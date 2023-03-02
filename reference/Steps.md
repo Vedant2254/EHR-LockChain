@@ -8,7 +8,7 @@
 
 3. Start creating contracts
 
-### `Management.sol` the main contract
+### `Contract.sol` the main contract
 
 #### Actors
 
@@ -17,6 +17,8 @@
    - **Register -** Whenever an address registers, it's address is stored in an array of patients, and their data is stored in a mapping from address to data.
 
 2. Doctor
-   - Register
+
+   - **Register -** Whenever an address registers, it's address is stored in an array of patients, and their data is stored in a mapping from address to data.
+   -
 
 ## Frontend

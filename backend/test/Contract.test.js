@@ -88,4 +88,39 @@ describe("Contract", function () {
       assert(drs[0] == doctor.address && drs[1] == patient.address);
     });
   });
+
+  describe("isPatient", function () {});
+
+  describe("addPatient", function () {});
+
+  describe("setPatHash", function () {});
+
+  describe("getAllPats", function () {});
+
+  describe("getPatHash", function () {});
+
+  describe("giveAndRevokeAccess", function () {
+    beforeEach(async function () {
+      await contract.connect(admin);
+      (await contract.addDoctor(doctor.address, "vedant")).wait(1);
+
+      await contract.connect(patient);
+      (await contract.addPatient()).wait(1);
+
+      (await contract.giveAccess(doctor.address)).wait(1);
+    });
+
+    it("Doctor address is added to patToDocAccess", async function () {
+      const doctors = await contract.getPatDocs();
+      assert(doctors.indexOf(doctor.address) != -1);
+    });
+
+    it("Doctor address is removed from patToDocAccess", async function () {
+      (await contract.revokeAccess(doctor.address)).wait(1);
+      const doctors = await contract.getPatDocs();
+      assert(doctors.indexOf(doctor.address) == -1);
+    });
+  });
+
+  describe("revokeAccess", function () {});
 });
