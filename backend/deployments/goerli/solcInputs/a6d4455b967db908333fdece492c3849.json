@@ -1,0 +1,41 @@
+{
+  "language": "Solidity",
+  "sources": {
+    "contracts/Contract.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.17;\n\nimport \"./Roles.sol\";\nimport \"./Utility.sol\";\n\nerror Contract__NotAdmin();\nerror Contract__NotDoctor();\nerror Contract__NotPatient();\n\ncontract Contract {\n    // using methods of Roles for Role struct in Roles\n    using Roles for Roles.Role;\n    using {Utility.indexOf} for address[];\n\n    // defining roles\n    Roles.Role private admin;\n    Roles.Role private doctor;\n    Roles.Role private patient;\n\n    // This is to store ids (addresses) of admin, doctors and patients\n    address private admin_id;\n    address[] private dr_ids;\n    address[] private pat_ids;\n\n    // This is to store hash of data of doctors and patients\n    mapping(address => string) Doctors;\n    mapping(address => string) Patients;\n    mapping(address => address[]) patToDocAccess;\n    mapping(address => address[]) docToPatAccess;\n\n    // Initializing admin\n    constructor() {\n        admin_id = msg.sender;\n        admin.add(msg.sender);\n    }\n\n    // Admin methods\n    function getAdmin() public view returns (address) {\n        return admin_id;\n    }\n\n    function isAdmin(address _address) public view returns (bool) {\n        return admin.has(_address);\n    }\n\n    // Doctor methods\n    function isDoctor(address _address) public view returns (bool) {\n        return doctor.has(_address);\n    }\n\n    function setDrHash(address _address, string memory _hash) public onlyAdmin {\n        Doctors[_address] = _hash;\n    }\n\n    function addDoctor(address _address, string memory _hash) public onlyAdmin {\n        doctor.add(_address);\n        dr_ids.push(_address);\n        setDrHash(_address, _hash);\n    }\n\n    function getAllDrs() public view returns (address[] memory) {\n        return dr_ids;\n    }\n\n    function getDocPats() public view onlyDoctor returns (address[] memory) {\n        return docToPatAccess[msg.sender];\n    }\n\n    function getDrHash(address _address) public view returns (string memory) {\n        if (!isDoctor(_address)) revert Contract__NotDoctor();\n        return Doctors[_address];\n    }\n\n    // Patient methods\n    function isPatient(address _address) public view returns (bool) {\n        return patient.has(_address);\n    }\n\n    function addPatient() public {\n        patient.add(msg.sender);\n        pat_ids.push(msg.sender);\n    }\n\n    function setPatHash(address _address, string memory _hash) public onlyDoctor {\n        if (!isPatient(_address)) revert Contract__NotPatient();\n        if (patToDocAccess[_address].indexOf(msg.sender) == -1) revert(\"Not Allowed!\");\n        Patients[_address] = _hash;\n    }\n\n    function getAllPats() public view returns (address[] memory) {\n        return pat_ids;\n    }\n\n    function getPatDocs() public view onlyPatient returns (address[] memory) {\n        return patToDocAccess[msg.sender];\n    }\n\n    function getPatHash(address _address) public view returns (string memory) {\n        if (!isPatient(_address)) revert Contract__NotPatient();\n\n        if (msg.sender != _address && patToDocAccess[_address].indexOf(msg.sender) == -1)\n            revert(\"Now Allowed!\");\n\n        return Patients[_address];\n    }\n\n    function giveAccess(address _address) public onlyPatient {\n        if (!isDoctor(_address)) revert Contract__NotDoctor();\n\n        if (patToDocAccess[msg.sender].indexOf(_address) == -1)\n            patToDocAccess[msg.sender].push(_address);\n\n        if (docToPatAccess[_address].indexOf(msg.sender) == -1)\n            docToPatAccess[_address].push(msg.sender);\n    }\n\n    function revokeAccess(address _address) public onlyPatient {\n        if (!isDoctor(_address)) revert Contract__NotDoctor();\n\n        uint256 i = uint256(patToDocAccess[msg.sender].indexOf(_address));\n        address[] memory temp = patToDocAccess[msg.sender];\n        patToDocAccess[msg.sender][i] = temp[temp.length - 1];\n        patToDocAccess[msg.sender].pop();\n\n        i = uint256(docToPatAccess[_address].indexOf(msg.sender));\n        temp = docToPatAccess[_address];\n        docToPatAccess[_address][i] = temp[temp.length - 1];\n        docToPatAccess[_address].pop();\n    }\n\n    // modifiers\n    modifier onlyAdmin() {\n        if (!admin.has(msg.sender)) revert Contract__NotAdmin();\n        _;\n    }\n\n    modifier onlyDoctor() {\n        if (!doctor.has(msg.sender)) revert Contract__NotDoctor();\n        _;\n    }\n\n    modifier onlyPatient() {\n        if (!patient.has(msg.sender)) revert Contract__NotPatient();\n        _;\n    }\n}\n"
+    },
+    "contracts/Roles.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.17;\n\nlibrary Roles {\n    // This is to keep track of roles\n    // Reduces searching cost\n    struct Role {\n        mapping(address => bool) bearer;\n    }\n\n    function add(Role storage role, address account) internal {\n        require(!has(role, account), \"Roles: account already has role\");\n        role.bearer[account] = true;\n    }\n\n    function remove(Role storage role, address account) internal {\n        require(has(role, account), \"Roles: account does not have role\");\n        role.bearer[account] = false;\n    }\n\n    function has(Role storage role, address account) internal view returns (bool) {\n        require(account != address(0), \"Roles: account is the zero address\");\n        return role.bearer[account];\n    }\n}\n"
+    },
+    "contracts/Utility.sol": {
+      "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.17;\n\nlibrary Utility {\n    function indexOf(address[] memory arr, address key) internal pure returns (int256) {\n        for (uint256 i = 0; i < arr.length; i++) {\n            if (arr[i] == key) return int256(i);\n        }\n        return -1;\n    }\n}\n"
+    }
+  },
+  "settings": {
+    "optimizer": {
+      "enabled": false,
+      "runs": 200
+    },
+    "outputSelection": {
+      "*": {
+        "*": [
+          "abi",
+          "evm.bytecode",
+          "evm.deployedBytecode",
+          "evm.methodIdentifiers",
+          "metadata",
+          "devdoc",
+          "userdoc",
+          "storageLayout",
+          "evm.gasEstimates"
+        ],
+        "": [
+          "ast"
+        ]
+      }
+    },
+    "metadata": {
+      "useLiteralContent": true
+    }
+  }
+}

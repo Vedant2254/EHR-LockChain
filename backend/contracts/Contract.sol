@@ -29,20 +29,6 @@ contract Contract {
     mapping(address => address[]) patToDocAccess;
     mapping(address => address[]) docToPatAccess;
 
-    /*
-    Access mapping looks like this
-     Access = {
-        pat1address: {
-            doc1address: true / false
-            doc2address: true / false
-        },
-        pat2address: {
-            doc2address: true / false
-            doc3address: true / false
-        }
-     }
-     */
-
     // Initializing admin
     constructor() {
         admin_id = msg.sender;
@@ -98,7 +84,7 @@ contract Contract {
 
     function setPatHash(address _address, string memory _hash) public onlyDoctor {
         if (!isPatient(_address)) revert Contract__NotPatient();
-        if (patToDocAccess[_address].indexOf(_address) == -1) revert("Not Allowed!");
+        if (patToDocAccess[_address].indexOf(msg.sender) == -1) revert("Not Allowed!");
         Patients[_address] = _hash;
     }
 
