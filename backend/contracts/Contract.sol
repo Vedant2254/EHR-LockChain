@@ -26,6 +26,8 @@ contract Contract {
     // This is to store hash of data of doctors and patients
     mapping(address => string) Doctors;
     mapping(address => string) Patients;
+
+    // This is to store access permissions for patient data
     mapping(address => address[]) patToDocAccess;
     mapping(address => address[]) docToPatAccess;
 
@@ -118,15 +120,19 @@ contract Contract {
     function revokeAccess(address _address) public onlyPatient {
         if (!isDoctor(_address)) revert Contract__NotDoctor();
 
-        uint256 i = uint256(patToDocAccess[msg.sender].indexOf(_address));
-        address[] memory temp = patToDocAccess[msg.sender];
-        patToDocAccess[msg.sender][i] = temp[temp.length - 1];
-        patToDocAccess[msg.sender].pop();
+        int256 i = patToDocAccess[msg.sender].indexOf(_address);
+        if (i != -1) {
+            address[] memory temp = patToDocAccess[msg.sender];
+            patToDocAccess[msg.sender][uint256(i)] = temp[temp.length - 1];
+            patToDocAccess[msg.sender].pop();
+        }
 
-        i = uint256(docToPatAccess[_address].indexOf(msg.sender));
-        temp = docToPatAccess[_address];
-        docToPatAccess[_address][i] = temp[temp.length - 1];
-        docToPatAccess[_address].pop();
+        i = docToPatAccess[_address].indexOf(msg.sender);
+        if (i != -1) {
+            address[] memory temp = docToPatAccess[_address];
+            docToPatAccess[_address][uint256(i)] = temp[temp.length - 1];
+            docToPatAccess[_address].pop();
+        }
     }
 
     // modifiers

@@ -183,7 +183,7 @@ describe("Contract", function () {
       assert(doctors.indexOf(doctor.address) == -1);
     });
 
-    it("Patient address is added to docToPatAccess", async function () {
+    it("Patient address is removed from docToPatAccess", async function () {
       await contract.revokeAccess(doctor.address);
       const patients = await (await ethers.getContract("Contract", doctor)).getDocPats();
       assert(patients.indexOf(patient.address) == -1);
