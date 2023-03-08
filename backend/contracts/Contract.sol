@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 import "./Roles.sol";
-import "./Utility.sol";
+import "./AddressArrayUtils.sol";
 
 error Contract__NotAdmin();
 error Contract__NotDoctor();
@@ -11,30 +11,36 @@ error Contract__NotPatient();
 contract Contract {
     // using methods of Roles for Role struct in Roles
     using Roles for Roles.Role;
-    using {Utility.indexOf} for address[];
+    using AddressArrayUtils for address[];
 
-    // defining roles
+    struct MedicalRecord {
+        address editor;
+        address[] viewers;
+        string data_hash;
+    }
+
+    // defining roles - contains hashes
     Roles.Role private admin;
     Roles.Role private doctor;
     Roles.Role private patient;
 
+    // persists - important for getting all doctors and all patients
     // This is to store ids (addresses) of admin, doctors and patients
     address private admin_id;
     address[] private dr_ids;
     address[] private pat_ids;
 
-    // This is to store hash of data of doctors and patients
-    mapping(address => string) Doctors;
-    mapping(address => string) Patients;
+    // persists - stores medical records its editors also helps access tracking
+    mapping(address => MedicalRecord) records;
 
+    // persists - important for getting patients of doctor and doctors of patient
     // This is to store access permissions for patient data
-    mapping(address => address[]) patToDocAccess;
     mapping(address => address[]) docToPatAccess;
 
     // Initializing admin
     constructor() {
+        admin.add(msg.sender, "null");
         admin_id = msg.sender;
-        admin.add(msg.sender);
     }
 
     // Admin methods
@@ -52,13 +58,12 @@ contract Contract {
     }
 
     function setDrHash(address _address, string memory _hash) public onlyAdmin {
-        Doctors[_address] = _hash;
+        doctor.set(_address, _hash);
     }
 
     function addDoctor(address _address, string memory _hash) public onlyAdmin {
-        doctor.add(_address);
+        doctor.add(_address, _hash);
         dr_ids.push(_address);
-        setDrHash(_address, _hash);
     }
 
     function getAllDrs() public view returns (address[] memory) {
@@ -71,7 +76,7 @@ contract Contract {
 
     function getDrHash(address _address) public view returns (string memory) {
         if (!isDoctor(_address)) revert Contract__NotDoctor();
-        return Doctors[_address];
+        return doctor.get(_address);
     }
 
     // Patient methods
@@ -79,60 +84,81 @@ contract Contract {
         return patient.has(_address);
     }
 
-    function addPatient() public {
-        patient.add(msg.sender);
+    function addPatient(string memory _hash) public {
+        patient.add(msg.sender, _hash);
         pat_ids.push(msg.sender);
     }
 
-    function setPatHash(address _address, string memory _hash) public onlyDoctor {
+    function setPatGeneralHash(string memory _hash) public onlyPatient {
+        patient.set(msg.sender, _hash);
+    }
+
+    function getPatGeneralHash() public view returns (string memory) {
+        return patient.get(msg.sender);
+    }
+
+    function setPatRecordHash(address _address, string memory _hash) public onlyDoctor {
         if (!isPatient(_address)) revert Contract__NotPatient();
-        if (patToDocAccess[_address].indexOf(msg.sender) == -1) revert("Not Allowed!");
-        Patients[_address] = _hash;
+        if (records[_address].editor != msg.sender) revert("Not Allowed");
+        records[_address].data_hash = _hash;
+    }
+
+    function getPatRecordHash(address _address) public view returns (string memory) {
+        if (!isPatient(_address)) revert Contract__NotPatient();
+
+        if (
+            msg.sender == _address ||
+            records[_address].editor == msg.sender ||
+            records[_address].viewers.indexOf(msg.sender) != -1
+        ) return records[_address].data_hash;
+
+        revert("Not Allowed");
     }
 
     function getAllPats() public view returns (address[] memory) {
         return pat_ids;
     }
 
-    function getPatDocs() public view onlyPatient returns (address[] memory) {
-        return patToDocAccess[msg.sender];
+    function getPatDr() public view onlyPatient returns (address) {
+        return records[msg.sender].editor;
     }
 
-    function getPatHash(address _address) public view returns (string memory) {
-        if (!isPatient(_address)) revert Contract__NotPatient();
-
-        if (msg.sender != _address && patToDocAccess[_address].indexOf(msg.sender) == -1)
-            revert("Now Allowed!");
-
-        return Patients[_address];
+    function getPatViewers() public view onlyPatient returns (address[] memory) {
+        return records[msg.sender].viewers;
     }
 
-    function giveAccess(address _address) public onlyPatient {
+    function changeEditorAccess(address _address) public onlyPatient {
+        // pending update - when user changes access, symmetric key S must be changed
         if (!isDoctor(_address)) revert Contract__NotDoctor();
 
-        if (patToDocAccess[msg.sender].indexOf(_address) == -1)
-            patToDocAccess[msg.sender].push(_address);
+        removeEditorAccess();
 
-        if (docToPatAccess[_address].indexOf(msg.sender) == -1)
+        // add new editor access
+        records[msg.sender].editor = _address;
+
+        if (!docToPatAccess[_address].contains(msg.sender))
             docToPatAccess[_address].push(msg.sender);
     }
 
-    function revokeAccess(address _address) public onlyPatient {
+    function removeEditorAccess() public onlyPatient {
+        address old_editor = records[msg.sender].editor;
+        records[msg.sender].editor = address(0);
+        docToPatAccess[old_editor].remove(msg.sender);
+    }
+
+    function grantViewerAccess(address _address) public onlyPatient {
         if (!isDoctor(_address)) revert Contract__NotDoctor();
 
-        int256 i = patToDocAccess[msg.sender].indexOf(_address);
-        if (i != -1) {
-            address[] memory temp = patToDocAccess[msg.sender];
-            patToDocAccess[msg.sender][uint256(i)] = temp[temp.length - 1];
-            patToDocAccess[msg.sender].pop();
+        if (!records[msg.sender].viewers.contains(_address)) {
+            records[msg.sender].viewers.push(_address);
         }
+    }
 
-        i = docToPatAccess[_address].indexOf(msg.sender);
-        if (i != -1) {
-            address[] memory temp = docToPatAccess[_address];
-            docToPatAccess[_address][uint256(i)] = temp[temp.length - 1];
-            docToPatAccess[_address].pop();
-        }
+    function revokeViewerAccess(address _address) public onlyPatient {
+        // pending update - when user revokes access, symmetric key S must be changed
+        if (!isDoctor(_address)) revert Contract__NotDoctor();
+
+        records[msg.sender].viewers.remove(_address);
     }
 
     // modifiers
