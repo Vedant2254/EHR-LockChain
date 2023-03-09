@@ -3,6 +3,7 @@ pragma solidity ^0.8.17;
 
 import "./Roles.sol";
 import "./AddressArrayUtils.sol";
+import "./AddToBoolMapping.sol";
 
 error Contract__NotAdmin();
 error Contract__NotDoctor();
@@ -11,6 +12,7 @@ error Contract__NotPatient();
 contract Contract {
     // using methods of Roles for Role struct in Roles
     using Roles for Roles.Role;
+    using AddToBoolMapping for AddToBoolMapping.Map;
     using AddressArrayUtils for address[];
 
     struct MedicalRecord {
@@ -19,32 +21,30 @@ contract Contract {
         string data_hash;
     }
 
+    struct Patients {
+        Roles.Role users;
+        mapping(address => MedicalRecord) records;
+    }
+
+    struct Doctors {
+        Roles.Role users;
+        mapping(address => string) public_keys;
+        mapping(address => AddToBoolMapping.Map) docToPatAccess;
+    }
+
     // defining roles - contains hashes
     Roles.Role private admin;
-    Roles.Role private doctor;
-    Roles.Role private patient;
-
-    // persists - important for getting all doctors and all patients
-    // This is to store ids (addresses) of admin, doctors and patients
-    address private admin_id;
-    address[] private dr_ids;
-    address[] private pat_ids;
-
-    // persists - stores medical records its editors also helps access tracking
-    mapping(address => MedicalRecord) records;
-
-    // persists - important for getting patients of doctor and doctors of patient
-    // This is to store access permissions for patient data
-    mapping(address => address[]) docToPatAccess;
+    Doctors private doctors;
+    Patients private patients;
 
     // Initializing admin
     constructor() {
         admin.add(msg.sender, "null");
-        admin_id = msg.sender;
     }
 
     // Admin methods
     function getAdmin() public view returns (address) {
+        address admin_id = admin.getMembers()[0];
         return admin_id;
     }
 
@@ -54,53 +54,62 @@ contract Contract {
 
     // Doctor methods
     function isDoctor(address _address) public view returns (bool) {
-        return doctor.has(_address);
-    }
-
-    function setDrHash(address _address, string memory _hash) public onlyAdmin {
-        doctor.set(_address, _hash);
+        return doctors.users.has(_address) && bytes(doctors.public_keys[_address]).length != 0;
     }
 
     function addDoctor(address _address, string memory _hash) public onlyAdmin {
-        doctor.add(_address, _hash);
-        dr_ids.push(_address);
+        if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed!");
+        doctors.users.add(_address, _hash);
     }
 
-    function getAllDrs() public view returns (address[] memory) {
-        return dr_ids;
+    function confirmAddDr(string memory _public_key) public onlyDoctor {
+        if (bytes(_public_key).length == 0) revert("Contract: Empty public key is not allowed!");
+        doctors.public_keys[msg.sender] = _public_key;
     }
 
-    function getDocPats() public view onlyDoctor returns (address[] memory) {
-        return docToPatAccess[msg.sender];
+    function setDrHash(address _address, string memory _hash) public onlyAdmin {
+        doctors.users.setHash(_address, _hash);
     }
 
     function getDrHash(address _address) public view returns (string memory) {
         if (!isDoctor(_address)) revert Contract__NotDoctor();
-        return doctor.get(_address);
+        return doctors.users.getHash(_address);
+    }
+
+    function getDrPubKey(address _address) public view returns (string memory) {
+        return doctors.public_keys[_address];
+    }
+
+    function getAllDrs() public view returns (address[] memory) {
+        return doctors.users.getMembers();
+    }
+
+    function getDocPats() public view onlyDoctor returns (address[] memory) {
+        return doctors.docToPatAccess[msg.sender].keys;
     }
 
     // Patient methods
     function isPatient(address _address) public view returns (bool) {
-        return patient.has(_address);
+        return patients.users.has(_address);
     }
 
     function addPatient(string memory _hash) public {
-        patient.add(msg.sender, _hash);
-        pat_ids.push(msg.sender);
+        if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed");
+        patients.users.add(msg.sender, _hash);
     }
 
     function setPatGeneralHash(string memory _hash) public onlyPatient {
-        patient.set(msg.sender, _hash);
+        patients.users.setHash(msg.sender, _hash);
     }
 
     function getPatGeneralHash() public view returns (string memory) {
-        return patient.get(msg.sender);
+        return patients.users.getHash(msg.sender);
     }
 
     function setPatRecordHash(address _address, string memory _hash) public onlyDoctor {
         if (!isPatient(_address)) revert Contract__NotPatient();
-        if (records[_address].editor != msg.sender) revert("Not Allowed");
-        records[_address].data_hash = _hash;
+        if (patients.records[_address].editor != msg.sender) revert("Not Allowed");
+        patients.records[_address].data_hash = _hash;
     }
 
     function getPatRecordHash(address _address) public view returns (string memory) {
@@ -108,49 +117,49 @@ contract Contract {
 
         if (
             msg.sender == _address ||
-            records[_address].editor == msg.sender ||
-            records[_address].viewers.indexOf(msg.sender) != -1
-        ) return records[_address].data_hash;
+            patients.records[_address].editor == msg.sender ||
+            patients.records[_address].viewers.indexOf(msg.sender) != -1
+        ) return patients.records[_address].data_hash;
 
         revert("Not Allowed");
     }
 
     function getAllPats() public view returns (address[] memory) {
-        return pat_ids;
+        return patients.users.getMembers();
     }
 
     function getPatDr() public view onlyPatient returns (address) {
-        return records[msg.sender].editor;
+        return patients.records[msg.sender].editor;
     }
 
     function getPatViewers() public view onlyPatient returns (address[] memory) {
-        return records[msg.sender].viewers;
+        return patients.records[msg.sender].viewers;
     }
 
     function changeEditorAccess(address _address) public onlyPatient {
         // pending update - when user changes access, symmetric key S must be changed
         if (!isDoctor(_address)) revert Contract__NotDoctor();
 
-        removeEditorAccess();
+        // remove old editor access
+        address old_editor = patients.records[msg.sender].editor;
+        doctors.docToPatAccess[old_editor].unset(msg.sender);
 
         // add new editor access
-        records[msg.sender].editor = _address;
-
-        if (!docToPatAccess[_address].contains(msg.sender))
-            docToPatAccess[_address].push(msg.sender);
+        patients.records[msg.sender].editor = _address;
+        doctors.docToPatAccess[_address].set(msg.sender);
     }
 
     function removeEditorAccess() public onlyPatient {
-        address old_editor = records[msg.sender].editor;
-        records[msg.sender].editor = address(0);
-        docToPatAccess[old_editor].remove(msg.sender);
+        address old_editor = patients.records[msg.sender].editor;
+        patients.records[msg.sender].editor = address(0);
+        doctors.docToPatAccess[old_editor].unset(msg.sender);
     }
 
     function grantViewerAccess(address _address) public onlyPatient {
         if (!isDoctor(_address)) revert Contract__NotDoctor();
 
-        if (!records[msg.sender].viewers.contains(_address)) {
-            records[msg.sender].viewers.push(_address);
+        if (!patients.records[msg.sender].viewers.contains(_address)) {
+            patients.records[msg.sender].viewers.push(_address);
         }
     }
 
@@ -158,7 +167,7 @@ contract Contract {
         // pending update - when user revokes access, symmetric key S must be changed
         if (!isDoctor(_address)) revert Contract__NotDoctor();
 
-        records[msg.sender].viewers.remove(_address);
+        patients.records[msg.sender].viewers.remove(_address);
     }
 
     // modifiers
@@ -168,12 +177,12 @@ contract Contract {
     }
 
     modifier onlyDoctor() {
-        if (!doctor.has(msg.sender)) revert Contract__NotDoctor();
+        if (!doctors.users.has(msg.sender)) revert Contract__NotDoctor();
         _;
     }
 
     modifier onlyPatient() {
-        if (!patient.has(msg.sender)) revert Contract__NotPatient();
+        if (!patients.users.has(msg.sender)) revert Contract__NotPatient();
         _;
     }
 }

@@ -28,8 +28,9 @@ describe("Contract", function () {
   });
 
   describe("isDoctor", function () {
-    it("Returns true if user is doctor", async function () {
+    it("Returns true if user is doctor and doctor has given his public key", async function () {
       await contract.addDoctor(doctor.address, "sample-hash");
+      await (await ethers.getContract("Contract", doctor)).confirmAddDr("12345");
       assert(await contract.isDoctor(doctor.address));
     });
 
@@ -41,6 +42,7 @@ describe("Contract", function () {
   describe("setDrHash & getDrHash", function () {
     it("Hash for doctor is set and retrieved correctly", async function () {
       await contract.addDoctor(doctor.address, "old-hash");
+      await (await ethers.getContract("Contract", doctor)).confirmAddDr("12345");
       await contract.setDrHash(doctor.address, "new-hash");
       assert.equal("new-hash", await contract.getDrHash(doctor.address));
     });
@@ -51,6 +53,7 @@ describe("Contract", function () {
 
     beforeEach(async function () {
       (await contract.addDoctor(doctor.address, hash)).wait(1);
+      await (await ethers.getContract("Contract", doctor)).confirmAddDr("12345");
     });
 
     it("Address is added to doctor role", async function () {
@@ -58,12 +61,12 @@ describe("Contract", function () {
       assert(isDoctor);
     });
 
-    it("Address is added to dr_ids array", async function () {
+    it("Address is added to doctors.bearer.keys array", async function () {
       const drs = await contract.getAllDrs();
       assert(drs.includes(doctor.address));
     });
 
-    it("Hash of doctor is added to Doctors array", async function () {
+    it("Hash of doctor is added", async function () {
       const drHash = await contract.getDrHash(doctor.address);
       assert.equal(drHash, hash);
     });
@@ -77,8 +80,10 @@ describe("Contract", function () {
 
   describe("getAllDrs", function () {
     it("All doctors array is returned correctly", async function () {
-      await contract.addDoctor(doctor.address, "");
-      await contract.addDoctor(patient.address, "");
+      await contract.addDoctor(doctor.address, "sample-hash");
+      await contract.addDoctor(patient.address, "sample-hash");
+      await (await ethers.getContract("Contract", doctor)).confirmAddDr("12345");
+      await (await ethers.getContract("Contract", patient)).confirmAddDr("12345");
       const drs = await contract.getAllDrs();
       assert(drs[0] == doctor.address && drs[1] == patient.address);
     });
@@ -158,6 +163,7 @@ describe("Contract", function () {
 
     beforeEach(async function () {
       await contract.addDoctor(doctor.address, "sample-hash");
+      await (await ethers.getContract("Contract", doctor)).confirmAddDr("12345");
 
       contract = await ethers.getContract("Contract", patient);
       await contract.addPatient("sample-hash");
@@ -174,6 +180,7 @@ describe("Contract", function () {
   describe("changeEditorAccess", function () {
     beforeEach(async function () {
       await contract.addDoctor(doctor.address, "vedant");
+      await (await ethers.getContract("Contract", doctor)).confirmAddDr("12345");
 
       contract = await ethers.getContract("Contract", patient);
       await contract.addPatient("sample-hash");
@@ -195,6 +202,7 @@ describe("Contract", function () {
   describe("removeEditorAccess", function () {
     beforeEach(async function () {
       await contract.addDoctor(doctor.address, "vedant");
+      await (await ethers.getContract("Contract", doctor)).confirmAddDr("12345");
 
       contract = await ethers.getContract("Contract", patient);
       await contract.addPatient("sample-hash");
