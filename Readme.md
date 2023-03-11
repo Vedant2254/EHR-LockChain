@@ -78,7 +78,7 @@ Encryption can be done using `crypto` module.
 
 #### Patient general details
 
-This data is not encrypted and visible to anyone
+This data is encrypted
 
 ```
 {
@@ -90,6 +90,15 @@ This data is not encrypted and visible to anyone
         .
         .
     },
+}
+```
+
+#### Patient key data
+
+This data has encrypted keys, only individual keys are encrypted
+
+```
+{
     keys: {
         address1: encKeySForAddress1
         address2: encKeySForAddress2
@@ -97,7 +106,8 @@ This data is not encrypted and visible to anyone
         .
         .
         .
-    }
+    },
+    medicalRecordCID: ---
 }
 ```
 
@@ -108,14 +118,19 @@ by addresses present in keys of [Patient General Details](#patient-general-detai
 
 ```
 {
-    data: {
-        record1: {
+    generalData: ---
+    history: {
+        hash: ---,
+        key: ---
+    },
+    data: [
+        {
             title: ---
             description: ---
             media (image, pdf, docx, video, etc.): ---
             quality: ---
         }
-        record2: {
+        {
             title: ---
             description: ---
             media (image, pdf, docx, video, etc.): ---
@@ -124,11 +139,11 @@ by addresses present in keys of [Patient General Details](#patient-general-detai
         .
         .
         .
-        metadata: {
-            version: ---
-            lastUpdateDateTime: ---
-            lastUpdateByAddress: ---
-        }
+    ]
+    metadata: {
+        version: ---
+        lastUpdateDateTime: ---
+        lastUpdateByAddress: ---
     }
     digitalSignatureOfDoctor: ---
     digitalSignatureOfPatient: ---

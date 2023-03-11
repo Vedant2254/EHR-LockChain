@@ -18,7 +18,7 @@ contract Contract {
     struct MedicalRecord {
         address editor;
         address[] viewers;
-        string data_hash;
+        string key_data_hash;
     }
 
     struct Patients {
@@ -109,7 +109,7 @@ contract Contract {
     function setPatRecordHash(address _address, string memory _hash) public onlyDoctor {
         if (!isPatient(_address)) revert Contract__NotPatient();
         if (patients.records[_address].editor != msg.sender) revert("Not Allowed");
-        patients.records[_address].data_hash = _hash;
+        patients.records[_address].key_data_hash = _hash;
     }
 
     function getPatRecordHash(address _address) public view returns (string memory) {
@@ -119,21 +119,13 @@ contract Contract {
             msg.sender == _address ||
             patients.records[_address].editor == msg.sender ||
             patients.records[_address].viewers.indexOf(msg.sender) != -1
-        ) return patients.records[_address].data_hash;
+        ) return patients.records[_address].key_data_hash;
 
         revert("Not Allowed");
     }
 
     function getAllPats() public view returns (address[] memory) {
         return patients.users.getMembers();
-    }
-
-    function getPatDr() public view onlyPatient returns (address) {
-        return patients.records[msg.sender].editor;
-    }
-
-    function getPatViewers() public view onlyPatient returns (address[] memory) {
-        return patients.records[msg.sender].viewers;
     }
 
     function changeEditorAccess(address _address) public onlyPatient {
@@ -155,6 +147,10 @@ contract Contract {
         doctors.docToPatAccess[old_editor].unset(msg.sender);
     }
 
+    function getPatDr() public view onlyPatient returns (address) {
+        return patients.records[msg.sender].editor;
+    }
+
     function grantViewerAccess(address _address) public onlyPatient {
         if (!isDoctor(_address)) revert Contract__NotDoctor();
 
@@ -168,6 +164,10 @@ contract Contract {
         if (!isDoctor(_address)) revert Contract__NotDoctor();
 
         patients.records[msg.sender].viewers.remove(_address);
+    }
+
+    function getPatViewers() public view onlyPatient returns (address[] memory) {
+        return patients.records[msg.sender].viewers;
     }
 
     // modifiers
