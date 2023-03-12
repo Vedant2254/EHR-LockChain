@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 library AddToStrMapping {
-    // mapping address => bool
+    // mapping address => string
     struct Map {
         address[] keys;
         mapping(address => string) values;

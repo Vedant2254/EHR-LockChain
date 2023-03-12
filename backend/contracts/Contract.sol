@@ -8,6 +8,8 @@ import "./AddToBoolMapping.sol";
 error Contract__NotAdmin();
 error Contract__NotDoctor();
 error Contract__NotPatient();
+error Contract__PendingDoctorApproval();
+error Contract__DoctorPublicKeyMissing();
 
 contract Contract {
     // using methods of Roles for Role struct in Roles
@@ -19,6 +21,11 @@ contract Contract {
         address editor;
         address[] viewers;
         string key_data_hash;
+    }
+
+    struct Admin {
+        address user;
+        AddToBoolMapping.Map pending_doctors;
     }
 
     struct Patients {
@@ -33,42 +40,55 @@ contract Contract {
     }
 
     // defining roles - contains hashes
-    Roles.Role private admin;
+    Admin private admin;
     Doctors private doctors;
     Patients private patients;
 
     // Initializing admin
     constructor() {
-        admin.add(msg.sender, "null");
+        admin.user = msg.sender;
     }
 
     // Admin methods
     function getAdmin() public view returns (address) {
-        address admin_id = admin.getMembers()[0];
-        return admin_id;
+        return admin.user;
     }
 
     function isAdmin(address _address) public view returns (bool) {
-        return admin.has(_address);
+        if (admin.user == _address) return true;
+        return false;
     }
 
     // Doctor methods
     function isDoctor(address _address) public view returns (bool) {
-        return doctors.users.has(_address) && bytes(doctors.public_keys[_address]).length != 0;
+        if (!doctors.users.has(_address)) return false;
+        if (admin.pending_doctors.get(_address)) return false;
+        if (bytes(doctors.public_keys[_address]).length == 0) return false;
+        return true;
     }
 
-    function addDoctor(address _address, string memory _hash) public onlyAdmin {
+    function addDoctor(string memory _hash) public {
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed!");
-        doctors.users.add(_address, _hash);
+        doctors.users.add(msg.sender, _hash);
+        admin.pending_doctors.set(msg.sender);
     }
 
-    function confirmAddDr(string memory _public_key) public onlyDoctor {
+    function approveDoctor(address _address) public onlyAdmin {
+        if (isDoctor(_address)) return;
+        if (!doctors.users.has(_address)) return;
+        admin.pending_doctors.unset(_address);
+    }
+
+    function confirmAddDr(string memory _public_key) public {
         if (bytes(_public_key).length == 0) revert("Contract: Empty public key is not allowed!");
+        if (!doctors.users.has(msg.sender)) revert Contract__NotDoctor();
+        if (admin.pending_doctors.get(msg.sender)) revert Contract__PendingDoctorApproval();
         doctors.public_keys[msg.sender] = _public_key;
     }
 
-    function setDrHash(address _address, string memory _hash) public onlyAdmin {
-        doctors.users.setHash(_address, _hash);
+    function setDrHash(string memory _hash) public onlyDoctor {
+        if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed!");
+        doctors.users.setHash(msg.sender, _hash);
     }
 
     function getDrHash(address _address) public view returns (string memory) {
@@ -172,17 +192,20 @@ contract Contract {
 
     // modifiers
     modifier onlyAdmin() {
-        if (!admin.has(msg.sender)) revert Contract__NotAdmin();
+        if (!isAdmin(msg.sender)) revert Contract__NotAdmin();
         _;
     }
 
     modifier onlyDoctor() {
         if (!doctors.users.has(msg.sender)) revert Contract__NotDoctor();
+        if (admin.pending_doctors.get(msg.sender)) revert Contract__PendingDoctorApproval();
+        if (bytes(doctors.public_keys[msg.sender]).length == 0)
+            revert Contract__DoctorPublicKeyMissing();
         _;
     }
 
     modifier onlyPatient() {
-        if (!patients.users.has(msg.sender)) revert Contract__NotPatient();
+        if (!isPatient(msg.sender)) revert Contract__NotPatient();
         _;
     }
 }
