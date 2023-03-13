@@ -4,22 +4,11 @@ async function main() {
   const { deployer } = await getNamedAccounts();
   const [_, doctor, patient] = await ethers.getSigners();
 
-  await deployments.fixture(["all"]);
-  const contract = await ethers.getContract("Contract");
+  // await deployments.fixture(["all"]);
+  const contract = await ethers.getContract("Contract", patient);
 
-  console.log(contract.signer.address);
-  const newContract = await ethers.getContract("Contract", doctor);
-  // await newContract.connect(doctor);
-  console.log(newContract.signer.address);
-
-  // console.log("Getting admin...");
-  // const admin = await contract.getAdmin();
-  // console.log(admin);
-
-  // const txRes = await contract.addDoctor(doctor.address, "Vedant");
-
-  // const docHash = await contract.getDrHash(doctor.address);
-  // console.log(docHash);
+  console.log(await contract.getPatGeneralHash(patient.address));
+  console.log(await contract.getPatRecordHash(patient.address));
 }
 
 main().catch((e) => {

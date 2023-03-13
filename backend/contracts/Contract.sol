@@ -113,22 +113,32 @@ contract Contract {
         return patients.users.has(_address);
     }
 
-    function addPatient(string memory _hash) public {
+    function addPatient(string memory _hash, string memory _key_data_hash) public {
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed");
         patients.users.add(msg.sender, _hash);
+        patients.records[msg.sender].key_data_hash = _key_data_hash;
     }
 
     function setPatGeneralHash(string memory _hash) public onlyPatient {
         patients.users.setHash(msg.sender, _hash);
     }
 
-    function getPatGeneralHash() public view returns (string memory) {
-        return patients.users.getHash(msg.sender);
+    function getPatGeneralHash(address _address) public view returns (string memory) {
+        if (!isPatient(_address)) revert Contract__NotPatient();
+
+        if (
+            msg.sender == _address ||
+            patients.records[_address].editor == msg.sender ||
+            patients.records[_address].viewers.indexOf(msg.sender) != -1
+        ) return patients.users.getHash(_address);
+
+        revert("Not Allowed");
     }
 
-    function setPatRecordHash(address _address, string memory _hash) public onlyDoctor {
+    function setPatRecordHash(address _address, string memory _hash) public {
         if (!isPatient(_address)) revert Contract__NotPatient();
-        if (patients.records[_address].editor != msg.sender) revert("Not Allowed");
+        if (!(msg.sender == _address || patients.records[_address].editor == msg.sender))
+            revert("Not Allowed");
         patients.records[_address].key_data_hash = _hash;
     }
 

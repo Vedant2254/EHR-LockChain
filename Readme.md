@@ -118,8 +118,7 @@ by addresses present in keys of [Patient General Details](#patient-general-detai
 
 ```
 {
-    generalData: ---
-    history: {
+    previousVersion: {
         hash: ---,
         key: ---
     },
