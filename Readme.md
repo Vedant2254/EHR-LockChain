@@ -4,6 +4,8 @@
 
 ### Files related
 
+These help getting file from user, converting file to textual form, making it encryption compatible, finally storing it to IPFS.
+
 1. `Blob` - converts object to array buffer, not quite used, but mentioned here.
 
 2. `File` - object of this type is returned from `<input type="file" />`
@@ -16,11 +18,13 @@
 
 ### Cryptography
 
-1. `crypto` - hashing, salt hashing, symmetric encryption, key pairs, asymmetric encryption, signing
+1. `crypto` - use for symmetric encryption of data
+
+2. `@metamask/eth-sig-util` - used for asymmetric encryption using public keys of users, decrypting using user's private key, signing data using user's private keys, verifying data integrity using user's public key.
 
 ## Files and file formats in textual format
 
-These help getting file from user, converting file to textual form, making it encryption compatible, finally storing it to IPFS. Some formats in used in this project -
+Some formats in used in this project -
 
 - `utf-8` string format
 - `ArrayBuffer` array of uint8
