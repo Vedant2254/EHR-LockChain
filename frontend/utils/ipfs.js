@@ -21,9 +21,9 @@ async function makeFileObjects(objects, filenames) {
   return files;
 }
 
-async function storeIPFS(files) {
+async function storeIPFS(files, options) {
   const client = await makeStorageClient();
-  const cid = await client.put(files);
+  const cid = await client.put(files, options);
   return cid;
 }
 

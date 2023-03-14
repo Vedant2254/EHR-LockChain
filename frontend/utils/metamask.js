@@ -7,9 +7,9 @@ async function getPublicKey(address) {
   });
 }
 
-async function encryptData(address, data) {
+async function encryptData(address, data, publicKey) {
   const enc = encrypt({
-    publicKey: await getPublicKey(address),
+    publicKey: publicKey || (await getPublicKey(address)),
     data: data,
     version: "x25519-xsalsa20-poly1305",
   });

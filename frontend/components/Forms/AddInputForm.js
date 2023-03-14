@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function AddInputForm({ handleInputsChange }) {
+export default function AddInputForm({ handleInputsInputChange }) {
   const [inputName, setInputName] = useState(""); // stores value of name of new input
   const [inputType, setInputType] = useState("text"); // stores value of type of new input
 
@@ -14,7 +14,7 @@ export default function AddInputForm({ handleInputsChange }) {
 
   function handleOnSubmit(event) {
     event.preventDefault();
-    handleInputsChange(inputName, inputType);
+    handleInputsInputChange(inputName, inputType);
   }
 
   return (
@@ -51,14 +51,14 @@ export default function AddInputForm({ handleInputsChange }) {
           checked={inputType == "email"}
         />{" "}
         Email
-        <input
+        {/* <input
           type="radio"
           name="type"
           value="file"
           onChange={handleInputTypeChange}
           checked={inputType == "file"}
         />{" "}
-        File
+        File */}
         <br />
         <button>{`Add ${inputType} input`}</button>
       </form>

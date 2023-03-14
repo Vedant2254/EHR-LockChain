@@ -25,6 +25,7 @@ contract Contract {
 
     struct Admin {
         address user;
+        string public_key;
         AddToBoolMapping.Map pending_doctors;
     }
 
@@ -59,7 +60,19 @@ contract Contract {
         return false;
     }
 
+    function setAdminPubKey(string memory _public_key) public onlyAdmin {
+        admin.public_key = _public_key;
+    }
+
+    function getAdminPubKey() public view returns (string memory) {
+        return admin.public_key;
+    }
+
     // Doctor methods
+    function isDoctorRegistered(address _address) public view returns (bool) {
+        return doctors.users.has(_address);
+    }
+
     function isDoctor(address _address) public view returns (bool) {
         if (!doctors.users.has(_address)) return false;
         if (admin.pending_doctors.get(_address)) return false;
@@ -68,6 +81,7 @@ contract Contract {
     }
 
     function addDoctor(string memory _hash) public {
+        if (isPatient(msg.sender)) revert("Contract: Address already registered as patient");
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed!");
         doctors.users.add(msg.sender, _hash);
         admin.pending_doctors.set(msg.sender);
@@ -92,7 +106,7 @@ contract Contract {
     }
 
     function getDrHash(address _address) public view returns (string memory) {
-        if (!isDoctor(_address)) revert Contract__NotDoctor();
+        if (!isDoctorRegistered(_address)) revert Contract__NotDoctor();
         return doctors.users.getHash(_address);
     }
 
@@ -102,6 +116,10 @@ contract Contract {
 
     function getAllDrs() public view returns (address[] memory) {
         return doctors.users.getMembers();
+    }
+
+    function getPendingDrs() public view returns (address[] memory) {
+        return admin.pending_doctors.keys;
     }
 
     function getDocPats() public view onlyDoctor returns (address[] memory) {
@@ -114,6 +132,8 @@ contract Contract {
     }
 
     function addPatient(string memory _hash, string memory _key_data_hash) public {
+        if (isDoctorRegistered(msg.sender) || isDoctor(msg.sender))
+            revert("Contract: Address already registered as doctor");
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed");
         patients.users.add(msg.sender, _hash);
         patients.records[msg.sender].key_data_hash = _key_data_hash;
