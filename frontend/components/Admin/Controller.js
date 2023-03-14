@@ -1,8 +1,8 @@
 import { useState } from "react";
-import DoctorController from "./Doctors/Controller";
-import PatientController from "./Patients/Controller";
+import DoctorWindow from "./Doctors/Window";
+import PatientWindow from "./Patients/Window";
 
-export default function AllDoctors({ handleViewDoctor }) {
+export default function AdminController() {
   const [currTab, setCurrTab] = useState("Main");
 
   return (
@@ -13,8 +13,8 @@ export default function AllDoctors({ handleViewDoctor }) {
       <br />
       <br />
       {currTab == "Main" && "Main"}
-      {currTab == "Doctors" && <DoctorController />}
-      {currTab == "Patients" && <PatientController />}
+      {currTab == "Doctors" && <DoctorWindow />}
+      {currTab == "Patients" && <PatientWindow />}
     </>
   );
 }

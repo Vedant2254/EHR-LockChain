@@ -39,14 +39,6 @@ export default function RegisterPatient() {
     enabled: enabled && CIDs.dataCID && CIDs.keyCID,
   });
 
-  // get admin public key
-  const { data: adminPubKey } = useContractRead({
-    address: contractAddress,
-    abi,
-    functionName: "getAdminPubKey",
-    enabled,
-  });
-
   /* Utility functions */
   async function registerPatient() {
     const { dataCID, keyCID } = CIDs;

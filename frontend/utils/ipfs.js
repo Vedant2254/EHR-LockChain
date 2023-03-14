@@ -27,16 +27,10 @@ async function storeIPFS(files, options) {
   return cid;
 }
 
-async function deleteIPFS(cid) {
+async function retrieveIPFS(cid) {
   const client = await makeStorageClient();
-  await client.delete(cid);
-}
-
-async function retrieve(cid) {
-  const client = makeStorageClient();
   const res = await client.get(cid);
-  console.log(res);
   return res.ok ? await res.files() : null;
 }
 
-module.exports = { makeFileObjects, storeIPFS, deleteIPFS, retrieve };
+module.exports = { makeFileObjects, storeIPFS, retrieveIPFS };

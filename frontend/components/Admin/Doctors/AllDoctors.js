@@ -1,23 +1,20 @@
-import { useAccount, useContractRead, useNetwork } from "wagmi";
-import useSWR from "swr";
-import Doctor from "./Doctor";
-
-const fetcher = (url) => fetch(url).then((res) => res.json());
+import { useContractRead } from "wagmi";
+import useValidTxnData from "@/utils/hooks/useValidTxnData";
 
 export default function AllDoctors({ handleViewDoctor }) {
-  const { data: contract } = useSWR("/api/constants", fetcher);
-  const { chain } = useNetwork();
-  const { address } = useAccount();
-
-  const contractAddress =
-    contract && chain && JSON.parse(contract).contractAddresses[chain.id];
-  const abi = contract && JSON.parse(contract).abi;
-  const enabled = contract && chain && address;
+  const { contractAddress, abi, enabled } = useValidTxnData();
 
   const { data: allDoctors } = useContractRead({
     address: contractAddress,
     abi,
     functionName: "getAllDrs",
+    enabled,
+  });
+
+  const { data: pendingDoctors } = useContractRead({
+    address: contractAddress,
+    abi,
+    functionName: "getPendingDrs",
     enabled,
   });
 
@@ -27,6 +24,10 @@ export default function AllDoctors({ handleViewDoctor }) {
       return (
         <div key={index}>
           <button onClick={() => handleViewDoctor(doctor)}>{doctor}</button>
+          {pendingDoctors &&
+            pendingDoctors.indexOf(doctor) != -1 &&
+            " Need your Approval"}
+          <br />
           <br />
         </div>
       );

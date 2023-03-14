@@ -2,11 +2,11 @@ import { useState } from "react";
 import CertificateInput from "./CustomInputs/CertificateInput";
 
 export default function CertificateInputs({
-  certificates,
+  certcount,
   handleCertificateChange,
   handleCertificateDelete,
 }) {
-  const [certificateCount, setCertificateCount] = useState(certificates);
+  const [certificateCount, setCertificateCount] = useState(certcount);
 
   function incrementCertificateCount() {
     setCertificateCount(certificateCount + 1);
@@ -19,8 +19,13 @@ export default function CertificateInputs({
 
   return (
     <>
-      <button onClick={incrementCertificateCount}>+</button>
-      <button onClick={decrementCertificateCount}>-</button>
+      <button onClick={incrementCertificateCount} type="button">
+        +
+      </button>
+      <button onClick={decrementCertificateCount} type="button">
+        -
+      </button>
+      <br />
       {Array.from(Array(certificateCount)).map((_, index) => (
         <div key={index}>
           <br />

@@ -73,6 +73,10 @@ contract Contract {
         return doctors.users.has(_address);
     }
 
+    function isPendingDoctor(address _address) public view returns (bool) {
+        return admin.pending_doctors.get(_address);
+    }
+
     function isDoctor(address _address) public view returns (bool) {
         if (!doctors.users.has(_address)) return false;
         if (admin.pending_doctors.get(_address)) return false;

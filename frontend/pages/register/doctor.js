@@ -10,6 +10,7 @@ export default function RegisterDoctor() {
   const router = useRouter();
 
   const [dataCID, setDataCID] = useState(null);
+  const [submitIsDisabled, setSubmitIsDisabled] = useState(false);
 
   /* Contract functions */
   const { data: isDoctor, refetch: runIsDoctor } = useContractRead({
@@ -29,11 +30,14 @@ export default function RegisterDoctor() {
   });
 
   /* Utility functions */
-  function registerDoctor() {
+  async function registerDoctor() {
     if (dataCID) {
-      runAddDoctor()
-        .then(runIsDoctor)
-        .catch((err) => console.log(err));
+      try {
+        await runAddDoctor();
+        await runIsDoctor();
+      } catch (err) {
+        console.log(err);
+      }
 
       setDataCID(null);
     }
@@ -46,40 +50,48 @@ export default function RegisterDoctor() {
   }, [address, isDoctor]);
 
   useEffect(() => {
-    registerDoctor();
+    (async () => {
+      await registerDoctor();
+      setSubmitIsDisabled(false);
+    })();
   }, [dataCID]);
 
   /* handlers */
   async function handleOnSubmit(data) {
-    // read file as data urls
-    function readFileAsync(file) {
-      return new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => resolve(reader.result);
-      });
-    }
-
-    // changes files to dataURLS in data
-    for (let key in data) {
-      if (data[key].constructor.name == "File") {
-        data[key] = await readFileAsync(data[key]);
+    setSubmitIsDisabled(true);
+    try {
+      // read file as data urls
+      function readFileAsync(file) {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onloadend = () => resolve(reader.result);
+        });
       }
-    }
 
-    // changes files to dataURLS in data
-    for (let i in data.certificates) {
-      const { media } = data.certificates[i];
-      if (media.constructor.name == "File")
-        data.certificates[i].media = await readFileAsync(media);
-    }
+      // changes files to dataURLS in data
+      for (let key in data) {
+        if (data[key].constructor.name == "File") {
+          data[key] = await readFileAsync(data[key]);
+        }
+      }
 
-    // store data to IPFS and set dataCID
-    console.log("Uploading data....");
-    const dataFiles = await makeFileObjects([data], [address]);
-    const cid = await storeIPFS(dataFiles, { wrapWithDirectory: false });
-    console.log(cid);
-    setDataCID(cid);
+      // changes files to dataURLS in data
+      for (let i in data.certificates) {
+        const { media } = data.certificates[i];
+        if (media.constructor.name == "File")
+          data.certificates[i].media = await readFileAsync(media);
+      }
+
+      // store data to IPFS and set dataCID
+      console.log("Uploading data....");
+      const dataFiles = await makeFileObjects([data], [address]);
+      const cid = await storeIPFS(dataFiles, { wrapWithDirectory: false });
+      console.log(cid);
+      setDataCID(cid);
+    } catch (e) {
+      setSubmitIsDisabled(false);
+    }
   }
 
   return (
@@ -92,7 +104,8 @@ export default function RegisterDoctor() {
           phone: "number",
           email: "email",
         }}
-        certCount={1}
+        submitIsDisabled={submitIsDisabled}
+        certcount={1}
         handleOnSubmit={handleOnSubmit}
       />
     </>

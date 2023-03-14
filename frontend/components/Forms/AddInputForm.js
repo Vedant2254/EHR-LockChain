@@ -12,46 +12,45 @@ export default function AddInputForm({ handleInputsInputChange }) {
     setInputType(event.target.value);
   }
 
-  function handleOnSubmit(event) {
+  function handleOnClick(event) {
     event.preventDefault();
     handleInputsInputChange(inputName, inputType);
   }
 
   return (
     <div>
-      <form onSubmit={handleOnSubmit}>
-        <input
-          type="text"
-          name="inputNameInput"
-          value={inputName}
-          onChange={handleInputNameChange}
-        />
-        <br />
-        <input
-          type="radio"
-          name="type"
-          value="text"
-          onChange={handleInputTypeChange}
-          checked={inputType == "text"}
-        />{" "}
-        Text
-        <input
-          type="radio"
-          name="type"
-          value="number"
-          onChange={handleInputTypeChange}
-          checked={inputType == "number"}
-        />{" "}
-        Number
-        <input
-          type="radio"
-          name="type"
-          value="email"
-          onChange={handleInputTypeChange}
-          checked={inputType == "email"}
-        />{" "}
-        Email
-        {/* <input
+      <input
+        type="text"
+        name="inputNameInput"
+        value={inputName}
+        onChange={handleInputNameChange}
+      />
+      <br />
+      <input
+        type="radio"
+        name="type"
+        value="text"
+        onChange={handleInputTypeChange}
+        checked={inputType == "text"}
+      />{" "}
+      Text
+      <input
+        type="radio"
+        name="type"
+        value="number"
+        onChange={handleInputTypeChange}
+        checked={inputType == "number"}
+      />{" "}
+      Number
+      <input
+        type="radio"
+        name="type"
+        value="email"
+        onChange={handleInputTypeChange}
+        checked={inputType == "email"}
+      />{" "}
+      Email
+      {/* <input
           type="radio"
           name="type"
           value="file"
@@ -59,9 +58,11 @@ export default function AddInputForm({ handleInputsInputChange }) {
           checked={inputType == "file"}
         />{" "}
         File */}
-        <br />
-        <button>{`Add ${inputType} input`}</button>
-      </form>
+      <br />
+      <button
+        onClick={handleOnClick}
+        type="button"
+      >{`Add ${inputType} input`}</button>
     </div>
   );
 }

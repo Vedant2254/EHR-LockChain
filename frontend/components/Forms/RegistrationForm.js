@@ -30,7 +30,7 @@ const Inputs = ({ data, inputs, handleDataInputChange }) => {
 
 export default function RegistrationForm({
   initialInputs,
-  certCount,
+  certcount,
   submitIsDisabled,
   handleOnSubmit,
 }) {
@@ -58,7 +58,6 @@ export default function RegistrationForm({
 
   function handleCertificateDelete() {
     const certs = certificates;
-    certs.pop();
     setCertificates(certs);
   }
 
@@ -81,20 +80,23 @@ export default function RegistrationForm({
           inputs={inputs}
           handleDataInputChange={handleDataInputChange}
         />
+        <br />
+        <AddInputForm handleInputsInputChange={handleInputsInputChange} />
+        {certcount > 0 && (
+          <>
+            <p>Add Certificates</p>
+            <CertificateInputs
+              certcount={certcount}
+              handleCertificateChange={handleCertificateChange}
+              handleCertificateDelete={handleCertificateDelete}
+            />
+          </>
+        )}
+        <br />
         <button disabled={submitIsDisabled}>Submit</button>
       </form>
       <br />
-      <AddInputForm handleInputsInputChange={handleInputsInputChange} />
-      {certCount > 0 && (
-        <>
-          <p>Add Certificates</p>
-          <CertificateInputs
-            certificates={certCount}
-            handleCertificateChange={handleCertificateChange}
-            handleCertificateDelete={handleCertificateDelete}
-          />
-        </>
-      )}
+      <br />
     </div>
   );
 }

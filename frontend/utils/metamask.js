@@ -26,4 +26,4 @@ async function decryptData(address, data) {
   return decrypt;
 }
 
-module.exports = { encryptData, decryptData };
+module.exports = { getPublicKey, encryptData, decryptData };
