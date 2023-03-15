@@ -8,6 +8,7 @@ import useValidTxnData from "../../utils/hooks/useValidTxnData";
 import { makeFileObjects, storeIPFS } from "../../utils/ipfs";
 import { symmetricEncrypt } from "../../utils/cryptography";
 import { encryptData } from "../../utils/metamask";
+import { initialInputs, initialValues } from "../../utils/initials";
 
 // components
 import RegistrationForm from "../../components/Forms/RegistrationForm";
@@ -128,13 +129,8 @@ export default function RegisterPatient() {
     <>
       <RegistrationForm
         handleOnSubmit={handleOnSumbit}
-        initialInputs={{
-          photo: "file",
-          name: "string",
-          address: "string",
-          phone: "number",
-          email: "email",
-        }}
+        initialInputs={initialInputs}
+        initialValues={initialValues}
         submitIsDisabled={submitIsDisabled}
       />
     </>

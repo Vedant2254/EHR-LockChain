@@ -4,17 +4,10 @@ import {
   useContractWrite,
 } from "wagmi";
 import useValidTxnData from "@/utils/hooks/useValidTxnData";
+import DisplayDoctorData from "../../UtilityComponents/DisplayDoctorData";
 
 export default function Doctor({ drAddress, clearCurrDoctor }) {
   const { contractAddress, abi, enabled } = useValidTxnData();
-
-  const { data: drHash } = useContractRead({
-    address: contractAddress,
-    abi,
-    functionName: "getDrHash",
-    args: [drAddress],
-    enabled,
-  });
 
   const { data: isPendingDoctor, refetch: runIsPendingDoctor } =
     useContractRead({
@@ -32,7 +25,7 @@ export default function Doctor({ drAddress, clearCurrDoctor }) {
     args: [drAddress],
   });
 
-  const { data: approveDoctorResponse, writeAsync: runApproveDoctor } =
+  const { writeAsync: runApproveDoctor } =
     useContractWrite(approveDoctorConfig);
 
   function approveDoctor() {
@@ -43,7 +36,8 @@ export default function Doctor({ drAddress, clearCurrDoctor }) {
 
   return (
     <div>
-      <p>{drHash}</p>
+      <DisplayDoctorData address={drAddress} />
+      <br />
       {isPendingDoctor ? (
         <button onClick={approveDoctor}>Approve Doctor</button>
       ) : (

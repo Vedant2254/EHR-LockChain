@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { makeFileObjects, storeIPFS } from "../../utils/ipfs";
 import RegistrationForm from "../../components/Forms/RegistrationForm";
 import useValidTxnData from "@/utils/hooks/useValidTxnData";
+import { initialInputs, initialValues } from "@/utils/initials";
 
 export default function RegisterDoctor() {
   const { address, contractAddress, abi, enabled } = useValidTxnData();
@@ -13,13 +14,14 @@ export default function RegisterDoctor() {
   const [submitIsDisabled, setSubmitIsDisabled] = useState(false);
 
   /* Contract functions */
-  const { data: isDoctor, refetch: runIsDoctor } = useContractRead({
-    address: contractAddress,
-    abi,
-    functionName: "isDoctorRegistered",
-    args: [address],
-    enabled,
-  });
+  const { data: isDoctorRegistered, refetch: runIsDoctorRegistered } =
+    useContractRead({
+      address: contractAddress,
+      abi,
+      functionName: "isDoctorRegistered",
+      args: [address],
+      enabled,
+    });
 
   const { writeAsync: runAddDoctor } = useContractWrite({
     address: contractAddress,
@@ -34,7 +36,7 @@ export default function RegisterDoctor() {
     if (dataCID) {
       try {
         await runAddDoctor();
-        await runIsDoctor();
+        await runIsDoctorRegistered();
       } catch (err) {
         console.log(err);
       }
@@ -46,8 +48,8 @@ export default function RegisterDoctor() {
   /* useEffects */
   useEffect(() => {
     if (!address) router.replace("/");
-    else if (isDoctor) router.replace("/dashboard/doctor");
-  }, [address, isDoctor]);
+    else if (isDoctorRegistered) router.replace("/dashboard/doctor");
+  }, [address, isDoctorRegistered]);
 
   useEffect(() => {
     (async () => {
@@ -97,13 +99,8 @@ export default function RegisterDoctor() {
   return (
     <>
       <RegistrationForm
-        initialInputs={{
-          photo: "file",
-          name: "string",
-          address: "string",
-          phone: "number",
-          email: "email",
-        }}
+        initialInputs={initialInputs}
+        initialValues={initialValues}
         submitIsDisabled={submitIsDisabled}
         certcount={1}
         handleOnSubmit={handleOnSubmit}

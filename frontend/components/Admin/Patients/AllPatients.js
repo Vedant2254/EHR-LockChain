@@ -1,17 +1,8 @@
-import { useAccount, useContractRead, useNetwork } from "wagmi";
-import useSWR from "swr";
-
-const fetcher = (url) => fetch(url).then((res) => res.json());
+import { useContractRead } from "wagmi";
+import useValidTxnData from "@/utils/hooks/useValidTxnData";
 
 export default function AllDoctors() {
-  const { data: contract } = useSWR("/api/constants", fetcher);
-  const { chain } = useNetwork();
-  const { address } = useAccount();
-
-  const contractAddress =
-    contract && chain && JSON.parse(contract).contractAddresses[chain.id];
-  const abi = contract && JSON.parse(contract).abi;
-  const enabled = contract && chain && address;
+  const { contractAddress, abi, enabled } = useValidTxnData();
 
   const { data: allPatients } = useContractRead({
     address: contractAddress,

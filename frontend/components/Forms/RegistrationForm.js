@@ -30,11 +30,12 @@ const Inputs = ({ data, inputs, handleDataInputChange }) => {
 
 export default function RegistrationForm({
   initialInputs,
+  initialValues,
   certcount,
   submitIsDisabled,
   handleOnSubmit,
 }) {
-  const [data, setData] = useState({}); // stores inputname -> inputvalue mapping
+  const [data, setData] = useState(initialValues || {}); // stores inputname -> inputvalue mapping
   const [certificates, setCertificates] = useState([]);
   const [inputs, setInputs] = useState({}); // stores inputname -> inputtype mapping
 
@@ -66,7 +67,6 @@ export default function RegistrationForm({
       <form
         onSubmit={(event) => {
           event.preventDefault();
-
           handleOnSubmit({ ...data, certificates });
         }}
       >
@@ -80,8 +80,8 @@ export default function RegistrationForm({
           inputs={inputs}
           handleDataInputChange={handleDataInputChange}
         />
-        <br />
-        <AddInputForm handleInputsInputChange={handleInputsInputChange} />
+        {/* <br />
+        <AddInputForm handleInputsInputChange={handleInputsInputChange} /> */}
         {certcount > 0 && (
           <>
             <p>Add Certificates</p>
