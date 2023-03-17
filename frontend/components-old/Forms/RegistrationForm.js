@@ -122,6 +122,8 @@ export default function RegistrationForm({
         <br />
         <button disabled={submitIsDisabled}>Submit</button>
       </form>
+      <br />
+      <br />
     </div>
   );
 }

@@ -3,6 +3,8 @@ import { hardhat, goerli, sepolia } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
+import { MantineProvider } from "@mantine/core";
+import "@/styles/globals.css";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [hardhat, goerli, sepolia],
@@ -22,8 +24,10 @@ const client = createClient({
 
 export default function App({ Component, pageProps }) {
   return (
-    <WagmiConfig client={client}>
-      <Component {...pageProps} />
-    </WagmiConfig>
+    <MantineProvider theme={{ colorScheme: "light" }}>
+      <WagmiConfig client={client}>
+        <Component {...pageProps} />
+      </WagmiConfig>
+    </MantineProvider>
   );
 }

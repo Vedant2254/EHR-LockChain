@@ -1,5 +1,5 @@
 import Head from "next/head";
-import ConnectButton from "../components/ConnectButton";
+import ConnectButton from "../components-old/ConnectButton";
 
 export default function Home() {
   return (
