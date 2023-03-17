@@ -51,13 +51,13 @@ contract Contract {
     }
 
     // Admin methods
-    function getAdmin() public view returns (address) {
-        return admin.user;
-    }
-
     function isAdmin(address _address) public view returns (bool) {
         if (admin.user == _address) return true;
         return false;
+    }
+
+    function getAdmin() public view returns (address) {
+        return admin.user;
     }
 
     function setAdminPubKey(string memory _public_key) public onlyAdmin {
@@ -69,11 +69,11 @@ contract Contract {
     }
 
     // Doctor methods
-    function isDoctorRegistered(address _address) public view returns (bool) {
+    function isDrRegistered(address _address) public view returns (bool) {
         return doctors.users.has(_address);
     }
 
-    function isPendingDoctor(address _address) public view returns (bool) {
+    function isDrPending(address _address) public view returns (bool) {
         return admin.pending_doctors.get(_address);
     }
 
@@ -84,20 +84,20 @@ contract Contract {
         return true;
     }
 
-    function addDoctor(string memory _hash) public {
+    function registerDr(string memory _hash) public {
         if (isPatient(msg.sender)) revert("Contract: Address already registered as patient");
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed!");
         doctors.users.add(msg.sender, _hash);
         admin.pending_doctors.set(msg.sender);
     }
 
-    function approveDoctor(address _address) public onlyAdmin {
+    function approveDr(address _address) public onlyAdmin {
         if (isDoctor(_address)) return;
         if (!doctors.users.has(_address)) return;
         admin.pending_doctors.unset(_address);
     }
 
-    function confirmAddDr(string memory _public_key) public {
+    function registerDrConfirm(string memory _public_key) public {
         if (bytes(_public_key).length == 0) revert("Contract: Empty public key is not allowed!");
         if (!doctors.users.has(msg.sender)) revert Contract__NotDoctor();
         if (admin.pending_doctors.get(msg.sender)) revert Contract__PendingDoctorApproval();
@@ -110,7 +110,7 @@ contract Contract {
     }
 
     function getDrHash(address _address) public view returns (string memory) {
-        if (!isDoctorRegistered(_address)) revert Contract__NotDoctor();
+        if (!isDrRegistered(_address)) revert Contract__NotDoctor();
         return doctors.users.getHash(_address);
     }
 
@@ -126,7 +126,7 @@ contract Contract {
         return admin.pending_doctors.keys;
     }
 
-    function getDocPats() public view onlyDoctor returns (address[] memory) {
+    function getPtsOfDr() public view onlyDoctor returns (address[] memory) {
         return doctors.docToPatAccess[msg.sender].keys;
     }
 
@@ -135,19 +135,19 @@ contract Contract {
         return patients.users.has(_address);
     }
 
-    function addPatient(string memory _hash, string memory _key_data_hash) public {
-        if (isDoctorRegistered(msg.sender) || isDoctor(msg.sender))
+    function registerPt(string memory _hash, string memory _key_data_hash) public {
+        if (isDrRegistered(msg.sender) || isDoctor(msg.sender))
             revert("Contract: Address already registered as doctor");
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed");
         patients.users.add(msg.sender, _hash);
         patients.records[msg.sender].key_data_hash = _key_data_hash;
     }
 
-    function setPatGeneralHash(string memory _hash) public onlyPatient {
+    function setPtGeneralHash(string memory _hash) public onlyPatient {
         patients.users.setHash(msg.sender, _hash);
     }
 
-    function getPatGeneralHash(address _address) public view returns (string memory) {
+    function getPtGeneralHash(address _address) public view returns (string memory) {
         if (!isPatient(_address)) revert Contract__NotPatient();
 
         if (
@@ -159,14 +159,14 @@ contract Contract {
         revert("Not Allowed");
     }
 
-    function setPatRecordHash(address _address, string memory _hash) public {
+    function setPtRecordHash(address _address, string memory _hash) public {
         if (!isPatient(_address)) revert Contract__NotPatient();
         if (!(msg.sender == _address || patients.records[_address].editor == msg.sender))
             revert("Not Allowed");
         patients.records[_address].key_data_hash = _hash;
     }
 
-    function getPatRecordHash(address _address) public view returns (string memory) {
+    function getPtRecordHash(address _address) public view returns (string memory) {
         if (!isPatient(_address)) revert Contract__NotPatient();
 
         if (
@@ -178,7 +178,7 @@ contract Contract {
         revert("Not Allowed");
     }
 
-    function getAllPats() public view returns (address[] memory) {
+    function getAllPts() public view returns (address[] memory) {
         return patients.users.getMembers();
     }
 
@@ -201,7 +201,7 @@ contract Contract {
         doctors.docToPatAccess[old_editor].unset(msg.sender);
     }
 
-    function getPatDr() public view onlyPatient returns (address) {
+    function getDrOfPt() public view onlyPatient returns (address) {
         return patients.records[msg.sender].editor;
     }
 

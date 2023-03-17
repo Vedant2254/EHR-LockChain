@@ -1,0 +1,16 @@
+import useValidTxnData from "./useValidTxnData";
+import { useContractRead } from "wagmi";
+
+export default function useIsPatient(address) {
+  const { contractAddress, enabled, abi } = useValidTxnData();
+
+  const { data: isPatient } = useContractRead({
+    address: contractAddress,
+    abi,
+    functionName: "isPatient",
+    args: [address],
+    enabled,
+  });
+
+  return { isPatient };
+}

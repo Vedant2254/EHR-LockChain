@@ -1,5 +1,5 @@
 import { useContractRead } from "wagmi";
-import useValidTxnData from "@/utils/hooks/useValidTxnData";
+import useValidTxnData from "@/hooks/useValidTxnData";
 
 export default function AllDoctors() {
   const { contractAddress, abi, enabled } = useValidTxnData();
@@ -7,7 +7,7 @@ export default function AllDoctors() {
   const { data: allPatients } = useContractRead({
     address: contractAddress,
     abi,
-    functionName: "getAllPats",
+    functionName: "getAllPts",
     enabled,
   });
 

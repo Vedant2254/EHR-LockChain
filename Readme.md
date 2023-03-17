@@ -175,6 +175,16 @@ by addresses present in keys of [Patient General Details](#patient-general-detai
 }
 ```
 
+### Pages
+
+### Frontend NextJS component structure
+
+```
+> Admin
+> Doctor
+> Patient
+```
+
 ## Further updates in 🧠 but not in 💻 yet
 
 We can store [w3name](https://github.com/web3-storage/w3name) instead of hash. Updates doesn't change this name, so reduces gas consumption of chaning hash each time data gets changed.

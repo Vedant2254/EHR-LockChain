@@ -1,4 +1,4 @@
-import useValidTxnData from "@/utils/hooks/useValidTxnData";
+import useValidTxnData from "@/hooks/useValidTxnData";
 import { useEffect, useState } from "react";
 import { useContractRead } from "wagmi";
 import { retrieveIPFS } from "@/utils/ipfs";

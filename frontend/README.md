@@ -119,3 +119,7 @@ Whenever request is received, if `revalidate` time has elapsed, page is regenera
 
 [Video1](https://youtu.be/AWbYJgsXHQ4)
 [Video2](https://youtu.be/QcUU89xKu70)
+
+## Styling in NextJS
+
+## Miscellaneous

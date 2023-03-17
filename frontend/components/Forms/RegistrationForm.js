@@ -1,6 +1,5 @@
 import { useState } from "react";
-import AddInputForm from "./AddInputForm";
-import CertificateInputs from "./CertificateInputs";
+import CertificateInput from "./CustomInputs/CertificateInput";
 import FileInput from "./CustomInputs/FileInput";
 
 const Inputs = ({ data, inputs, handleDataInputChange }) => {
@@ -28,6 +27,46 @@ const Inputs = ({ data, inputs, handleDataInputChange }) => {
   });
 };
 
+const CertificateInputs = ({
+  certcount,
+  handleCertificateChange,
+  handleCertificateDelete,
+}) => {
+  const [certificateCount, setCertificateCount] = useState(certcount);
+
+  function incrementCertificateCount() {
+    setCertificateCount(certificateCount + 1);
+  }
+
+  function decrementCertificateCount() {
+    certificateCount > 0 && setCertificateCount(certificateCount - 1);
+    handleCertificateDelete();
+  }
+
+  return (
+    <>
+      <button onClick={incrementCertificateCount} type="button">
+        +
+      </button>
+      <button onClick={decrementCertificateCount} type="button">
+        -
+      </button>
+      <br />
+      {Array.from(Array(certificateCount)).map((_, index) => (
+        <div key={index}>
+          <br />
+          <CertificateInput
+            index={index}
+            handleCertificateChange={(index, event) =>
+              handleCertificateChange(index, event)
+            }
+          />
+        </div>
+      ))}
+    </>
+  );
+};
+
 export default function RegistrationForm({
   initialInputs,
   initialValues,
@@ -37,16 +76,11 @@ export default function RegistrationForm({
 }) {
   const [data, setData] = useState(initialValues || {}); // stores inputname -> inputvalue mapping
   const [certificates, setCertificates] = useState([]);
-  const [inputs, setInputs] = useState({}); // stores inputname -> inputtype mapping
 
   function handleDataInputChange(event) {
     let { name, value } = event.target;
     if (event.target.files) value = event.target.files[0];
     setData({ ...data, [name]: value });
-  }
-
-  function handleInputsInputChange(inputName, inputType) {
-    setInputs({ ...inputs, [inputName]: inputType });
   }
 
   function handleCertificateChange(index, event) {
@@ -75,13 +109,6 @@ export default function RegistrationForm({
           inputs={initialInputs}
           handleDataInputChange={handleDataInputChange}
         />
-        <Inputs
-          data={data}
-          inputs={inputs}
-          handleDataInputChange={handleDataInputChange}
-        />
-        {/* <br />
-        <AddInputForm handleInputsInputChange={handleInputsInputChange} /> */}
         {certcount > 0 && (
           <>
             <p>Add Certificates</p>

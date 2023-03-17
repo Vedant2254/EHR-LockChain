@@ -1,26 +1,18 @@
 import { useEffect } from "react";
-import { useContractRead } from "wagmi";
+import { useAccount } from "wagmi";
 import { useRouter } from "next/router";
-import useValidTxnData from "@/utils/hooks/useValidTxnData";
+import useIsAdmin from "@/hooks/useIsAdmin";
 import AdminController from "@/components/Admin/Controller";
 
 export default function AdminDashboard() {
-  const { address, contractAddress, abi, enabled } = useValidTxnData();
+  const { address } = useAccount();
+  const { isAdmin } = useIsAdmin(address);
   const router = useRouter();
 
-  const { data: isAdmin, isFetching } = useContractRead({
-    address: contractAddress,
-    abi,
-    functionName: "isAdmin",
-    args: [address],
-    onError: (err) => console.log(err),
-    enabled,
-  });
-
   useEffect(() => {
-    if (!address) router.replace("/");
-    if (isAdmin != undefined && !isAdmin) router.replace("/");
-  }, [isAdmin]);
+    !address && router.replace("/");
+    isAdmin != undefined && !isAdmin && router.replace("/");
+  }, [address, isAdmin]);
 
   return isAdmin ? <AdminController /> : "";
 }

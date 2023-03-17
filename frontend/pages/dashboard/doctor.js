@@ -1,56 +1,20 @@
 import { useState, useEffect } from "react";
-import { useContractRead, useContractWrite } from "wagmi";
+import { useAccount, useContractWrite } from "wagmi";
 import { useRouter } from "next/router";
-import { getPublicKey } from "../../utils/metamask";
-import useValidTxnData from "@/utils/hooks/useValidTxnData";
-import DoctorController from "../../components/Doctor/Controller";
+import useIsDoctorRegistered from "@/hooks/useIsDoctorRegistered";
+import useIsDoctorPending from "@/hooks/useIsDoctorPending";
+import useIsDoctor from "@/hooks/useIsDoctor";
+import useValidTxnData from "@/hooks/useValidTxnData";
+import { getPublicKey } from "@/utils/metamask";
+import DoctorController from "@/components/Doctor/Controller";
+import useRegisterDoctorConfirm from "@/hooks/useRegisterDoctorConfirm";
 
 export default function DoctorDashboard() {
-  const { address, contractAddress, abi, enabled } = useValidTxnData();
-  const [publicKey, setPublicKey] = useState(null);
+  const { address } = useAccount();
+  const { isDoctorRegistered } = useIsDoctorRegistered(address);
+  const { isDoctorPending } = useIsDoctorPending(address);
+  const { isDoctor, registerDrConfirm } = useRegisterDoctorConfirm();
   const router = useRouter();
-
-  const { data: isDoctorRegistered } = useContractRead({
-    address: contractAddress,
-    abi,
-    functionName: "isDoctorRegistered",
-    args: [address],
-    enabled,
-  });
-
-  const { data: isDoctor, refetch: runIsDoctor } = useContractRead({
-    address: contractAddress,
-    abi,
-    functionName: "isDoctor",
-    args: [address],
-    enabled: false,
-  });
-
-  const { writeAsync: runConfirmAddDr } = useContractWrite({
-    address: contractAddress,
-    abi,
-    functionName: "confirmAddDr",
-    args: [publicKey],
-    enabled,
-  });
-
-  async function confirmAddDr() {
-    if (publicKey) {
-      try {
-        await runConfirmAddDr();
-        await runIsDoctor();
-      } catch (e) {
-        console.log(e);
-      }
-      setPublicKey(null);
-    }
-  }
-
-  useEffect(() => {
-    (async () => {
-      await confirmAddDr();
-    })();
-  }, [publicKey]);
 
   useEffect(() => {
     if (!address) router.replace("/");
@@ -58,20 +22,14 @@ export default function DoctorDashboard() {
       router.replace("/register/doctor");
   }, [address, isDoctorRegistered]);
 
-  return isDoctorRegistered ? (
+  return (
     <>
       {!isDoctor && (
-        <button
-          onClick={async () => {
-            setPublicKey(await getPublicKey(address));
-          }}
-        >
+        <button onClick={registerDrConfirm} disabled={isDoctorPending}>
           Confirm Registration
         </button>
       )}
       <DoctorController />
     </>
-  ) : (
-    ""
   );
 }

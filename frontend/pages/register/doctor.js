@@ -1,107 +1,31 @@
-import { useState, useEffect } from "react";
-import { useContractRead, useContractWrite } from "wagmi";
+import { useEffect } from "react";
+import { useAccount } from "wagmi";
 import { useRouter } from "next/router";
-import { makeFileObjects, storeIPFS } from "../../utils/ipfs";
+import useRegisterDoctor from "@/hooks/useRegisterDoctor";
+import { patient as patientInitials } from "@/utils/initials";
 import RegistrationForm from "../../components/Forms/RegistrationForm";
-import useValidTxnData from "@/utils/hooks/useValidTxnData";
-import { initialInputs, initialValues } from "@/utils/initials";
 
 export default function RegisterDoctor() {
-  const { address, contractAddress, abi, enabled } = useValidTxnData();
+  const { isConnected } = useAccount();
+  const { isDoctorRegistered, isLoading, handleOnSubmit } = useRegisterDoctor();
   const router = useRouter();
 
-  const [dataCID, setDataCID] = useState(null);
-  const [submitIsDisabled, setSubmitIsDisabled] = useState(false);
-
-  /* Contract functions */
-  const { data: isDoctorRegistered, refetch: runIsDoctorRegistered } =
-    useContractRead({
-      address: contractAddress,
-      abi,
-      functionName: "isDoctorRegistered",
-      args: [address],
-      enabled,
-    });
-
-  const { writeAsync: runAddDoctor } = useContractWrite({
-    address: contractAddress,
-    abi,
-    functionName: "addDoctor",
-    args: [dataCID],
-    enabled: enabled && dataCID,
-  });
-
-  /* Utility functions */
-  async function registerDoctor() {
-    if (dataCID) {
-      try {
-        await runAddDoctor();
-        await runIsDoctorRegistered();
-      } catch (err) {
-        console.log(err);
-      }
-
-      setDataCID(null);
-    }
-  }
-
-  /* useEffects */
-  useEffect(() => {
-    if (!address) router.replace("/");
-    else if (isDoctorRegistered) router.replace("/dashboard/doctor");
-  }, [address, isDoctorRegistered]);
+  const { initialInputs, initialValues } = patientInitials;
 
   useEffect(() => {
-    (async () => {
-      await registerDoctor();
-      setSubmitIsDisabled(false);
-    })();
-  }, [dataCID]);
+    !isConnected && router.replace("/");
+  }, [isConnected]);
 
-  /* handlers */
-  async function handleOnSubmit(data) {
-    setSubmitIsDisabled(true);
-    try {
-      // read file as data urls
-      function readFileAsync(file) {
-        return new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onloadend = () => resolve(reader.result);
-        });
-      }
-
-      // changes files to dataURLS in data
-      for (let key in data) {
-        if (data[key].constructor.name == "File") {
-          data[key] = await readFileAsync(data[key]);
-        }
-      }
-
-      // changes files to dataURLS in data
-      for (let i in data.certificates) {
-        const { media } = data.certificates[i];
-        if (media.constructor.name == "File")
-          data.certificates[i].media = await readFileAsync(media);
-      }
-
-      // store data to IPFS and set dataCID
-      console.log("Uploading data....");
-      const dataFiles = await makeFileObjects([data], [address]);
-      const cid = await storeIPFS(dataFiles, { wrapWithDirectory: false });
-      console.log(cid);
-      setDataCID(cid);
-    } catch (e) {
-      setSubmitIsDisabled(false);
-    }
-  }
+  useEffect(() => {
+    isDoctorRegistered && router.replace("/dashboard/doctor");
+  }, [isDoctorRegistered]);
 
   return (
     <>
       <RegistrationForm
         initialInputs={initialInputs}
         initialValues={initialValues}
-        submitIsDisabled={submitIsDisabled}
+        submitIsDisabled={isLoading}
         certcount={1}
         handleOnSubmit={handleOnSubmit}
       />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import useValidTxnData from "@/utils/hooks/useValidTxnData";
+import useValidTxnData from "@/hooks/useValidTxnData";
 import { useContractRead, useContractWrite } from "wagmi";
 import { getPublicKey } from "../../utils/metamask";
 import PatientWindow from "./Patients/Window";

@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { useAccount, useNetwork } from "wagmi";
 import useSWR from "swr";
 

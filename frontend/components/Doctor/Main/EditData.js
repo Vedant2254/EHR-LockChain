@@ -1,9 +1,10 @@
 import RegistrationForm from "@/components/Forms/RegistrationForm";
-import useHashAndData from "@/utils/hooks/useHashAndData";
-import { initialInputs, initialValues } from "@/utils/initials";
+import useHashAndData from "@/hooks/useHashAndData";
+import { doctor as doctorInitials } from "@/utils/initials";
 
 export default function EditData() {
-  const { drHash, data, certificates } = useHashAndData("getDrHash");
+  const { certificates } = useHashAndData("getDrHash");
+  const { initialInputs, initialValues } = doctorInitials;
 
   return (
     <RegistrationForm

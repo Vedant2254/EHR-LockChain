@@ -1,5 +1,5 @@
 import { useContractRead } from "wagmi";
-import useValidTxnData from "@/utils/hooks/useValidTxnData";
+import useValidTxnData from "@/hooks/useValidTxnData";
 
 export default function AllDoctors({ handleViewDoctor }) {
   const { contractAddress, abi, enabled } = useValidTxnData();

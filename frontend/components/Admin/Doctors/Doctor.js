@@ -3,7 +3,7 @@ import {
   usePrepareContractWrite,
   useContractWrite,
 } from "wagmi";
-import useValidTxnData from "@/utils/hooks/useValidTxnData";
+import useValidTxnData from "@/hooks/useValidTxnData";
 import DisplayDoctorData from "../../UtilityComponents/DisplayDoctorData";
 
 export default function Doctor({ drAddress, clearCurrDoctor }) {
@@ -13,7 +13,7 @@ export default function Doctor({ drAddress, clearCurrDoctor }) {
     useContractRead({
       address: contractAddress,
       abi,
-      functionName: "isPendingDoctor",
+      functionName: "isDrPending",
       args: [drAddress],
       enabled,
     });
@@ -21,7 +21,7 @@ export default function Doctor({ drAddress, clearCurrDoctor }) {
   const { config: approveDoctorConfig } = usePrepareContractWrite({
     address: contractAddress,
     abi,
-    functionName: "approveDoctor",
+    functionName: "approveDr",
     args: [drAddress],
   });
 
