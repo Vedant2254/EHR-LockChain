@@ -1,31 +1,35 @@
-import { useState } from "react";
-import FileInput from "./FileInput";
+import { FileInput, TextInput, Textarea, Button, SimpleGrid } from "@mantine/core";
+import { isNotEmpty, useForm } from "@mantine/form";
 
-export default function CertificateInput({ index, handleCertificateChange }) {
-  const [state, setState] = useState({ title: "", description: "" });
+export default function CertificateInput({ index, initialValues, insertCertificate }) {
+  const form = useForm({
+    initialValues: initialValues || { media: null, title: "", description: "" },
+    validate: {
+      // media: isNotEmpty("Media cannot be empty"),
+      // title: isNotEmpty("Title cannot be empty"),
+      // description: isNotEmpty("Description cannot be empty"),
+    },
+  });
 
-  function handleDataInputChange(event) {
-    if (!event.target.files)
-      setState({ ...state, [event.target.name]: event.target.value });
-    handleCertificateChange(index, event);
+  function runInsertCertificate() {
+    if (form.validate().hasErrors) return;
+    form.setValues({ media: null, title: "", description: "" });
+    insertCertificate(index, form.values);
   }
 
   return (
-    <div>
-      <FileInput name="media" handleOnFileChange={handleDataInputChange} />
-      <br />
-      <input
-        name="title"
-        type="text"
-        value={state.title}
-        onChange={handleDataInputChange}
-      />
-      <br />
-      <textarea
+    <>
+      <SimpleGrid cols={2} pb="md">
+        <FileInput name="media" {...form.getInputProps("media")} />
+        <TextInput name="title" type="text" placeholder="Title" {...form.getInputProps("title")} />
+      </SimpleGrid>
+      <Textarea
+        pb="md"
         name="description"
-        value={state.description}
-        onChange={handleDataInputChange}
+        placeholder="Description"
+        {...form.getInputProps("description")}
       />
-    </div>
+      <Button onClick={runInsertCertificate}>Add certificate</Button>
+    </>
   );
 }

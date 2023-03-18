@@ -1,6 +1,17 @@
 import { useEffect, useState } from "react";
 import { useConnect, useAccount, useDisconnect } from "wagmi";
-import { Button, Popover, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Button, Menu, useMantineTheme } from "@mantine/core";
+import { IconPlugConnected } from "@tabler/icons-react";
+import { ArrowDownIcon } from "@modulz/radix-icons";
+import LogosMetamaskIcon from "./MetamaskIcon";
+
+const IconConnectDisconnect = () => {
+  return (
+    <ActionIcon color="blue" size="xs">
+      <IconPlugConnected />
+    </ActionIcon>
+  );
+};
 
 export default function Home() {
   const { connect, connectors } = useConnect();
@@ -15,25 +26,31 @@ export default function Home() {
   }, [isConnected]);
 
   return isDefinitelyConnected ? (
-    <Popover width={200} position="bottom" withArrow shadow="md">
-      <Popover.Target>
-        <Button variant="outline">
+    <Menu showdow="md" trigger="hover">
+      <Menu.Target>
+        <Button variant="light" radius="sm" leftIcon={<ArrowDownIcon />}>
           {address &&
             `${address.substring(0, 6)}...${address.substring(
               address.length - 6,
               address.length
             )}`}
         </Button>
-      </Popover.Target>
-      <Popover.Dropdown>
-        <Button w="100%" onClick={disconnect}>
+      </Menu.Target>
+
+      <Menu.Dropdown>
+        <Menu.Item
+          icon={<IconConnectDisconnect />}
+          p="7px"
+          onClick={disconnect}
+        >
           Disconnect
-        </Button>
-      </Popover.Dropdown>
-    </Popover>
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
   ) : (
     <Button
-      variant="outline"
+      variant="light"
+      leftIcon={<LogosMetamaskIcon />}
       onClick={() => {
         connect({ connector: connectors.at(0) });
       }}

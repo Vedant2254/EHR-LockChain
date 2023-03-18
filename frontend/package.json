@@ -25,6 +25,7 @@
     "@mantine/spotlight": "^6.0.2",
     "@mantine/tiptap": "^6.0.2",
     "@metamask/eth-sig-util": "^5.0.2",
+    "@modulz/radix-icons": "^4.0.0",
     "@tabler/icons-react": "^2.10.0",
     "@tiptap/extension-link": "^2.0.0-beta.220",
     "@tiptap/react": "^2.0.0-beta.220",
@@ -37,6 +38,7 @@
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "styled-components": "^5.3.9",
     "swr": "^2.1.0",
     "wagmi": "^0.12.1",
     "web3.storage": "^4.5.4"

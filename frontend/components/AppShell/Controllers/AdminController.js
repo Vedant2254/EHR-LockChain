@@ -8,12 +8,6 @@ export default function AdminController() {
   const router = useRouter();
   const { location } = router.query;
 
-  // if (location == "dashboard") return <AdminDashboard />;
-  // if (location == "all-doctors") return <AllDoctors />;
-  // if (location == "all-patients") return <AllPatients />;
-
-  // return <NothingHere />;
-
   return (
     <Tabs value={location}>
       <Tabs.Panel value="dashboard">

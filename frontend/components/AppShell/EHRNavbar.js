@@ -10,18 +10,16 @@ export default function EHRNavbar({ navlinks, opened }) {
     : router.pathname;
 
   return (
-    <Navbar
-      pt="md"
-      pl="md"
-      hiddenBreakpoint="sm"
-      hidden={!opened}
-      width={{ sm: 200, lg: 300 }}
-    >
+    <Navbar pt="md" pl="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
       <Navbar.Section></Navbar.Section>
       <Navbar.Section grow>
         <Tabs
           value={location || "/"}
-          onTabChange={(value) => router.push(`${basePath}${value}`)}
+          onTabChange={(value) => {
+            value != "/" &&
+              router.asPath != `${basePath}${value}` &&
+              router.push(`${basePath}${value}`);
+          }}
           orientation="vertical"
         >
           <Tabs.List w="100%">

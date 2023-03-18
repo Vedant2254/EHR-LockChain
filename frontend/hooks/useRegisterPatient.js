@@ -76,6 +76,13 @@ export default function useRegisterPatient() {
         }
       }
 
+      // changes files to dataURLS in data
+      for (let i in data.certificates) {
+        const { media } = data.certificates[i];
+        if (media.constructor.name == "File")
+          data.certificates[i].media = await readFileAsync(media);
+      }
+
       // encrypt data using symmetric key
       const { key, iv, cipherData } = symmetricEncrypt(JSON.stringify(data));
 

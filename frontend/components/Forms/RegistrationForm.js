@@ -1,127 +1,164 @@
 import { useState } from "react";
+import {
+  Button,
+  Stepper,
+  TextInput,
+  Group,
+  Code,
+  FileInput,
+  SimpleGrid,
+  ActionIcon,
+} from "@mantine/core";
+import { hasLength, isEmail, isInRange, isNotEmpty, matches, useForm } from "@mantine/form";
 import CertificateInput from "./CustomInputs/CertificateInput";
-import FileInput from "./CustomInputs/FileInput";
-
-const Inputs = ({ data, inputs, handleDataInputChange }) => {
-  return Object.keys(inputs).map((input, index) => {
-    const name = input;
-    const type = inputs[input];
-    return (
-      <div key={index}>
-        {type == "file" ? (
-          <FileInput name={name} handleOnFileChange={handleDataInputChange} />
-        ) : (
-          <input
-            name={name}
-            type={type}
-            value={data[name]}
-            placeholder={name.replace(
-              name.charAt(0),
-              name.charAt(0).toUpperCase()
-            )}
-            onChange={handleDataInputChange}
-          />
-        )}
-      </div>
-    );
-  });
-};
-
-const CertificateInputs = ({
-  certcount,
-  handleCertificateChange,
-  handleCertificateDelete,
-}) => {
-  const [certificateCount, setCertificateCount] = useState(certcount);
-
-  function incrementCertificateCount() {
-    setCertificateCount(certificateCount + 1);
-  }
-
-  function decrementCertificateCount() {
-    certificateCount > 0 && setCertificateCount(certificateCount - 1);
-    handleCertificateDelete();
-  }
-
-  return (
-    <>
-      <button onClick={incrementCertificateCount} type="button">
-        +
-      </button>
-      <button onClick={decrementCertificateCount} type="button">
-        -
-      </button>
-      <br />
-      {Array.from(Array(certificateCount)).map((_, index) => (
-        <div key={index}>
-          <br />
-          <CertificateInput
-            index={index}
-            handleCertificateChange={(index, event) =>
-              handleCertificateChange(index, event)
-            }
-          />
-        </div>
-      ))}
-    </>
-  );
-};
+import {
+  IconBrandFacebook,
+  IconBrandInstagram,
+  IconBrandTwitter,
+  IconCamera,
+  IconFileCheck,
+  IconUser,
+} from "@tabler/icons-react";
+import { DateInput } from "@mantine/dates";
 
 export default function RegistrationForm({
-  initialInputs,
+  user,
   initialValues,
-  certcount,
   submitIsDisabled,
   handleOnSubmit,
 }) {
-  const [data, setData] = useState(initialValues || {}); // stores inputname -> inputvalue mapping
-  const [certificates, setCertificates] = useState([]);
+  const [active, setActive] = useState(0);
+  const form = useForm({
+    initialValues: { ...initialValues, certificates: initialValues.certificates || [] },
+    validate: {
+      // photo: isNotEmpty("Photo cannot be empty"),
+      // name: hasLength({ min: 2, max: 25 }, "Name must be 2-25 characters"),
+      // dob: isNotEmpty("Date of birth cannot be empty"),
+      // age: isInRange({ min: 18, max: 99 }, "You must be 18-99 years old to register"),
+      // gender: matches(/^(male|female|Male|Female)$/, "Input must be Male/male or Female/female"),
+      // address: isNotEmpty("Address cannot be empty"),
+      // phone: matches(/^\d{10}$/, "Phone number must be a 10 digit number"),
+      // email: isEmail("Invalid Email"),
+    },
+  });
 
-  function handleDataInputChange(event) {
-    let { name, value } = event.target;
-    if (event.target.files) value = event.target.files[0];
-    setData({ ...data, [name]: value });
+  function nextStep() {
+    setActive((current) => {
+      if (form.validate().hasErrors) {
+        return current;
+      }
+      return current < 3 ? current + 1 : current;
+    });
   }
 
-  function handleCertificateChange(index, event) {
-    const certs = certificates;
-    let { name, value } = event.target;
-    if (event.target.files) value = event.target.files[0];
-    certs[index] = { ...certs[index], [name]: value };
-    setCertificates(certs);
+  function prevStep() {
+    setActive((current) => (current > 0 ? current - 1 : current));
   }
 
-  function handleCertificateDelete() {
-    const certs = certificates;
-    setCertificates(certs);
+  function insertCertificate(index, certificate) {
+    if (index < form.values.certificates.length) form.removeListItem("certificates", index);
+    form.insertListItem("certificates", certificate, index);
   }
 
   return (
-    <div>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          handleOnSubmit({ ...data, certificates });
-        }}
-      >
-        <Inputs
-          data={data}
-          inputs={initialInputs}
-          handleDataInputChange={handleDataInputChange}
-        />
-        {certcount > 0 && (
-          <>
-            <p>Add Certificates</p>
-            <CertificateInputs
-              certcount={certcount}
-              handleCertificateChange={handleCertificateChange}
-              handleCertificateDelete={handleCertificateDelete}
+    <form onSubmit={form.onSubmit((data) => handleOnSubmit(data))}>
+      <Stepper active={active} breakpoint="sm" p="sm">
+        <Stepper.Step label="Profile" description="Basic details" icon={<IconUser />}>
+          <SimpleGrid cols={2}>
+            {/* General details */}
+            <FileInput placeholder="Your photo" {...form.getInputProps("photo")} />
+            <TextInput placeholder="Name" {...form.getInputProps("name")} />
+            <DateInput placeholder="Date of birth" {...form.getInputProps("dob")} />
+            <TextInput placeholder="Age" {...form.getInputProps("age")} />
+            <TextInput placeholder="Gender" {...form.getInputProps("gender")} />
+
+            {/* Medical details */}
+            {/* ?????? */}
+
+            {/* Contact details */}
+            <TextInput placeholder="Address" {...form.getInputProps("address")} />
+            <TextInput placeholder="Phone no." {...form.getInputProps("phone")} />
+            <TextInput placeholder="Email" {...form.getInputProps("email")} />
+          </SimpleGrid>
+        </Stepper.Step>
+
+        <Stepper.Step
+          label={user == "doctor" ? "Medical certificates" : "Medical records"}
+          description="Let them know you better"
+          icon={<IconFileCheck />}
+        >
+          <CertificateInput
+            index={form.values.certificates.length}
+            insertCertificate={insertCertificate}
+            values={form.values.certificates}
+          />
+          {form.values.certificates.map((certificate, index) => {
+            return (
+              <Code block mt="xl" key={index}>
+                {JSON.stringify(certificate, null, 2)}
+              </Code>
+            );
+          })}
+        </Stepper.Step>
+
+        <Stepper.Step
+          label="Social media"
+          description="Make it easy to contact you"
+          icon={<IconCamera />}
+        >
+          <SimpleGrid cols={3}>
+            <TextInput
+              icon={
+                <ActionIcon
+                  variant="gradient"
+                  gradient={{ from: "yellow", to: "purple", deg: 45 }}
+                  size="sm"
+                >
+                  <IconBrandInstagram />
+                </ActionIcon>
+              }
+              placeholder="Instagram username"
+              {...form.getInputProps("instagram")}
             />
-          </>
+            <TextInput
+              icon={
+                <ActionIcon color="purple" size="sm">
+                  <IconBrandFacebook />
+                </ActionIcon>
+              }
+              placeholder="Facebook username"
+              {...form.getInputProps("facebook")}
+            />
+            <TextInput
+              icon={
+                <ActionIcon color="blue" size="sm">
+                  <IconBrandTwitter />
+                </ActionIcon>
+              }
+              placeholder="Twitter username"
+              {...form.getInputProps("twitter")}
+            />
+          </SimpleGrid>
+        </Stepper.Step>
+
+        <Stepper.Completed>
+          <Button type="submit" disabled={submitIsDisabled}>
+            Submit
+          </Button>
+          <Code block mt="xl">
+            {JSON.stringify(form.values, null, 2)}
+          </Code>
+        </Stepper.Completed>
+      </Stepper>
+
+      <Group position="right" mt="xl">
+        {active !== 0 && (
+          <Button variant="default" onClick={prevStep}>
+            Back
+          </Button>
         )}
-        <br />
-        <button disabled={submitIsDisabled}>Submit</button>
-      </form>
-    </div>
+        {active !== 3 && <Button onClick={nextStep}>Next step</Button>}
+      </Group>
+    </form>
   );
 }

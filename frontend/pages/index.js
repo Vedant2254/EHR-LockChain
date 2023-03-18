@@ -1,5 +1,5 @@
 import Head from "next/head";
-import ConnectButton from "../components-old/ConnectButton";
+import EHRHeader from "@/components/AppShell/EHRHeader";
 
 export default function Home() {
   return (
@@ -8,9 +8,7 @@ export default function Home() {
         <title>EHR data management system</title>
       </Head>
       <main>
-        <nav>
-          <ConnectButton />
-        </nav>
+        <EHRHeader />
       </main>
     </>
   );
