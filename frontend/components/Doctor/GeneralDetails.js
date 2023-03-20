@@ -36,25 +36,8 @@ export default function GeneralDetails({ data }) {
 
   return (
     <>
-      <Title order={3}>Dr. {data.name}'s profile</Title>
-      <Grid mt="md">
-        <Grid.Col span={3}>
-          <Image
-            src={data.photo}
-            height={200}
-            width={200}
-            radius={100}
-            classNames={{ image: "mantine-Image-image" }}
-            styles={{ image: classes.image }}
-            caption={
-              <>
-                <Text fw={500}>{data.name}</Text>
-                {data.title || "No title provided"}
-              </>
-            }
-          />
-        </Grid.Col>
-        <Grid.Col span={5}>
+      <Grid>
+        <Grid.Col span={7}>
           <Table verticalSpacing="sm">
             <tbody>
               {Object.keys(data).map((key) => {
@@ -76,8 +59,8 @@ export default function GeneralDetails({ data }) {
           </Table>
         </Grid.Col>
         <Grid.Col span={1}></Grid.Col>
-        <Grid.Col span={3}>
-          <Container className={classes.socialcard} p="md">
+        <Grid.Col span={4}>
+          <Container className={classes.socialcard} ml="xl" p="md">
             <Text fw="bold">Social</Text>
             <Group mt="lg">
               <ActionIcon
