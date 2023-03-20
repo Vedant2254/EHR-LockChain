@@ -9,7 +9,7 @@ import {
   SimpleGrid,
   ActionIcon,
 } from "@mantine/core";
-import { hasLength, isEmail, isInRange, isNotEmpty, matches, useForm } from "@mantine/form";
+import { hasLength, isEmail, isNotEmpty, matches, useForm } from "@mantine/form";
 import CertificateInput from "./CustomInputs/CertificateInput";
 import {
   IconBrandFacebook,
@@ -31,10 +31,15 @@ export default function RegistrationForm({
   const form = useForm({
     initialValues: { ...initialValues, certificates: initialValues.certificates || [] },
     validate: {
-      // photo: isNotEmpty("Photo cannot be empty"),
+      // photo: (value) =>
+      //   !value
+      //     ? "Photo cannot be empty"
+      //     : value.size / 1024 > 250
+      //     ? "Size of file must be less than or equal to 250KB"
+      //     : null,
       // name: hasLength({ min: 2, max: 25 }, "Name must be 2-25 characters"),
       // dob: isNotEmpty("Date of birth cannot be empty"),
-      // age: isInRange({ min: 18, max: 99 }, "You must be 18-99 years old to register"),
+      // age: (value) => (value < 18 || value > 99 ? "You must be 18-99 years old to register" : null),
       // gender: matches(/^(male|female|Male|Female)$/, "Input must be Male/male or Female/female"),
       // address: isNotEmpty("Address cannot be empty"),
       // phone: matches(/^\d{10}$/, "Phone number must be a 10 digit number"),
@@ -61,7 +66,7 @@ export default function RegistrationForm({
   }
 
   return (
-    <form onSubmit={form.onSubmit((data) => handleOnSubmit(data))}>
+    <form onSubmit={form.onSubmit((data) => handleOnSubmit({ ...data }))}>
       <Stepper active={active} breakpoint="sm" p="sm">
         <Stepper.Step label="Profile" description="Basic details" icon={<IconUser />}>
           <SimpleGrid cols={2}>

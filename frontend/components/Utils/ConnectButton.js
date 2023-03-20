@@ -19,8 +19,6 @@ export default function Home() {
   const { isConnected, address } = useAccount();
   const [isDefinitelyConnected, setIsDefinitelyConnected] = useState(false);
 
-  const theme = useMantineTheme();
-
   useEffect(() => {
     setIsDefinitelyConnected(isConnected);
   }, [isConnected]);
@@ -30,19 +28,12 @@ export default function Home() {
       <Menu.Target>
         <Button variant="light" radius="sm" leftIcon={<ArrowDownIcon />}>
           {address &&
-            `${address.substring(0, 6)}...${address.substring(
-              address.length - 6,
-              address.length
-            )}`}
+            `${address.substring(0, 6)}...${address.substring(address.length - 6, address.length)}`}
         </Button>
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Item
-          icon={<IconConnectDisconnect />}
-          p="7px"
-          onClick={disconnect}
-        >
+        <Menu.Item icon={<IconConnectDisconnect />} p="7px" onClick={disconnect}>
           Disconnect
         </Menu.Item>
       </Menu.Dropdown>

@@ -1,9 +1,13 @@
 import { createCipheriv, createDecipheriv, randomBytes } from "crypto";
 
-function symmetricEncrypt(data) {
+function generateKey() {
   const key = randomBytes(32);
   const iv = randomBytes(16);
 
+  return { key, iv };
+}
+
+function symmetricEncrypt(data, key, iv) {
   const cipher = createCipheriv("aes-256-gcm", key, iv);
   const cipherData = cipher.update(data, "utf-8", "hex");
 
@@ -18,6 +22,7 @@ function symmetricDecrypt(cipherData, key, iv) {
 }
 
 module.exports = {
+  generateKey,
   symmetricEncrypt,
   symmetricDecrypt,
 };

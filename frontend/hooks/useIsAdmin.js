@@ -4,7 +4,7 @@ import { useContractRead } from "wagmi";
 export default function useIsAdmin(address) {
   const { contractAddress, enabled, abi } = useValidTxnData();
 
-  const { data: isAdmin } = useContractRead({
+  const { data: isAdmin, isFetched } = useContractRead({
     address: contractAddress,
     abi,
     functionName: "isAdmin",
@@ -12,5 +12,5 @@ export default function useIsAdmin(address) {
     enabled,
   });
 
-  return { isAdmin };
+  return { isAdmin, isFetched };
 }

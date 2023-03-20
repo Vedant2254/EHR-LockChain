@@ -7,17 +7,16 @@ export default function useRegisterDoctor() {
   const { address, contractAddress, abi, enabled } = useValidTxnData();
 
   const [dataCID, setDataCID] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState(null);
 
   /* Contract functions */
-  const { data: isDoctorRegistered, refetch: runIsDoctorRegistered } =
-    useContractRead({
-      address: contractAddress,
-      abi,
-      functionName: "isDrRegistered",
-      args: [address],
-      enabled,
-    });
+  const { data: isDoctorRegistered, refetch: runIsDoctorRegistered } = useContractRead({
+    address: contractAddress,
+    abi,
+    functionName: "isDrRegistered",
+    args: [address],
+    enabled,
+  });
 
   const { writeAsync: runAddDoctor } = useContractWrite({
     address: contractAddress,
@@ -44,14 +43,15 @@ export default function useRegisterDoctor() {
   /* useEffects */
   useEffect(() => {
     (async () => {
+      setStatus("transaction");
       await registerDoctor();
-      setIsLoading(false);
+      setStatus(null);
     })();
   }, [dataCID]);
 
   /* handlers */
   async function handleOnSubmit(data) {
-    setIsLoading(true);
+    setStatus("uploading");
     try {
       // read file as data urls
       function readFileAsync(file) {
@@ -83,9 +83,9 @@ export default function useRegisterDoctor() {
       console.log(cid);
       setDataCID(cid);
     } catch (e) {
-      setIsLoading(false);
+      setStatus(false);
     }
   }
 
-  return { isDoctorRegistered, isLoading, handleOnSubmit };
+  return { isDoctorRegistered, isLoading: status, handleOnSubmit };
 }

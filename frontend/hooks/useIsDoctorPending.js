@@ -9,7 +9,7 @@ export default function useIsDoctorPending(address) {
     abi,
     functionName: "isDrPending",
     args: [address],
-    enabled,
+    enabled: enabled && address,
   });
 
   return { isDoctorPending };

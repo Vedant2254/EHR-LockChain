@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { Paper, AppShell, useMantineTheme } from "@mantine/core";
+import { Paper, AppShell, useMantineTheme, LoadingOverlay } from "@mantine/core";
 import EHRHeader from "./EHRHeader";
 import EHRNavbar from "./EHRNavbar";
 
-export default function EHRAppShell({ navlinks, Controller }) {
+export default function EHRAppShell({ loading, navlinks, Controller }) {
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
 
   return (
     <Paper>
+      <LoadingOverlay visible={loading} overlayBlur={3} />
       <AppShell
         styles={{
           main: {

@@ -28,6 +28,7 @@ export default function CertificateInput({ index, initialValues, insertCertifica
         name="description"
         placeholder="Description"
         {...form.getInputProps("description")}
+        autosize
       />
       <Button onClick={runInsertCertificate}>Add certificate</Button>
     </>

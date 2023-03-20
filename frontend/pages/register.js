@@ -4,7 +4,7 @@ import { useAccount } from "wagmi";
 import useIsDoctorRegistered from "@/hooks/useIsDoctorRegistered";
 import useIsPatient from "@/hooks/useIsPatient";
 
-import { Tabs, LoadingOverlay } from "@mantine/core";
+import { Tabs } from "@mantine/core";
 import EHRAppShell from "@/components/AppShell/EHRAppShell";
 import RegisterPatient from "@/components/Register/RegsiterPatient";
 import RegisterDoctor from "@/components/Register/RegisterDoctor";
@@ -13,8 +13,8 @@ export default function RegisterUser() {
   const [activeTab, setActiveTab] = useState("patient");
 
   const { address } = useAccount();
-  const { isDoctorRegistered } = useIsDoctorRegistered(address);
-  const { isPatient } = useIsPatient(address);
+  const { isDoctorRegistered, isFetched: isDRFetched } = useIsDoctorRegistered(address);
+  const { isPatient, isFetched: isPtFetched } = useIsPatient(address);
   const router = useRouter();
 
   useEffect(() => {
@@ -27,34 +27,24 @@ export default function RegisterUser() {
   }, [isPatient, isDoctorRegistered]);
 
   return (
-    <>
-      <LoadingOverlay
-        visible={
-          isDoctorRegistered == undefined ||
-          isPatient == undefined ||
-          isPatient ||
-          isDoctorRegistered
-        }
-        overlayBlur={2}
-      />
-      <EHRAppShell
-        navlinks={[{ label: "Registration", location: "" }]}
-        Controller={() => (
-          <Tabs value={activeTab} onTabChange={setActiveTab} px="xl" pt="md">
-            <Tabs.List grow mb="xl">
-              <Tabs.Tab value="patient">Register as patient</Tabs.Tab>
-              <Tabs.Tab value="doctor">Register as doctor</Tabs.Tab>
-            </Tabs.List>
+    <EHRAppShell
+      loading={!isDRFetched || !isPtFetched || isPatient || isDoctorRegistered}
+      navlinks={[{ label: "Registration", location: "" }]}
+      Controller={() => (
+        <Tabs value={activeTab} onTabChange={setActiveTab} px="xl" pt="md">
+          <Tabs.List grow mb="xl">
+            <Tabs.Tab value="patient">Register as patient</Tabs.Tab>
+            <Tabs.Tab value="doctor">Register as doctor</Tabs.Tab>
+          </Tabs.List>
 
-            <Tabs.Panel value="patient">
-              <RegisterPatient />
-            </Tabs.Panel>
-            <Tabs.Panel value="doctor">
-              <RegisterDoctor />
-            </Tabs.Panel>
-          </Tabs>
-        )}
-      />
-    </>
+          <Tabs.Panel value="patient">
+            <RegisterPatient />
+          </Tabs.Panel>
+          <Tabs.Panel value="doctor">
+            <RegisterDoctor />
+          </Tabs.Panel>
+        </Tabs>
+      )}
+    />
   );
 }

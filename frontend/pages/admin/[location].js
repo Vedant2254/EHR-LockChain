@@ -9,13 +9,13 @@ import EHRAppShell from "@/components/AppShell/EHRAppShell";
 
 export default function MainScreen() {
   const { address } = useAccount();
-  const { isAdmin } = useIsAdmin(address);
+  const { isAdmin, isFetched } = useIsAdmin(address);
   const router = useRouter();
 
-  // no need to check for connected using address seperately as isAdmin stays undefined and user is redirected to /
   useEffect(() => {
-    isAdmin != undefined && !isAdmin && router.replace("/");
-  }, [isAdmin]);
+    !address && router.replace("/");
+    isFetched && !isAdmin && router.replace("/");
+  }, [address, isAdmin]);
 
   const navlinks = [
     { label: "Dashboard", location: "dashboard" },
@@ -24,9 +24,10 @@ export default function MainScreen() {
   ];
 
   return (
-    <>
-      <LoadingOverlay visible={!isAdmin} overlayBlur={2} />
-      <EHRAppShell navlinks={navlinks} Controller={AdminController} />
-    </>
+    <EHRAppShell
+      loading={!isFetched || !isAdmin}
+      navlinks={navlinks}
+      Controller={AdminController}
+    />
   );
 }

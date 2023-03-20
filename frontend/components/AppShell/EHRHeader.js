@@ -1,12 +1,4 @@
-import {
-  Header,
-  Burger,
-  Text,
-  Flex,
-  Box,
-  MediaQuery,
-  useMantineTheme,
-} from "@mantine/core";
+import { Header, Burger, Text, Flex, Box, MediaQuery, useMantineTheme } from "@mantine/core";
 import ConnectButton from "@/components/Utils/ConnectButton";
 
 export default function EHRHeader({ opened, setOpened }) {
@@ -27,7 +19,7 @@ export default function EHRHeader({ opened, setOpened }) {
 
         <Text>EHR data management system</Text>
 
-        <Box component={ConnectButton}></Box>
+        <ConnectButton />
       </Flex>
     </Header>
   );

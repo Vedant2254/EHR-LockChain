@@ -24,7 +24,23 @@ const client = createClient({
 
 export default function App({ Component, pageProps }) {
   return (
-    <MantineProvider theme={{ colorScheme: "light", loader: "bars" }}>
+    <MantineProvider
+      theme={{
+        colorScheme: "light",
+        loader: "bars",
+        components: {
+          Button: {
+            styles: {
+              root: {
+                transition: "300ms",
+                "&:hover": { transform: "scale(1.002)" },
+                "&:active": { transform: "scale(0.99)" },
+              },
+            },
+          },
+        },
+      }}
+    >
       <WagmiConfig client={client}>
         <Component {...pageProps} />
       </WagmiConfig>

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useContractRead, useContractWrite } from "wagmi";
 import useValidTxnData from "@/hooks/useValidTxnData";
 import { makeFileObjects, storeIPFS } from "@/utils/ipfs";
-import { symmetricEncrypt } from "@/utils/cryptography";
+import { generateKey, symmetricEncrypt } from "@/utils/cryptography";
 import { encryptData } from "@/utils/metamask";
 
 export default function useRegisterPatient() {
@@ -69,6 +69,10 @@ export default function useRegisterPatient() {
         });
       }
 
+      // seperate certificates from data
+      const { certificates } = data;
+      delete data.certificates;
+
       // changes files to dataURLS in data
       for (let key in data) {
         if (data[key].constructor.name == "File") {
@@ -76,15 +80,21 @@ export default function useRegisterPatient() {
         }
       }
 
-      // changes files to dataURLS in data
-      for (let i in data.certificates) {
-        const { media } = data.certificates[i];
-        if (media.constructor.name == "File")
-          data.certificates[i].media = await readFileAsync(media);
+      // changes media in certificates to dataURLS in data
+      for (let i in certificates) {
+        const { media } = certificates[i];
+        if (media && media.constructor.name == "File")
+          certificates[i].media = await readFileAsync(media);
       }
 
       // encrypt data using symmetric key
-      const { key, iv, cipherData } = symmetricEncrypt(JSON.stringify(data));
+      const { key, iv } = generateKey();
+      const { cipherData } = symmetricEncrypt(JSON.stringify(data), key, iv);
+      const { cipherData: cipherCertificates } = symmetricEncrypt(
+        JSON.stringify(certificates),
+        key,
+        iv
+      );
 
       // create JSON of key and iv of symmetric encryption, then encrypt it using
       // patients public key
@@ -98,8 +108,15 @@ export default function useRegisterPatient() {
       const dataFiles = await makeFileObjects([cipherData], [address]);
       const dataCID = await storeIPFS(dataFiles, { wrapWithDirectory: false });
 
+      // store encrypted certificates to IPFS
+      const certificateFiles = await makeFileObjects([cipherCertificates], [address]);
+      const certificatesCID = await storeIPFS(certificateFiles, { wrapWithDirectory: false });
+
       // store encrypted key to IPFS in below format
-      const keyFile = { keys: { [address]: JSON.stringify(encS) } };
+      const keyFile = {
+        keys: { [address]: JSON.stringify(encS) },
+        medicalRecordCID: certificatesCID,
+      };
       const keyFiles = await makeFileObjects([keyFile], [address]);
       const keyCID = await storeIPFS(keyFiles, { wrapWithDirectory: false });
 
@@ -108,6 +125,7 @@ export default function useRegisterPatient() {
       console.log(dataCID);
       console.log(keyCID);
     } catch (err) {
+      console.log(err);
       setIsLoading(false);
     }
 
