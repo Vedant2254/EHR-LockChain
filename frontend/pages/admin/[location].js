@@ -3,7 +3,6 @@ import { useAccount } from "wagmi";
 import useIsAdmin from "@/hooks/useIsAdmin";
 import { useRouter } from "next/router";
 
-import { LoadingOverlay } from "@mantine/core";
 import AdminController from "@/components/AppShell/Controllers/AdminController";
 import EHRAppShell from "@/components/AppShell/EHRAppShell";
 

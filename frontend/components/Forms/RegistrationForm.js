@@ -127,7 +127,7 @@ export default function RegistrationForm({
             />
             <TextInput
               icon={
-                <ActionIcon color="purple" size="sm">
+                <ActionIcon color="indigo" size="sm">
                   <IconBrandFacebook />
                 </ActionIcon>
               }
