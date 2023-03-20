@@ -140,6 +140,7 @@ contract Contract {
             revert("Contract: Address already registered as doctor");
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed");
         patients.users.add(msg.sender, _hash);
+        patients.records[msg.sender].editor = msg.sender;
         patients.records[msg.sender].key_data_hash = _key_data_hash;
     }
 
@@ -161,8 +162,7 @@ contract Contract {
 
     function setPtRecordHash(address _address, string memory _hash) public {
         if (!isPatient(_address)) revert Contract__NotPatient();
-        if (!(msg.sender == _address || patients.records[_address].editor == msg.sender))
-            revert("Not Allowed");
+        if (!(patients.records[_address].editor == msg.sender)) revert("Not Allowed");
         patients.records[_address].key_data_hash = _hash;
     }
 
@@ -197,7 +197,7 @@ contract Contract {
 
     function removeEditorAccess() public onlyPatient {
         address old_editor = patients.records[msg.sender].editor;
-        patients.records[msg.sender].editor = address(0);
+        patients.records[msg.sender].editor = msg.sender;
         doctors.docToPatAccess[old_editor].unset(msg.sender);
     }
 

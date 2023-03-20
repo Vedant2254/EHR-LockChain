@@ -11,12 +11,12 @@ async function main() {
   // console.log(await contract.getPatGeneralHash(patient.address));
   // console.log(await contract.getPatRecordHash(patient.address));
 
-  // console.log(await contract.getDrHash(doctor.address));
+  console.log(await contract.getDrHash("0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc"));
 
-  for (let i = 1; i < accounts.length; i++) {
-    const drContract = await ethers.getContract("Contract", accounts[i]);
-    drContract.registerDr("abc");
-  }
+  // for (let i = 1; i < accounts.length; i++) {
+  //   const drContract = await ethers.getContract("Contract", accounts[i]);
+  //   drContract.registerDr("abc");
+  // }
 }
 
 main().catch((e) => {
