@@ -8,17 +8,18 @@ import useGetDoctorOfPatient from "@/hooks/useGetDoctorOfPatient";
 
 export default function PatientController() {
   const { address } = useAccount();
-  const { doctorOfPatient } = useGetDoctorOfPatient();
+  const { doctor } = useGetDoctorOfPatient();
+
   const router = useRouter();
   const { location } = router.query;
 
   return (
     <Tabs value={location}>
-      {/* <Tabs.Panel value="dashboard">
+      <Tabs.Panel value="dashboard">
         <Patient address={address} user="patient" />
-      </Tabs.Panel> */}
+      </Tabs.Panel>
       <Tabs.Panel value="my-doctor">
-        {doctorOfPatient != address ? <Doctor address={doctorOfPatient} user="patient" /> : ""}
+        <Doctor address={doctor} user="patient" />
       </Tabs.Panel>
       <Tabs.Panel value="all-doctors">
         <AllDoctors user="patient" />
