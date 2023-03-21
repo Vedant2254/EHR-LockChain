@@ -58,76 +58,78 @@ export default function useRegisterPatient() {
 
   /* Handler functions */
   async function handleOnSumbit(data) {
-    setIsLoading(true);
-    try {
-      // read file as data urls
-      function readFileAsync(file) {
-        return new Promise((resolve) => {
-          const reader = new FileReader();
-          reader.readAsDataURL(file);
-          reader.onloadend = () => resolve(reader.result);
-        });
-      }
+    // setIsLoading(true);
+    // try {
+    //   // read file as data urls
+    //   function readFileAsync(file) {
+    //     return new Promise((resolve) => {
+    //       const reader = new FileReader();
+    //       reader.readAsDataURL(file);
+    //       reader.onloadend = () => resolve(reader.result);
+    //     });
+    //   }
 
-      // seperate certificates from data
-      const { certificates } = data;
-      delete data.certificates;
+    //   // seperate certificates from data
+    //   const { certificates } = data;
+    //   delete data.certificates;
 
-      // changes files to dataURLS in data
-      for (let key in data) {
-        if (data[key].constructor.name == "File") {
-          data[key] = await readFileAsync(data[key]);
-        }
-      }
+    //   // changes files to dataURLS in data
+    //   for (let key in data) {
+    //     if (data[key].constructor.name == "File") {
+    //       data[key] = await readFileAsync(data[key]);
+    //     }
+    //   }
 
-      // changes media in certificates to dataURLS in data
-      for (let i in certificates) {
-        const { media } = certificates[i];
-        if (media && media.constructor.name == "File")
-          certificates[i].media = await readFileAsync(media);
-      }
+    //   // changes media in certificates to dataURLS in data
+    //   for (let i in certificates) {
+    //     const { media } = certificates[i];
+    //     if (media && media.constructor.name == "File")
+    //       certificates[i].media = await readFileAsync(media);
+    //   }
 
-      // encrypt data using symmetric key
-      const { key, iv } = generateKey();
-      const { cipherData } = symmetricEncrypt(JSON.stringify(data), key, iv);
-      const { cipherData: cipherCertificates } = symmetricEncrypt(
-        JSON.stringify(certificates),
-        key,
-        iv
-      );
+    //   // encrypt data using symmetric key
+    //   const { key, iv } = generateKey();
+    //   const { cipherData } = symmetricEncrypt(JSON.stringify(data), key, iv);
+    //   const { cipherData: cipherCertificates } = symmetricEncrypt(
+    //     JSON.stringify(certificates),
+    //     key,
+    //     iv
+    //   );
 
-      // create JSON of key and iv of symmetric encryption, then encrypt it using
-      // patients public key
-      const S = {
-        key: key.toString("hex"),
-        iv: iv.toString("hex"),
-      };
-      const encS = await encryptData(address, JSON.stringify(S));
+    //   // create JSON of key and iv of symmetric encryption, then encrypt it using
+    //   // patients public key
+    //   const S = {
+    //     key: key.toString("hex"),
+    //     iv: iv.toString("hex"),
+    //   };
+    //   const encS = await encryptData(address, JSON.stringify(S));
 
-      // store encrypted data to IPFS
-      const dataFiles = await makeFileObjects([cipherData], [address]);
-      const dataCID = await storeIPFS(dataFiles, { wrapWithDirectory: false });
+    //   // store encrypted data to IPFS
+    //   const dataFiles = await makeFileObjects([cipherData], [address]);
+    //   const dataCID = await storeIPFS(dataFiles, { wrapWithDirectory: false });
 
-      // store encrypted certificates to IPFS
-      const certificateFiles = await makeFileObjects([cipherCertificates], [address]);
-      const certificatesCID = await storeIPFS(certificateFiles, { wrapWithDirectory: false });
+    //   // store encrypted certificates to IPFS
+    //   const certificateFiles = await makeFileObjects([cipherCertificates], [address]);
+    //   const certificatesCID = await storeIPFS(certificateFiles, { wrapWithDirectory: false });
 
-      // store encrypted key to IPFS in below format
-      const keyFile = {
-        keys: { [address]: JSON.stringify(encS) },
-        medicalRecordCID: certificatesCID,
-      };
-      const keyFiles = await makeFileObjects([keyFile], [address]);
-      const keyCID = await storeIPFS(keyFiles, { wrapWithDirectory: false });
+    //   // store encrypted key to IPFS in below format
+    //   const keyFile = {
+    //     keys: { [address]: JSON.stringify(encS) },
+    //     medicalRecordCID: certificatesCID,
+    //   };
+    //   const keyFiles = await makeFileObjects([keyFile], [address]);
+    //   const keyCID = await storeIPFS(keyFiles, { wrapWithDirectory: false });
 
-      // set dataCID and keyCID in state CIDs
-      setCIDs({ dataCID, keyCID });
-      console.log(dataCID);
-      console.log(keyCID);
-    } catch (err) {
-      console.log(err);
-      setIsLoading(false);
-    }
+    //   // set dataCID and keyCID in state CIDs
+    //   setCIDs({ dataCID, keyCID });
+    //   console.log(dataCID);
+    //   console.log(keyCID);
+    // } catch (err) {
+    //   console.log(err);
+    //   setIsLoading(false);
+    // }
+
+    setCIDs({ dataCID: "abc", keyCID: "def" });
 
     /* Contract function runAddPatient (addPatient) is performed in
       useEffect hook triggered by change in CIDs because we don't get
