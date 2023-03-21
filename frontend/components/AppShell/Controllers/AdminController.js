@@ -10,11 +10,8 @@ export default function AdminController() {
 
   return (
     <Tabs value={location}>
-      <Tabs.Panel value="dashboard">
-        <AdminDashboard />
-      </Tabs.Panel>
       <Tabs.Panel value="all-doctors">
-        <AllDoctors />
+        <AllDoctors user="admin" />
       </Tabs.Panel>
       <Tabs.Panel value="all-patients">
         <AllPatients />

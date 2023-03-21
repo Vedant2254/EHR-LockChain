@@ -6,8 +6,8 @@ import { readAsTextAsync } from "@/utils/readFileAsync";
 
 // This hook gets patient or doctor hash from contract, gets corresponding data from IPFS
 // and returns hash, data and certificates of data
-export default function useHashAndData(functionName, address) {
-  const { address: curraddress, contractAddress, abi, enabled } = useValidTxnData();
+export default function useGetDoctorData(address) {
+  const { contractAddress, abi, enabled } = useValidTxnData();
   const [data, setData] = useState({});
   const [certificates, setCertificates] = useState([]);
 
@@ -15,8 +15,8 @@ export default function useHashAndData(functionName, address) {
   const { data: drHash } = useContractRead({
     address: contractAddress,
     abi,
-    functionName,
-    args: [address || curraddress],
+    functionName: "getDrHash",
+    args: [address],
     enabled,
   });
 

@@ -1,5 +1,7 @@
 import Head from "next/head";
 import EHRHeader from "@/components/AppShell/EHRHeader";
+import Link from "next/link";
+import { NavLink, Button, Group } from "@mantine/core";
 
 export default function Home() {
   return (
@@ -9,6 +11,20 @@ export default function Home() {
       </Head>
       <main>
         <EHRHeader />
+        <Group m="md">
+          <Button component={Link} href="/register">
+            Register
+          </Button>
+          <Button component={Link} href="/admin">
+            Admin
+          </Button>
+          <Button component={Link} href="/doctor">
+            Doctor
+          </Button>
+          <Button component={Link} href="/patient">
+            Patient
+          </Button>
+        </Group>
       </main>
     </>
   );

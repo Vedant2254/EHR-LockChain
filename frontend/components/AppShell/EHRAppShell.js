@@ -9,7 +9,7 @@ export default function EHRAppShell({ loading, navlinks, Controller }) {
 
   return (
     <Paper>
-      <LoadingOverlay visible={loading} overlayBlur={3} />
+      <LoadingOverlay visible={loading} overlayBlur={4} />
       <AppShell
         styles={{
           main: {

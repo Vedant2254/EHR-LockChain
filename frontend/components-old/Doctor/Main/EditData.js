@@ -1,5 +1,5 @@
 import RegistrationForm from "@/components-old/Forms/RegistrationForm";
-import useHashAndData from "@/hooks/useHashAndData";
+import useHashAndData from "@/hooks/useDrHashAndData";
 import { doctor as doctorInitials } from "@/utils/initials";
 
 export default function EditData() {

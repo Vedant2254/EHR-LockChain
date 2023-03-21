@@ -88,7 +88,7 @@ export default function RegistrationForm({
         </Stepper.Step>
 
         <Stepper.Step
-          label={user == "doctor" ? "Medical certificates" : "Medical records"}
+          label={user == "doctor" ? "Doctor's Certificates" : "Medical Certificates"}
           description="Let them know you better"
           icon={<IconFileCheck />}
         >

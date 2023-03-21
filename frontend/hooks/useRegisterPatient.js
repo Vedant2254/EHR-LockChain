@@ -22,7 +22,7 @@ export default function useRegisterPatient() {
   });
 
   // perform registration
-  const { writeAsync: runAddPatient } = useContractWrite({
+  const { writeAsync: runRegisterPt } = useContractWrite({
     address: contractAddress,
     abi,
     functionName: "registerPt",
@@ -37,7 +37,7 @@ export default function useRegisterPatient() {
     if (dataCID && keyCID) {
       // add patient by passing dataCID
       try {
-        await runAddPatient();
+        await runRegisterPt();
         await runIsPatient();
       } catch (err) {
         console.log(err);

@@ -1,5 +1,5 @@
 import { isDataURL } from "@/utils/isDataURL";
-import useHashAndData from "@/hooks/useHashAndData";
+import useHashAndData from "@/hooks/useDrHashAndData";
 
 const ShowUserData = ({ data }) => {
   return Object.keys(data).map((key, index) => {

@@ -17,14 +17,13 @@ export default function MainScreen() {
   }, [address, isAdmin]);
 
   const navlinks = [
-    { label: "Dashboard", location: "dashboard" },
     { label: "All doctors", location: "all-doctors" },
     { label: "All patients", location: "all-patients" },
   ];
 
   return (
     <EHRAppShell
-      loading={!isFetched || !isAdmin}
+      loading={!address || !isFetched || !isAdmin}
       navlinks={navlinks}
       Controller={AdminController}
     />

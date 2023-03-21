@@ -1,3 +1,3 @@
-export default function PatientGeneralDetails() {
-  return "Patient general details";
+export default function GeneralDetails() {
+  return "Patient General details";
 }
