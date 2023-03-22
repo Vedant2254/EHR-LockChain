@@ -8,30 +8,29 @@ import { readAsTextAsync } from "@/utils/readFileAsync";
 // and returns hash, data and certificates of data
 export default function useGetDoctorData(address) {
   const { contractAddress, abi, enabled } = useValidTxnData();
-  const [data, setData] = useState({});
-  const [certificates, setCertificates] = useState([]);
+  const [data, setData] = useState({ generalData: {}, certificates: [] });
 
   // get hash
-  const { data: drHash } = useContractRead({
+  const { data: hashData } = useContractRead({
     address: contractAddress,
     abi,
     functionName: "getDrHash",
     args: [address],
-    enabled,
+    enabled: enabled && address,
   });
 
   // get data from IPFS
   useEffect(() => {
     (async () => {
-      if (!drHash) return;
-      const files = await retrieveIPFS(drHash);
+      if (!hashData) return;
+      const files = await retrieveIPFS(hashData);
       const file = files[0];
       const ipfsData = JSON.parse(await readAsTextAsync(file));
-      setCertificates(ipfsData.certificates);
+      const certificates = ipfsData.certificates;
       delete ipfsData.certificates;
-      setData(ipfsData);
+      ipfsData && certificates && setData({ generalData: ipfsData, certificates });
     })();
-  }, [drHash]);
+  }, [hashData]);
 
-  return { drHash, data, certificates };
+  return { ...hashData, ...data };
 }

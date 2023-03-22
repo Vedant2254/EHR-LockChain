@@ -15,7 +15,7 @@ export default function useRegisterDoctorConfirm() {
     abi,
     functionName: "registerDrConfirm",
     args: [publicKey],
-    enabled,
+    enabled: enabled && publicKey,
   });
 
   async function registerDrConfirm() {

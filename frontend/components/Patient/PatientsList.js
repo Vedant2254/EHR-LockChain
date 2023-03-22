@@ -8,6 +8,13 @@ const useStyles = createStyles((theme) => ({
     borderRadius: theme.radius.md,
     boxShadow: theme.shadows.sm,
     transition: "200ms",
+    "&:hover": {
+      transform: "scale(1.005)",
+      backgroundColor: "#fafafa",
+      boxShadow: theme.shadows.md,
+      border: `1px solid ${theme.colors.gray[2]}`,
+    },
+    "&:active": { transform: "scale(0.99)" },
   },
 }));
 

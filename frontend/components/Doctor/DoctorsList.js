@@ -1,4 +1,4 @@
-import { SimpleGrid, Badge, Text, Flex, createStyles, Divider, Grid, Center } from "@mantine/core";
+import { SimpleGrid, Badge, Text, createStyles, Divider, Grid, Center } from "@mantine/core";
 
 const useStyles = createStyles((theme) => ({
   doctorBtn: {

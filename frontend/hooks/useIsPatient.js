@@ -9,7 +9,7 @@ export default function useIsPatient(address) {
     abi,
     functionName: "isPatient",
     args: [address],
-    enabled,
+    enabled: enabled && address,
   });
 
   return { isPatient, isFetched };

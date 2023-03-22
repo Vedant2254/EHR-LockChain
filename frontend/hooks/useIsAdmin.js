@@ -9,7 +9,7 @@ export default function useIsAdmin(address) {
     abi,
     functionName: "isAdmin",
     args: [address],
-    enabled,
+    enabled: enabled && address,
   });
 
   return { isAdmin, isFetched };

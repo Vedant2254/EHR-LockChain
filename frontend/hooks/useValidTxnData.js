@@ -11,8 +11,7 @@ export default function useValidTxnData() {
   const { address } = useAccount();
   // const [enabled, setEnabled] = useState(false);
 
-  const contractAddress =
-    contract && chain && JSON.parse(contract).contractAddresses[chain.id];
+  const contractAddress = contract && chain && JSON.parse(contract).contractAddresses[chain.id];
   const abi = contract && JSON.parse(contract).abi;
   const enabled = Boolean(contract && chain && address);
 

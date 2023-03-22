@@ -7,7 +7,7 @@ import DoctorButtons from "./DoctorButtons";
 
 export default function Doctor({ address, user }) {
   // get data
-  const { data, certificates } = useGetDoctorData(address);
+  const { generalData, certificates } = useGetDoctorData(address);
 
   const [activeTab, setActiveTab] = useState("general-details");
 
@@ -22,7 +22,7 @@ export default function Doctor({ address, user }) {
         <DoctorButtons address={address} user={user} />
 
         <Tabs.Panel value="general-details" mt="md">
-          <GeneralDetails data={data} />
+          <GeneralDetails data={generalData} />
         </Tabs.Panel>
         <Tabs.Panel value="certificates" mt="md">
           <Certifications certificates={certificates} />
