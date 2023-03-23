@@ -3,11 +3,11 @@ import { useAccount } from "wagmi";
 import { useRouter } from "next/router";
 import useGetDoctorOfPatient from "@/hooks/useGetDoctorOfPatient";
 import useChangeEditorAccess from "@/hooks/useChangeEditorAccess";
+import useRemoveEditorAccess from "@/hooks/useRemoveEditorAccess";
 import AllDoctors from "@/components/Doctor/AllDoctors";
 import Doctor from "@/components/Doctor/Doctor";
 import Patient from "@/components/Patient/Patient";
 import { Button, Tabs, Text } from "@mantine/core";
-import useRemoveEditorAccess from "@/hooks/useRemoveEditorAccess";
 
 export default function PatientController() {
   const { address } = useAccount();
