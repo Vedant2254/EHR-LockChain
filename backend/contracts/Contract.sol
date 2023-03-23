@@ -182,23 +182,32 @@ contract Contract {
         return patients.users.getMembers();
     }
 
-    function changeEditorAccess(address _address) public onlyPatient {
+    function changeEditorAccess(
+        address _address,
+        string memory _general_hash,
+        string memory _key_hash
+    ) public onlyPatient {
         // pending update - when user changes access, symmetric key S must be changed
         if (!isDoctor(_address)) revert Contract__NotDoctor();
 
         // remove old editor access
-        address old_editor = patients.records[msg.sender].editor;
-        doctors.docToPatAccess[old_editor].unset(msg.sender);
+        removeEditorAccess(_general_hash, _key_hash);
 
         // add new editor access
         patients.records[msg.sender].editor = _address;
         doctors.docToPatAccess[_address].set(msg.sender);
     }
 
-    function removeEditorAccess() public onlyPatient {
+    function removeEditorAccess(
+        string memory _general_hash,
+        string memory _key_hash
+    ) public onlyPatient {
         address old_editor = patients.records[msg.sender].editor;
         patients.records[msg.sender].editor = msg.sender;
         doctors.docToPatAccess[old_editor].unset(msg.sender);
+
+        patients.users.setHash(msg.sender, _general_hash);
+        patients.records[msg.sender].key_data_hash = _key_hash;
     }
 
     function getDrOfPt() public view onlyPatient returns (address) {

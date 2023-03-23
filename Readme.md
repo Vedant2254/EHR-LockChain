@@ -185,6 +185,29 @@ by addresses present in keys of [Patient General Details](#patient-general-detai
 > Patient
 ```
 
+### Issues that occured during development
+
+#### Cheating of Metamask
+
+1. Metamask sends transactions that needs to be signed through the account that is currently selected
+2. But, when calling a view function on contract it sends it may be sent through any account that is connected, not necessarily through the selected account
+3. It was realised when patients data was returned instead call reverted with message "Not Allowed" as contract used to compare allowed addresses with msg.sender, when I returned msg.sender from contract I realised that the account call was being sent was not the account currectly selected in metamask, it was being sent from the account that was first connected to website.
+4. In this application specifically for functions that are view functions and rely on msg.sender, I have used ethersjs direclty instead of wagmi hooks.
+   ```js
+   async function getPatientDataManually() {
+     try {
+       const provider = new ethers.providers.Web3Provider(window.ethereum);
+       const signer = provider.getSigner();
+       // useSigner() from wagmi can also be used to get current signer
+       // const signer = useSigner();
+       const contract = new ethers.Contract(contractAddress, abi, signer);
+       console.log(await contract.getPtRecordHash(address));
+     } catch (err) {
+       console.log(err);
+     }
+   }
+   ```
+
 ## Further updates in 🧠 but not in 💻 yet
 
 We can store [w3name](https://github.com/web3-storage/w3name) instead of hash. Updates doesn't change this name, so reduces gas consumption of chaning hash each time data gets changed.
