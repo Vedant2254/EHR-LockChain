@@ -1,8 +1,10 @@
 import { usePrepareContractWrite, useContractWrite } from "wagmi";
+import useIsDoctorPending from "./useIsDoctorPending";
 import useValidTxnData from "./useValidTxnData";
 
 export default function useApproveDoctor(address) {
   const { contractAddress, abi, enabled } = useValidTxnData();
+  const { isDoctorPending, runIsDoctorPending } = useIsDoctorPending(address);
 
   const { config: approveDoctorConfig } = usePrepareContractWrite({
     address: contractAddress,
@@ -12,16 +14,18 @@ export default function useApproveDoctor(address) {
     enabled: enabled && address,
   });
 
-  const { writeAsync: approveDoctor } = useContractWrite(approveDoctorConfig);
+  const { writeAsync: approveDoctor, isLoading: isApproving } =
+    useContractWrite(approveDoctorConfig);
 
   async function runApproveDoctor() {
     try {
       const response = await approveDoctor();
       await response.wait(1);
+      await runIsDoctorPending();
     } catch (e) {
       console.log(e);
     }
   }
 
-  return { runApproveDoctor };
+  return { isDoctorPending, isApproving, runApproveDoctor };
 }

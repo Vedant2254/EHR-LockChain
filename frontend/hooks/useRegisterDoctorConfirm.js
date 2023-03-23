@@ -18,20 +18,23 @@ export default function useRegisterDoctorConfirm() {
     enabled: enabled && publicKey,
   });
 
+  useEffect(() => {
+    publicKey &&
+      (async () => {
+        try {
+          const response = await runRegisterDrConfirm();
+          await response.wait(1);
+          await runIsDoctor();
+        } catch (err) {
+          console.log(err);
+        }
+        setPublicKey(null);
+      })();
+  }, [publicKey]);
+
   async function registerDrConfirm() {
     setPublicKey(await getPublicKey(address));
   }
-
-  useEffect(() => {
-    (async () => {
-      if (publicKey) {
-        const response = await runRegisterDrConfirm();
-        await response.wait(1);
-        await runIsDoctor();
-        setPublicKey(null);
-      }
-    })();
-  }, [publicKey]);
 
   return { isDoctor, runIsDoctor, registerDrConfirm };
 }

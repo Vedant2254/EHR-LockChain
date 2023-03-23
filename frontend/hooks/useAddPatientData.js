@@ -25,11 +25,11 @@ export default function useAddPatientData(ptAddress, drAddress) {
   async function setupCIDs(generalData, certificates) {
     // encrypt both data using new symmetric key
     const { key, iv } = generateKey();
-    const cipherData = symmetricEncrypt(JSON.stringify(generalData), key, iv);
+    const cipherGeneralData = symmetricEncrypt(JSON.stringify(generalData), key, iv);
     const cipherCertificates = symmetricEncrypt(JSON.stringify(certificates), key, iv);
 
     // store encrypted general data to IPFS
-    const generalDataFile = await makeFileObjects([cipherData], [drAddress]);
+    const generalDataFile = await makeFileObjects([cipherGeneralData], [drAddress]);
     const generalDataCID = await storeIPFS(generalDataFile, { wrapWithDirectory: false });
 
     // store encrypted certificates to IPFS

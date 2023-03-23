@@ -5,7 +5,6 @@ const patient = {
     dob: "",
     age: "",
     gender: "",
-    "blood group": "",
     address: "",
     phone: "",
     email: "",

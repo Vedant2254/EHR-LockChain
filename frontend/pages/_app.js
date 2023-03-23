@@ -32,9 +32,9 @@ export default function App({ Component, pageProps }) {
           Button: {
             styles: {
               root: {
-                transition: "300ms",
-                "&:hover": { transform: "scale(1.002)" },
-                "&:active": { transform: "scale(0.99)" },
+                transition: "150ms",
+                "&:hover": { transform: "scale(1.005)" },
+                "&:active": { transform: "scale(0.98)" },
               },
             },
           },

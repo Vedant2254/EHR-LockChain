@@ -26,6 +26,8 @@ export default function RegisterUser() {
     isPatient && router.replace("/patient/dashboard");
   }, [isPatient, isDoctorRegistered]);
 
+  console.log(isDoctorRegistered, isPatient);
+
   return (
     <EHRAppShell
       loading={!isDRFetched || !isPtFetched || isPatient || isDoctorRegistered}
