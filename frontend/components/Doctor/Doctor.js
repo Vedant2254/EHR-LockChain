@@ -1,15 +1,18 @@
 import useGetDoctorData from "@/hooks/useGetDoctorData";
 import { Box, Tabs } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import GeneralDetails from "./GeneralDetails";
 import Certifications from "./Certifications";
 import DoctorButtons from "./DoctorButtons";
 
-export default function Doctor({ address, user }) {
+export default function Doctor({ address, user, setDoctor }) {
   // get data
   const { generalData, certificates } = useGetDoctorData(address);
-
   const [activeTab, setActiveTab] = useState("general-details");
+
+  useEffect(() => {
+    setDoctor && setDoctor(address);
+  }, [address]);
 
   return (
     <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal" px="xl" mt="md">

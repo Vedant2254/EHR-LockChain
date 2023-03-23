@@ -19,17 +19,22 @@ export default function useGetDoctorData(address) {
     enabled: enabled && address,
   });
 
-  // get data from IPFS
-  useEffect(() => {
-    (async () => {
-      if (!hashData) return;
+  async function getData() {
+    try {
       const files = await retrieveIPFS(hashData);
       const file = files[0];
       const ipfsData = JSON.parse(await readAsTextAsync(file));
       const certificates = ipfsData.certificates;
       delete ipfsData.certificates;
       ipfsData && certificates && setData({ generalData: ipfsData, certificates });
-    })();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // get data from IPFS
+  useEffect(() => {
+    hashData && getData();
   }, [hashData]);
 
   return { ...hashData, ...data };

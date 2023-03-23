@@ -25,7 +25,8 @@ export default function useRegisterDoctorConfirm() {
   useEffect(() => {
     (async () => {
       if (publicKey) {
-        await runRegisterDrConfirm();
+        const response = await runRegisterDrConfirm();
+        await response.wait(1);
         await runIsDoctor();
         setPublicKey(null);
       }

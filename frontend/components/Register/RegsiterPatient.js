@@ -5,7 +5,7 @@ import useRegisterPatient from "@/hooks/useRegisterPatient";
 export default function RegisterPatient() {
   const { isLoading, handleOnSumbit } = useRegisterPatient();
 
-  const { initialInputs, initialValues } = patientInitials;
+  const { initialValues } = patientInitials;
 
   return (
     <RegistrationForm

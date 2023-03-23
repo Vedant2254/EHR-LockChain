@@ -1,19 +1,47 @@
-import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import { useEffect, useState } from "react";
+import { useContractWrite } from "wagmi";
 import useValidTxnData from "./useValidTxnData";
+import useAddPatientData from "./useAddPatientData";
 
-export default function useChangeEditorAccess(address) {
-  const { contractAddress, abi, enabled } = useValidTxnData();
+export default function useChangeEditorAccess(drAddress) {
+  const { address: curraddress, contractAddress, abi, enabled } = useValidTxnData();
 
-  const { config: changeEditorAccessConfig } = usePrepareContractWrite({
+  const [isLoading, setIsLoading] = useState(false);
+  const { CIDs, setupCIDs, resetCIDs } = useAddPatientData(curraddress, drAddress);
+
+  const { writeAsync: changeEditorAccess } = useContractWrite({
     address: contractAddress,
     abi,
     functionName: "changeEditorAccess",
-    args: [address],
-    enabled: enabled && address,
+    args: [drAddress, CIDs.generalDataCID, CIDs.keyDataCID],
+    enabled: enabled && drAddress && CIDs.generalDataCID && CIDs.keyDataCID,
   });
 
-  const { data: changeEditorAccessResponse, writeAsync: changeEditorAccess } =
-    useContractWrite(changeEditorAccessConfig);
+  // storing hashes (CIDs) to smart contract happens here
+  useEffect(() => {
+    CIDs.generalDataCID &&
+      CIDs.keyDataCID &&
+      (async () => {
+        try {
+          await changeEditorAccess();
+        } catch (err) {
+          console.log(err);
+        }
+        setIsLoading(false);
+        resetCIDs();
+      })();
+  }, [CIDs]);
 
-  return { changeEditorAccessResponse, changeEditorAccess };
+  // work of encryption and storing to ipfs happens here
+  async function runChangeEditorAccess({ generalData, certificates }) {
+    setIsLoading(true);
+    try {
+      await setupCIDs(generalData, certificates);
+    } catch (err) {
+      setIsLoading(false);
+      console.log(err);
+    }
+  }
+
+  return { isLoading, runChangeEditorAccess };
 }

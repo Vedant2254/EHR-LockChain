@@ -1,14 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useGetPatientData from "@/hooks/useGetPatientData";
 
 import { Tabs } from "@mantine/core";
 import GeneralDetails from "./GeneralDetails";
 import MedicalCertificates from "./MedicalCertificates";
 
-export default function Patient({ address, user }) {
+export default function Patient({ address, user, setData }) {
   // get data
   const [activeTab, setActiveTab] = useState("general-details");
   const { generalData, certificates } = useGetPatientData(address);
+
+  useEffect(() => {
+    setData && setData({ generalData, certificates });
+  }, [generalData, certificates]);
 
   return (
     <>

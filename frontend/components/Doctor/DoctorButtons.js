@@ -1,9 +1,14 @@
 import useIsDoctorPending from "@/hooks/useIsDoctorPending";
 import useApproveDoctor from "@/hooks/useApproveDoctor";
 import useRegisterDoctorConfirm from "@/hooks/useRegisterDoctorConfirm";
-import { Badge, Box, Button, Group } from "@mantine/core";
+import { Badge, Button, Group } from "@mantine/core";
 
-export default function DoctorButtons({ address, user }) {
+export default function DoctorButtons({
+  address,
+  user,
+  isChangeAccessLoading,
+  runChangeEditorAccess,
+}) {
   const { isDoctorPending } = useIsDoctorPending(address);
   const { runApproveDoctor } = useApproveDoctor(address);
   const { isDoctor, registerDrConfirm } = useRegisterDoctorConfirm();
@@ -35,7 +40,6 @@ export default function DoctorButtons({ address, user }) {
           Edit (not ready)
         </Button>
       )}
-      {/* </Group> */}
     </Group>
   );
 }

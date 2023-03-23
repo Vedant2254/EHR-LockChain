@@ -11,7 +11,7 @@ function symmetricEncrypt(data, key, iv) {
   const cipher = createCipheriv("aes-256-gcm", key, iv);
   const cipherData = cipher.update(data, "utf-8", "hex");
 
-  return { key, iv, cipherData };
+  return cipherData;
 }
 
 function symmetricDecrypt(cipherData, key, iv) {

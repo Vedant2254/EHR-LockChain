@@ -2,6 +2,7 @@ import { SimpleGrid, Text, createStyles, Divider, Grid, Center, Badge } from "@m
 
 const useStyles = createStyles((theme) => ({
   patientBtn: {
+    cursor: "pointer",
     padding: theme.spacing.lg,
     backgroundColor: theme.white,
     border: `1px solid ${theme.colors.gray[1]}`,
@@ -42,15 +43,15 @@ function PatientListItem({ index, patient, onClick }) {
   );
 }
 
-export default function PatientList({ allPatients, setActiveTab }) {
+export default function PatientList({ patients, setActiveTab }) {
   return (
     <SimpleGrid px="xl">
       <Text fz="xl" fw={500}>
         All Patient addresses (Not allowed to view data)
       </Text>
       <Divider />
-      {allPatients &&
-        allPatients.map((patient, index) => {
+      {patients &&
+        patients.map((patient, index) => {
           return (
             <div key={index}>
               <PatientListItem

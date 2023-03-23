@@ -24,5 +24,5 @@ export default function useGetDoctorOfPatient() {
     })();
   }, [enabled, signer]);
 
-  return { doctor };
+  return { doctor, getDoctorOfPatient };
 }

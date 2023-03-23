@@ -1,14 +1,11 @@
 const patient = {
-  initialInputs: {
-    photo: "file",
-    name: "string",
-    address: "string",
-    phone: "number",
-    email: "email",
-  },
   initialValues: {
     photo: "",
     name: "",
+    dob: "",
+    age: "",
+    gender: "",
+    "blood group": "",
     address: "",
     phone: "",
     email: "",
@@ -16,16 +13,12 @@ const patient = {
 };
 
 const doctor = {
-  initialInputs: {
-    photo: "file",
-    name: "string",
-    address: "string",
-    phone: "number",
-    email: "email",
-  },
   initialValues: {
     photo: "",
     name: "",
+    dob: "",
+    age: "",
+    gender: "",
     address: "",
     phone: "",
     email: "",

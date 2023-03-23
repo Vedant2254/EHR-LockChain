@@ -5,7 +5,7 @@ import RegistrationForm from "@/components/Forms/RegistrationForm";
 export default function RegisterDoctor() {
   const { isLoading, handleOnSubmit } = useRegisterDoctor();
 
-  const { initialInputs, initialValues } = patientInitials;
+  const { initialValues } = patientInitials;
 
   return (
     <RegistrationForm

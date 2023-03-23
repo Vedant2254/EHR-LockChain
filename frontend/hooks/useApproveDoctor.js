@@ -16,7 +16,8 @@ export default function useApproveDoctor(address) {
 
   async function runApproveDoctor() {
     try {
-      await approveDoctor();
+      const response = await approveDoctor();
+      await response.wait(1);
     } catch (e) {
       console.log(e);
     }

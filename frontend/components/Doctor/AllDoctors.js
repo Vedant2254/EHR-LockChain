@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button, Divider, Tabs } from "@mantine/core";
 import Doctor from "./Doctor";
@@ -7,16 +7,20 @@ import useGetAllDoctors from "@/hooks/useGetAllDoctors";
 import useGetPendingDoctors from "@/hooks/useGetPendingDoctors";
 import { IconArrowLeft } from "@tabler/icons-react";
 
-export default function AllDoctors({ user }) {
+export default function AllDoctors({ user, setDoctor }) {
   // 'all' shows list of all doctors, else doctor with address of activeTab
   const { allDoctors } = useGetAllDoctors();
   const { pendingDoctors } = useGetPendingDoctors();
 
   const [activeTab, setActiveTab] = useState("all");
 
+  useEffect(() => {
+    activeTab == "all" && setDoctor && setDoctor(null);
+  }, [activeTab]);
+
   return (
     <>
-      <Tabs orientation="vertical" onTabChange={setActiveTab} value={activeTab}>
+      <Tabs orientation="vertical" onTabChange={setActiveTab} value={activeTab} keepMounted={false}>
         <Tabs.Panel value="all">
           <Tabs.List>
             <DoctorsList
@@ -40,7 +44,7 @@ export default function AllDoctors({ user }) {
                   Back to all doctors
                 </Button>
                 <Divider mt="sm" />
-                <Doctor address={doctor} user={user} />
+                <Doctor address={doctor} user={user} setDoctor={setDoctor} />
               </Tabs.Panel>
             );
           })}

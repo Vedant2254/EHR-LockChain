@@ -15,7 +15,7 @@ export default function DoctorController() {
         <Doctor address={address} user="doctor" />
       </Tabs.Panel>
       <Tabs.Panel value="my-patients">
-        <PatientsOfDoctor />
+        <PatientsOfDoctor user="doctor" />
       </Tabs.Panel>
     </Tabs>
   );

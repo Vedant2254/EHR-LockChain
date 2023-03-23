@@ -18,7 +18,7 @@ export default function useRegisterDoctor() {
     enabled,
   });
 
-  const { writeAsync: runAddDoctor } = useContractWrite({
+  const { writeAsync: registerDr } = useContractWrite({
     address: contractAddress,
     abi,
     functionName: "registerDr",
@@ -30,7 +30,8 @@ export default function useRegisterDoctor() {
   async function registerDoctor() {
     if (dataCID) {
       try {
-        await runAddDoctor();
+        const response = await registerDr();
+        await response.wait(1);
         await runIsDoctorRegistered();
       } catch (err) {
         console.log(err);

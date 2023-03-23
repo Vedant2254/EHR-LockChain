@@ -41,6 +41,7 @@ export default function RegistrationForm({
       // dob: isNotEmpty("Date of birth cannot be empty"),
       // age: (value) => (value < 18 || value > 99 ? "You must be 18-99 years old to register" : null),
       // gender: matches(/^(male|female|Male|Female)$/, "Input must be Male/male or Female/female"),
+      // "blood group": matches(/^(A|B|AB|O)[+-]$/, "Blood must be like 'A+', 'B-', 'O+', 'AB-'"),
       // address: isNotEmpty("Address cannot be empty"),
       // phone: matches(/^\d{10}$/, "Phone number must be a 10 digit number"),
       // email: isEmail("Invalid Email"),
@@ -78,7 +79,7 @@ export default function RegistrationForm({
             <TextInput placeholder="Gender" {...form.getInputProps("gender")} />
 
             {/* Medical details */}
-            {/* ?????? */}
+            <TextInput placeholder="Blood Group" {...form.getInputProps("blood group")} />
 
             {/* Contact details */}
             <TextInput placeholder="Address" {...form.getInputProps("address")} />

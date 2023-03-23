@@ -4,5 +4,5 @@ import PatientsList from "./PatientsList";
 export default function AllPatients() {
   const { allPatients } = useGetAllPatients();
 
-  return <PatientsList allPatients={allPatients} setActiveTab={() => {}} />;
+  return <PatientsList patients={allPatients} setActiveTab={() => {}} />;
 }
