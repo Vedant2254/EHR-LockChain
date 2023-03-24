@@ -63,6 +63,21 @@ export default function useRegisterPatient() {
       const { certificates } = data;
       delete data.certificates;
 
+      // convert date to string
+      const { dob } = data;
+      if (dob && dob.constructor.name == "Date") data.dob = dob.toDateString();
+
+      // change photo from File to data url
+      const { photo } = data;
+      if (photo && photo.constructor.name == "File") data.photo = await readAsDataURLAsync(photo);
+
+      // changes media in certificates to dataURLS in data
+      for (let i in certificates) {
+        const { media } = certificates[i];
+        if (media && media.constructor.name == "File")
+          certificates[i].media = await readAsDataURLAsync(media);
+      }
+
       await setupCIDs(data, certificates);
     } catch (err) {
       console.log(err);

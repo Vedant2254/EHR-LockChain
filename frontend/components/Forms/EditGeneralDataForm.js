@@ -16,10 +16,11 @@ export default function EditGeneralDataForm({ initialValues, setEditedGeneralDat
       <Modal opened={opened} onClose={close} title={<Text>Edit your general data</Text>}>
         <form
           onSubmit={form.onSubmit(async (data) => {
+            if (data.dob) console.log(data.dob);
             const { photo } = data;
             if (photo && photo.constructor.name == "File")
               data.photo = await readAsDataURLAsync(photo);
-            setEditedGeneralData({ ...data, dob: data.dob && data.dob.toDateString() });
+            setEditedGeneralData({ ...data });
           })}
         >
           <SimpleGrid cols={1}>

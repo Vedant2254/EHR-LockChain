@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useContractRead, useContractWrite } from "wagmi";
 import useValidTxnData from "@/hooks/useValidTxnData";
 import useAddDoctorData from "./useAddDoctorData";
+import { readAsDataURLAsync } from "@/utils/readFileAsync";
 
 export default function useRegisterDoctor() {
   const { address, contractAddress, abi, enabled } = useValidTxnData();
@@ -42,6 +43,21 @@ export default function useRegisterDoctor() {
   /* handlers */
   async function handleOnSubmit(data) {
     try {
+      // convert date to string
+      const { dob } = data;
+      if (dob && dob.constructor.name == "Date") data.dob = dob.toDateString();
+
+      // changes files to dataURLS in data
+      const { photo } = data;
+      if (photo && photo.constructor.name == "File") data.photo = await readAsDataURLAsync(photo);
+
+      // changes files to dataURLS in data
+      for (let i in data.certificates) {
+        const { media } = data.certificates[i];
+        if (media.constructor.name == "File")
+          data.certificates[i].media = await readAsDataURLAsync(media);
+      }
+
       await setupCID(data);
     } catch (err) {
       console.log(err);

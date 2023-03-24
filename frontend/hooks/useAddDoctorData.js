@@ -13,17 +13,6 @@ export default function useAddDoctorData(address) {
   async function setupCID(data) {
     setIsLoading(true);
     try {
-      // changes files to dataURLS in data
-      const { photo } = data;
-      if (photo && photo.constructor.name == "File") data.photo = await readAsDataURLAsync(photo);
-
-      // changes files to dataURLS in data
-      for (let i in data.certificates) {
-        const { media } = data.certificates[i];
-        if (media.constructor.name == "File")
-          data.certificates[i].media = await readAsDataURLAsync(media);
-      }
-
       // store data to IPFS and set dataCID
       console.log("Uploading data....");
       const dataFiles = await makeFileObjects([data], [address]);

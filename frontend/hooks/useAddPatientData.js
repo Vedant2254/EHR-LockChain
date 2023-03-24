@@ -60,11 +60,6 @@ export default function useAddPatientData(ptAddress, drAddress) {
         // store encrypted general data to IPFS
         console.log("changing general data");
 
-        // change photo from File to data url
-        const { photo } = generalData;
-        if (photo && photo.constructor.name == "File")
-          generalData.photo = await readAsDataURLAsync(photo);
-
         const cipherGeneralData = symmetricEncrypt(JSON.stringify(generalData), key, iv);
         const generalDataFile = await makeFileObjects([cipherGeneralData], [drAddress]);
         generalDataCID = await storeIPFS(generalDataFile, { wrapWithDirectory: false });
@@ -73,13 +68,6 @@ export default function useAddPatientData(ptAddress, drAddress) {
       if (certificates) {
         // store encrypted certificates to IPFS
         console.log("changing certificates");
-
-        // changes media in certificates to dataURLS in data
-        for (let i in certificates) {
-          const { media } = certificates[i];
-          if (media && media.constructor.name == "File")
-            certificates[i].media = await readAsDataURLAsync(media);
-        }
 
         const cipherCertificates = symmetricEncrypt(JSON.stringify(certificates), key, iv);
         const certificatesFiles = await makeFileObjects([cipherCertificates], [drAddress]);
