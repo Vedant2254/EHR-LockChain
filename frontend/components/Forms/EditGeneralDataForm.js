@@ -14,7 +14,14 @@ export default function EditGeneralDataForm({ initialValues, setEditedGeneralDat
   return (
     <Box mb="xs">
       <Modal opened={opened} onClose={close} title={<Text>Edit your general data</Text>}>
-        <form onSubmit={form.onSubmit(async (data) => setEditedGeneralData(data))}>
+        <form
+          onSubmit={form.onSubmit(async (data) => {
+            const { photo } = data;
+            if (photo && photo.constructor.name == "File")
+              data.photo = await readAsDataURLAsync(photo);
+            setEditedGeneralData(data);
+          })}
+        >
           <SimpleGrid cols={1}>
             <GeneralDataInput form={form} />
             <SocialInput form={form} />

@@ -25,6 +25,10 @@ const EditCertificateBtn = () => (
 
 export default function MedicalCertificates({ certificates, setEditedCertificates }) {
   async function insertCertificate(index, certificate) {
+    const { media } = certificate;
+    if (media && media.constructor.name == "File")
+      certificate.media = await readAsDataURLAsync(media);
+
     const temp = [...certificates];
     if (index < certificates.length) temp[index] = { ...certificate };
     else temp.push(certificate);

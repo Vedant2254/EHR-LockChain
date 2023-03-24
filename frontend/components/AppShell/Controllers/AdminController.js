@@ -12,8 +12,6 @@ export default function AdminController() {
   const [doctor, setDoctor] = useState(null);
   const { isDoctorPending, isApproving, runApproveDoctor } = useApproveDoctor(doctor);
 
-  console.log(doctor);
-
   return (
     <Tabs value={location}>
       <Tabs.Panel value="all-doctors">

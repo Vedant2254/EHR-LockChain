@@ -32,7 +32,7 @@ export default function PatientController() {
       <Tabs.Panel value="my-doctor">
         {address != doctorOfPatient ? (
           <>
-            <Doctor address={doctorOfPatient} user="patient" />
+            <Doctor user="patient" address={doctorOfPatient} />
             <Button
               onClick={() => runRemoveEditorAccess(data)}
               ml="lg"
