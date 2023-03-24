@@ -31,7 +31,7 @@ export default function useUpdatePatient(ptAddress, updater) {
   useEffect(() => {
     CIDs.keyDataCID &&
       (async () => {
-        setPtRecordHash();
+        await setPtRecordHash();
       })();
   }, [CIDs.keyDataCID]);
 

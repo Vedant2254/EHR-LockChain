@@ -19,7 +19,7 @@ export default function EditGeneralDataForm({ initialValues, setEditedGeneralDat
             const { photo } = data;
             if (photo && photo.constructor.name == "File")
               data.photo = await readAsDataURLAsync(photo);
-            setEditedGeneralData(data);
+            setEditedGeneralData({ ...data, dob: data.dob && data.dob.toDateString() });
           })}
         >
           <SimpleGrid cols={1}>

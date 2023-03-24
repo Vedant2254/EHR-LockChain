@@ -23,7 +23,7 @@ export default function DoctorButtons({ address, user }) {
             </Button>
           )}
           <Button compact disabled>
-            Edit (not ready)
+            Edit
           </Button>
         </>
       )}

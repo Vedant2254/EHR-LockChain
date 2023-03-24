@@ -58,7 +58,7 @@ export default function useAddPatientData(ptAddress, drAddress) {
 
       if (generalData) {
         // store encrypted general data to IPFS
-        console.log("chaning general data");
+        console.log("changing general data");
 
         // change photo from File to data url
         const { photo } = generalData;
@@ -72,7 +72,7 @@ export default function useAddPatientData(ptAddress, drAddress) {
 
       if (certificates) {
         // store encrypted certificates to IPFS
-        console.log("chaning certificates");
+        console.log("changing certificates");
 
         // changes media in certificates to dataURLS in data
         for (let i in certificates) {

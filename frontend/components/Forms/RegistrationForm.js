@@ -68,7 +68,11 @@ export default function RegistrationForm({
   }
 
   return (
-    <form onSubmit={form.onSubmit((data) => handleOnSubmit({ ...data }))}>
+    <form
+      onSubmit={form.onSubmit((data) =>
+        handleOnSubmit({ ...data, dob: data.dob && data.dob.toDateString() })
+      )}
+    >
       <Stepper active={active} breakpoint="sm" p="sm">
         <Stepper.Step label="Profile" description="Basic details" icon={<IconUser />}>
           <SimpleGrid cols={2}>
