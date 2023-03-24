@@ -26,7 +26,7 @@ export default function PatientController() {
   return (
     <Tabs value={location}>
       <Tabs.Panel value="dashboard">
-        <Patient address={address} user="patient" setData={setData} />
+        <Patient user="patient" address={address} setData={setData} />
       </Tabs.Panel>
 
       <Tabs.Panel value="my-doctor">

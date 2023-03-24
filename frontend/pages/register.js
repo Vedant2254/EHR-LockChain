@@ -26,14 +26,12 @@ export default function RegisterUser() {
     isPatient && router.replace("/patient/dashboard");
   }, [isPatient, isDoctorRegistered]);
 
-  console.log(isDoctorRegistered, isPatient);
-
   return (
     <EHRAppShell
       loading={!isDRFetched || !isPtFetched || isPatient || isDoctorRegistered}
       navlinks={[{ label: "Registration", location: "" }]}
       Controller={() => (
-        <Tabs value={activeTab} onTabChange={setActiveTab} px="xl" pt="md">
+        <Tabs value={activeTab} onTabChange={setActiveTab} px="xl" pt="md" keepMounted={false}>
           <Tabs.List grow mb="xl">
             <Tabs.Tab value="patient">Register as patient</Tabs.Tab>
             <Tabs.Tab value="doctor">Register as doctor</Tabs.Tab>

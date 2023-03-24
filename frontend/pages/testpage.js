@@ -1,5 +1,5 @@
 import useGetPatientData from "@/hooks/useGetPatientData";
-import ConnectButton from "@/components/Utils/ConnectButton";
+import ConnectButton from "@/components/AppShell/ConnectButton";
 import { AddChainError, useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
 import useValidTxnData from "@/hooks/useValidTxnData";
 import useGetDoctorOfPatient from "@/hooks/useGetDoctorOfPatient";

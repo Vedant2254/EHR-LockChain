@@ -11,15 +11,9 @@ import {
 } from "@mantine/core";
 import { hasLength, isEmail, isNotEmpty, matches, useForm } from "@mantine/form";
 import CertificateInput from "./CustomInputs/CertificateInput";
-import {
-  IconBrandFacebook,
-  IconBrandInstagram,
-  IconBrandTwitter,
-  IconCamera,
-  IconFileCheck,
-  IconUser,
-} from "@tabler/icons-react";
-import { DateInput } from "@mantine/dates";
+import { IconCamera, IconFileCheck, IconUser } from "@tabler/icons-react";
+import GeneralDataInputs from "./CustomInputs/GeneralDataInput";
+import SocialInput from "./CustomInputs/SocialInput";
 
 export default function RegistrationForm({
   user,
@@ -39,11 +33,19 @@ export default function RegistrationForm({
       //     : null,
       // name: hasLength({ min: 2, max: 25 }, "Name must be 2-25 characters"),
       // dob: isNotEmpty("Date of birth cannot be empty"),
-      // age: (value) => (value < 18 || value > 99 ? "You must be 18-99 years old to register" : null),
+      // age: (value) =>
+      //   !value
+      //     ? "Age cannot be empty"
+      //     : value < 18 || value > 99
+      //     ? "You must be 18-99 years old to register"
+      //     : null,
       // gender: matches(/^(male|female|Male|Female)$/, "Input must be Male/male or Female/female"),
       // address: isNotEmpty("Address cannot be empty"),
       // phone: matches(/^\d{10}$/, "Phone number must be a 10 digit number"),
       // email: isEmail("Invalid Email"),
+      // instagram: matches(/^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/\S*)?$/, "Invalid url"),
+      // facebook: matches(/^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/\S*)?$/, "Invalid url"),
+      // twitter: matches(/^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/\S*)?$/, "Invalid url"),
     },
   });
 
@@ -70,17 +72,19 @@ export default function RegistrationForm({
       <Stepper active={active} breakpoint="sm" p="sm">
         <Stepper.Step label="Profile" description="Basic details" icon={<IconUser />}>
           <SimpleGrid cols={2}>
+            <GeneralDataInputs form={form} />
+
             {/* General details */}
-            <FileInput placeholder="Your photo" {...form.getInputProps("photo")} />
+            {/* <FileInput placeholder="Your photo" {...form.getInputProps("photo")} />
             <TextInput placeholder="Name" {...form.getInputProps("name")} />
             <DateInput placeholder="Date of birth" {...form.getInputProps("dob")} />
             <TextInput placeholder="Age" {...form.getInputProps("age")} />
-            <TextInput placeholder="Gender" {...form.getInputProps("gender")} />
+            <TextInput placeholder="Gender" {...form.getInputProps("gender")} /> */}
 
             {/* Contact details */}
-            <TextInput placeholder="Address" {...form.getInputProps("address")} />
+            {/* <TextInput placeholder="Address" {...form.getInputProps("address")} />
             <TextInput placeholder="Phone no." {...form.getInputProps("phone")} />
-            <TextInput placeholder="Email" {...form.getInputProps("email")} />
+            <TextInput placeholder="Email" {...form.getInputProps("email")} /> */}
           </SimpleGrid>
         </Stepper.Step>
 
@@ -109,37 +113,7 @@ export default function RegistrationForm({
           icon={<IconCamera />}
         >
           <SimpleGrid cols={3}>
-            <TextInput
-              icon={
-                <ActionIcon
-                  variant="gradient"
-                  gradient={{ from: "yellow", to: "purple", deg: 45 }}
-                  size="sm"
-                >
-                  <IconBrandInstagram />
-                </ActionIcon>
-              }
-              placeholder="Instagram username"
-              {...form.getInputProps("instagram")}
-            />
-            <TextInput
-              icon={
-                <ActionIcon color="indigo" size="sm">
-                  <IconBrandFacebook />
-                </ActionIcon>
-              }
-              placeholder="Facebook username"
-              {...form.getInputProps("facebook")}
-            />
-            <TextInput
-              icon={
-                <ActionIcon color="blue" size="sm">
-                  <IconBrandTwitter />
-                </ActionIcon>
-              }
-              placeholder="Twitter username"
-              {...form.getInputProps("twitter")}
-            />
+            <SocialInput form={form} />
           </SimpleGrid>
         </Stepper.Step>
 

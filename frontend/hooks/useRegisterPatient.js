@@ -6,9 +6,9 @@ import { readAsDataURLAsync } from "@/utils/readFileAsync";
 
 export default function useRegisterPatient() {
   const { address, contractAddress, abi, enabled } = useValidTxnData();
-  const { CIDs, setupCIDs, resetCIDs } = useAddPatientData(address);
+  const { isLoading: isUploadingData, CIDs, setupCIDs, resetCIDs } = useAddPatientData(address);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [status, setStatus] = useState({ message: null, error: "" });
 
   // check if user is patient
   const { data: isPatient, refetch: runIsPatient } = useContractRead({
@@ -20,31 +20,13 @@ export default function useRegisterPatient() {
   });
 
   // perform registration
-  const { writeAsync: runRegisterPt } = useContractWrite({
+  const { writeAsync: registerPatient, isLoading: isTxnLoading } = useContractWrite({
     address: contractAddress,
     abi,
     functionName: "registerPt",
     args: [CIDs.generalDataCID, CIDs.keyDataCID],
     enabled: enabled && CIDs.generalDataCID && CIDs.keyDataCID,
   });
-
-  /* Utility functions */
-  async function registerPatient() {
-    const { generalDataCID, keyDataCID: keyCID } = CIDs;
-
-    if (generalDataCID && keyCID) {
-      // add patient by passing dataCID
-      try {
-        const response = await runRegisterPt();
-        await response.wait(1);
-        await runIsPatient();
-      } catch (err) {
-        console.log(err);
-      }
-
-      resetCIDs();
-    }
-  }
 
   // registers patient when CIDs are available
   useEffect(() => {
@@ -53,32 +35,38 @@ export default function useRegisterPatient() {
     generalDataCID &&
       keyCID &&
       (async () => {
-        await registerPatient();
-        setIsLoading(false);
+        try {
+          // do
+          setStatus({ message: "Sending transaction", error: null });
+          const response = await registerPatient();
+
+          // wait
+          setStatus({ message: "Waiting for transaction confirmation", error: null });
+          await response.wait(1);
+
+          // verify
+          setStatus({ message: null, error: null });
+          await runIsPatient();
+        } catch (err) {
+          console.log(err);
+          setStatus({ message: null, error: err });
+        }
+
+        resetCIDs();
       })();
   }, [CIDs]);
 
   /* Handler functions */
   async function handleOnSumbit(data) {
-    setIsLoading(true);
+    setStatus({ message: "Uploading data", error: null });
     try {
-      // seperate certificates from data
       const { certificates } = data;
       delete data.certificates;
 
-      data.photo = data.photo && (await readAsDataURLAsync(data.photo));
-
-      // changes media in certificates to dataURLS in data
-      for (let i in certificates) {
-        const { media } = certificates[i];
-        if (media && media.constructor.name == "File")
-          certificates[i].media = await readAsDataURLAsync(media);
-      }
-
-      setupCIDs(data, certificates);
+      await setupCIDs(data, certificates);
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
+      setStatus({ message: "Idle", error: "Data upload failed" });
     }
 
     /* Contract function runAddPatient (addPatient) is performed in
@@ -86,5 +74,12 @@ export default function useRegisterPatient() {
       updated value of changed state of CIDs here */
   }
 
-  return { isPatient, isLoading, handleOnSumbit };
+  return {
+    isPatient,
+    status,
+    isLoading: isUploadingData || isTxnLoading,
+    isUploadingData,
+    isTxnLoading,
+    handleOnSumbit,
+  };
 }

@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useConnect, useAccount, useDisconnect } from "wagmi";
-import { ActionIcon, Button, Menu, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Button, Menu } from "@mantine/core";
 import { IconPlugConnected } from "@tabler/icons-react";
 import { ArrowDownIcon } from "@modulz/radix-icons";
-import LogosMetamaskIcon from "./MetamaskIcon";
+import LogosMetamaskIcon from "@/components/Utils/Icons/MetamaskIcon";
 
 const IconConnectDisconnect = () => {
   return (

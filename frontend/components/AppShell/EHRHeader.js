@@ -1,5 +1,5 @@
 import { Header, Burger, Text, Flex, Box, MediaQuery, useMantineTheme } from "@mantine/core";
-import ConnectButton from "@/components/Utils/ConnectButton";
+import ConnectButton from "@/components/AppShell/ConnectButton";
 
 export default function EHRHeader({ opened, setOpened }) {
   const theme = useMantineTheme();

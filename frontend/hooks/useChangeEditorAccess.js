@@ -6,10 +6,14 @@ import useAddPatientData from "./useAddPatientData";
 export default function useChangeEditorAccess(drAddress) {
   const { address: curraddress, contractAddress, abi, enabled } = useValidTxnData();
 
-  const [isLoading, setIsLoading] = useState(false);
-  const { CIDs, setupCIDs, resetCIDs } = useAddPatientData(curraddress, drAddress);
+  const {
+    isLoading: isUploadingData,
+    CIDs,
+    setupCIDs,
+    resetCIDs,
+  } = useAddPatientData(curraddress, drAddress);
 
-  const { writeAsync: changeEditorAccess } = useContractWrite({
+  const { writeAsync: changeEditorAccess, isLoading: isTxnLoading } = useContractWrite({
     address: contractAddress,
     abi,
     functionName: "changeEditorAccess",
@@ -27,21 +31,23 @@ export default function useChangeEditorAccess(drAddress) {
         } catch (err) {
           console.log(err);
         }
-        setIsLoading(false);
         resetCIDs();
       })();
   }, [CIDs]);
 
   // work of encryption and storing to ipfs happens here
   async function runChangeEditorAccess({ generalData, certificates }) {
-    setIsLoading(true);
     try {
       await setupCIDs(generalData, certificates);
     } catch (err) {
-      setIsLoading(false);
       console.log(err);
     }
   }
 
-  return { isLoading, runChangeEditorAccess };
+  return {
+    isLoading: isUploadingData || isTxnLoading,
+    isUploadingData,
+    isTxnLoading,
+    runChangeEditorAccess,
+  };
 }

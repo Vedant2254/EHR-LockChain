@@ -6,10 +6,9 @@ import useAddPatientData from "./useAddPatientData";
 export default function useRemoveEditorAccess() {
   const { address: curraddress, contractAddress, abi, enabled } = useValidTxnData();
 
-  const [isLoading, setIsLoading] = useState(false);
-  const { CIDs, setupCIDs, resetCIDs } = useAddPatientData(curraddress);
+  const { isLoading: isUploadingData, CIDs, setupCIDs, resetCIDs } = useAddPatientData(curraddress);
 
-  const { writeAsync: removeEditorAccess } = useContractWrite({
+  const { writeAsync: removeEditorAccess, isLoading: isTxnLoading } = useContractWrite({
     address: contractAddress,
     abi,
     functionName: "removeEditorAccess",
@@ -27,20 +26,22 @@ export default function useRemoveEditorAccess() {
         } catch (err) {
           console.log(err);
         }
-        setIsLoading(false);
         resetCIDs();
       })();
   }, [CIDs]);
 
   async function runRemoveEditorAccess({ generalData, certificates }) {
-    setIsLoading(true);
     try {
       await setupCIDs(generalData, certificates);
     } catch (err) {
-      setIsLoading(false);
       console.log(err);
     }
   }
 
-  return { isLoading, runRemoveEditorAccess };
+  return {
+    isLoading: isUploadingData || isTxnLoading,
+    isUploadingData,
+    isTxnLoading,
+    runRemoveEditorAccess,
+  };
 }

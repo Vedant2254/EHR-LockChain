@@ -4,6 +4,10 @@ import { generateKey, symmetricEncrypt } from "@/utils/cryptography";
 import { encryptData, decryptData } from "@/utils/metamask";
 import { makeFileObjects, storeIPFS } from "@/utils/ipfs";
 import useGetPatientHash from "./useGetPatientHash";
+import { readAsDataURLAsync } from "@/utils/readFileAsync";
+
+// this thing can be converted to a simple function rather than a hook
+// will be done later
 
 // it expects ptAddress (data owner), drAddress (one who can access data)
 // it returns a function setupCIDs that expects generalData and certificates, plane format
@@ -20,6 +24,8 @@ export default function useAddPatientData(ptAddress, drAddress) {
   const { publicKey: drPublicKey } = useGetDoctorPubKey(drAddress || null);
   const { certificatesHash } = useGetPatientHash(ptAddress);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   function resetCIDs() {
     setCIDs({ generalDataCID: null, keyDataCID: null });
   }
@@ -34,70 +40,93 @@ export default function useAddPatientData(ptAddress, drAddress) {
   // change keyData if keyData, certificates are changed or drAddress is provided and drAddress is not the decrypter
   // update keyData such that, keys are encrypted if they have changed
   async function setupCIDs(generalData, certificates, keyData) {
-    const decrypter =
-      drAddress && keyData ? (keyData.keys[drAddress] ? drAddress : ptAddress) : ptAddress;
+    setIsLoading(true);
+    try {
+      const decrypter =
+        drAddress && keyData ? (keyData.keys[drAddress] ? drAddress : ptAddress) : ptAddress;
 
-    let { key, iv } = keyData
-      ? JSON.parse(await decryptData(decrypter, keyData.keys[decrypter]))
-      : generateKey();
+      let { key, iv } = keyData
+        ? JSON.parse(await decryptData(decrypter, keyData.keys[decrypter]))
+        : generateKey();
 
-    if (keyData) {
-      key = Buffer.from(key, "hex");
-      iv = Buffer.from(iv, "hex");
+      if (keyData) {
+        key = Buffer.from(key, "hex");
+        iv = Buffer.from(iv, "hex");
+      }
+
+      let generalDataCID, certificatesCID, keyDataCID;
+
+      if (generalData) {
+        // store encrypted general data to IPFS
+        console.log("chaning general data");
+
+        // change photo from File to data url
+        const { photo } = generalData;
+        if (photo && photo.constructor.name == "File")
+          generalData.photo = await readAsDataURLAsync(photo);
+
+        const cipherGeneralData = symmetricEncrypt(JSON.stringify(generalData), key, iv);
+        const generalDataFile = await makeFileObjects([cipherGeneralData], [drAddress]);
+        generalDataCID = await storeIPFS(generalDataFile, { wrapWithDirectory: false });
+      } else generalDataCID = null;
+
+      if (certificates) {
+        // store encrypted certificates to IPFS
+        console.log("chaning certificates");
+
+        // changes media in certificates to dataURLS in data
+        for (let i in certificates) {
+          const { media } = certificates[i];
+          if (media && media.constructor.name == "File")
+            certificates[i].media = await readAsDataURLAsync(media);
+        }
+
+        const cipherCertificates = symmetricEncrypt(JSON.stringify(certificates), key, iv);
+        const certificatesFiles = await makeFileObjects([cipherCertificates], [drAddress]);
+        certificatesCID = await storeIPFS(certificatesFiles, { wrapWithDirectory: false });
+      } else certificatesCID = null;
+
+      if (certificates || !keyData || (drAddress && decrypter != drAddress)) {
+        console.log("changing keys");
+        // encrypt newly generated key
+        const S = JSON.stringify({
+          key: key.toString("hex"),
+          iv: iv.toString("hex"),
+        });
+
+        const keyDataFile = {
+          keys: drAddress
+            ? {
+                [ptAddress]: keyData
+                  ? keyData.keys[ptAddress]
+                  : JSON.stringify(await encryptData(ptAddress, S)),
+                [drAddress]: keyData
+                  ? keyData.keys[drAddress]
+                  : JSON.stringify(await encryptData(null, S, drPublicKey)),
+              }
+            : {
+                [ptAddress]: keyData
+                  ? keyData.keys[ptAddress]
+                  : JSON.stringify(await encryptData(ptAddress, S)),
+              },
+          medicalRecordCID: certificatesCID || certificatesHash,
+        };
+
+        const keyDataFiles = await makeFileObjects([keyDataFile], [drAddress]);
+        keyDataCID = await storeIPFS(keyDataFiles, { wrapWithDirectory: false });
+      } else keyDataCID = null;
+
+      // finally change the state of cids
+      setCIDs({ generalDataCID, keyDataCID });
+      console.log(generalDataCID);
+      console.log(certificatesCID);
+      console.log(keyDataCID);
+    } catch (err) {
+      setIsLoading(false);
+      throw err;
     }
-
-    let generalDataCID, certificatesCID, keyDataCID;
-
-    if (generalData) {
-      // store encrypted general data to IPFS
-      const cipherGeneralData = symmetricEncrypt(JSON.stringify(generalData), key, iv);
-      const generalDataFile = await makeFileObjects([cipherGeneralData], [drAddress]);
-      generalDataCID = await storeIPFS(generalDataFile, { wrapWithDirectory: false });
-    } else generalDataCID = null;
-
-    if (certificates) {
-      // store encrypted certificates to IPFS
-      const cipherCertificates = symmetricEncrypt(JSON.stringify(certificates), key, iv);
-      const certificatesFiles = await makeFileObjects([cipherCertificates], [drAddress]);
-      certificatesCID = await storeIPFS(certificatesFiles, { wrapWithDirectory: false });
-    } else certificatesCID = null;
-
-    if (certificates || !keyData || (drAddress && decrypter != drAddress)) {
-      console.log("changing keys");
-      // encrypt newly generated key
-      const S = JSON.stringify({
-        key: key.toString("hex"),
-        iv: iv.toString("hex"),
-      });
-
-      const keyDataFile = {
-        keys: drAddress
-          ? {
-              [ptAddress]: keyData
-                ? keyData.keys[ptAddress]
-                : JSON.stringify(await encryptData(ptAddress, S)),
-              [drAddress]: keyData
-                ? keyData.keys[drAddress]
-                : JSON.stringify(await encryptData(null, S, drPublicKey)),
-            }
-          : {
-              [ptAddress]: keyData
-                ? keyData.keys[ptAddress]
-                : JSON.stringify(await encryptData(ptAddress, S)),
-            },
-        medicalRecordCID: certificatesCID || certificatesHash,
-      };
-
-      const keyDataFiles = await makeFileObjects([keyDataFile], [drAddress]);
-      keyDataCID = await storeIPFS(keyDataFiles, { wrapWithDirectory: false });
-    } else keyDataCID = null;
-
-    // finally change the state of cids
-    setCIDs({ generalDataCID, keyDataCID });
-    console.log(generalDataCID);
-    console.log(certificatesCID);
-    console.log(keyDataCID);
+    setIsLoading(false);
   }
 
-  return { CIDs, setupCIDs, resetCIDs };
+  return { isLoading, CIDs, setupCIDs, resetCIDs };
 }
