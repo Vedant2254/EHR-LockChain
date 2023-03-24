@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { readAsDataURLAsync } from "@/utils/readFileAsync";
 import { makeFileObjects, storeIPFS } from "@/utils/ipfs";
 
 export default function useAddDoctorData(address) {

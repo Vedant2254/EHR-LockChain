@@ -37,5 +37,5 @@ export default function useGetDoctorData(address) {
     hashData && getData();
   }, [hashData]);
 
-  return { ...hashData, ...data };
+  return { hashData, ...data };
 }

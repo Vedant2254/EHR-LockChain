@@ -9,29 +9,46 @@ import SocialInput from "./CustomInputs/SocialInput";
 export default function EditGeneralDataForm({ initialValues, setEditedGeneralData }) {
   const [opened, { open, close }] = useDisclosure(false);
 
-  const form = useForm({ ...initialValues });
+  const form = useForm({ initialValues: {} });
 
   return (
     <Box mb="xs">
-      <Modal opened={opened} onClose={close} title={<Text>Edit your general data</Text>}>
+      <Modal
+        opened={opened}
+        onClose={close}
+        title={
+          <Text>
+            Edit your general data{" "}
+            <Text c="dimmed" size="xs">
+              Fill out the fields you want to edit, leave empty to keep unchanged
+            </Text>
+          </Text>
+        }
+      >
         <form
-          onSubmit={form.onSubmit(async (data) => {
-            if (data.dob) console.log(data.dob);
+          onSubmit={form.onSubmit(async (formdata) => {
+            const data = { ...formdata };
+
+            const { dob } = data;
+            if (dob) data.dob = data.dob.toDateString();
+
             const { photo } = data;
             if (photo && photo.constructor.name == "File")
               data.photo = await readAsDataURLAsync(photo);
-            setEditedGeneralData({ ...data });
+
+            setEditedGeneralData({ ...initialValues, ...data });
+            form.reset();
           })}
         >
           <SimpleGrid cols={1}>
             <GeneralDataInput form={form} />
             <SocialInput form={form} />
-            <Button type="submit">Submit</Button>
+            <Button type="submit">Update fields</Button>
           </SimpleGrid>
         </form>
       </Modal>
 
-      <Button onClick={open} variant="outline" compact>
+      <Button onClick={open} variant="subtle" compact>
         <IconEdit /> Edit data
       </Button>
     </Box>

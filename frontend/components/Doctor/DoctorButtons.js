@@ -2,7 +2,7 @@ import useIsDoctorPending from "@/hooks/useIsDoctorPending";
 import useRegisterDoctorConfirm from "@/hooks/useRegisterDoctorConfirm";
 import { Badge, Button, Group } from "@mantine/core";
 
-export default function DoctorButtons({ address, user }) {
+export default function DoctorButtons({ user, address }) {
   const { isDoctorPending } = useIsDoctorPending(address);
   const { isDoctor, registerDrConfirm } = useRegisterDoctorConfirm();
 
@@ -22,9 +22,6 @@ export default function DoctorButtons({ address, user }) {
               Confirm Registration
             </Button>
           )}
-          <Button compact disabled>
-            Edit
-          </Button>
         </>
       )}
     </Group>

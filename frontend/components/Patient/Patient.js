@@ -7,12 +7,14 @@ import MedicalCertificates from "./MedicalCertificates";
 import ConfirmChangesDialog from "../Utils/ConfirmChangesDialog";
 import useUpdatePatient from "@/hooks/useUpdatePatient";
 import { useAccount } from "wagmi";
+import useCheckAccess from "@/hooks/useCheckAccess";
 
 export default function Patient({ user, address, setData }) {
   // get data
   const { address: curraddress } = useAccount();
   const { generalData, certificates, keyData } = useGetPatientData(address);
   const { updateData } = useUpdatePatient(address, curraddress);
+  const { access } = useCheckAccess(address);
 
   const [activeTab, setActiveTab] = useState("general-details");
   const [editedGeneralData, setEditedGeneralData] = useState();
@@ -38,10 +40,15 @@ export default function Patient({ user, address, setData }) {
         </Tabs.List>
 
         <Tabs.Panel value="general-details" mt="md" h="100%">
-          <GeneralDetails data={editedGeneralData} setEditedGeneralData={setEditedGeneralData} />
+          <GeneralDetails
+            access={access}
+            data={editedGeneralData}
+            setEditedGeneralData={setEditedGeneralData}
+          />
         </Tabs.Panel>
         <Tabs.Panel value="certificates" mt="md" h="100%">
           <MedicalCertificates
+            access={access}
             certificates={editedCertificates}
             setEditedCertificates={setEditedCertificates}
           />

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSigner } from "wagmi";
 import useValidTxnData from "./useValidTxnData";
 
-export default function useGetPatientsOfDoctor() {
+export default function useGetPatientsOfDoctor(runnow = true) {
   const { contractAddress, abi, enabled } = useValidTxnData();
   const { data: signer } = useSigner();
 
@@ -19,8 +19,8 @@ export default function useGetPatientsOfDoctor() {
   }
 
   useEffect(() => {
-    enabled && signer && getPatientsOfDoctor();
-  }, [enabled, signer]);
+    runnow && enabled && signer && getPatientsOfDoctor();
+  }, [enabled, signer, runnow]);
 
   return { patients };
 }

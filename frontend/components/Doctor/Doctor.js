@@ -6,11 +6,13 @@ import Certifications from "./Certifications";
 import DoctorButtons from "./DoctorButtons";
 import ConfirmChangesDialog from "../Utils/ConfirmChangesDialog";
 import useUpdateDoctor from "@/hooks/useUpdateDoctor";
+import useCheckAccess from "@/hooks/useCheckAccess";
 
 export default function Doctor({ user, address, setDoctor }) {
   // get data
   const { generalData, certificates } = useGetDoctorData(address);
   const { updateData } = useUpdateDoctor();
+  const { access } = useCheckAccess(address);
 
   const [activeTab, setActiveTab] = useState("general-details");
   const [editedGeneralData, setEditedGeneralData] = useState();
@@ -39,13 +41,18 @@ export default function Doctor({ user, address, setDoctor }) {
         </Tabs.List>
 
         <Box my="md">
-          <DoctorButtons address={address} user={user} />
+          <DoctorButtons user={user} address={address} />
 
           <Tabs.Panel value="general-details" mt="md">
-            <GeneralDetails data={editedGeneralData} setEditedGeneralData={setEditedGeneralData} />
+            <GeneralDetails
+              access={access}
+              data={editedGeneralData}
+              setEditedGeneralData={setEditedGeneralData}
+            />
           </Tabs.Panel>
           <Tabs.Panel value="certificates" mt="md">
             <Certifications
+              access={access}
               certificates={editedCertificates}
               setEditedCertificates={setEditedCertificates}
             />
@@ -54,7 +61,7 @@ export default function Doctor({ user, address, setDoctor }) {
       </Tabs>
       <ConfirmChangesDialog
         isEdited={isEdited}
-        handleOnConfirm={() => updateData({ ...generalData, certificates })}
+        handleOnConfirm={() => updateData(editedGeneralData, editedCertificates)}
         handleOnReset={() => {
           setEditedGeneralData(generalData);
           setEditedCertificates(certificates);

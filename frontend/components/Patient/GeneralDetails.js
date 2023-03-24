@@ -8,6 +8,7 @@ import {
   Group,
   ActionIcon,
   Container,
+  Box,
 } from "@mantine/core";
 import {
   IconBrandFacebookFilled,
@@ -24,13 +25,15 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function GeneralDetails({ data, setEditedGeneralData }) {
+export default function GeneralDetails({ access, data, setEditedGeneralData }) {
   const { classes } = useStyles();
 
   return (
     data && (
       <>
-        <EditGeneralDataForm initialValues={data} setEditedGeneralData={setEditedGeneralData} />
+        {access == 2 && (
+          <EditGeneralDataForm initialValues={data} setEditedGeneralData={setEditedGeneralData} />
+        )}
         <Title order={3}>{data.name}'s profile</Title>
         <Grid mt="xs">
           <Grid.Col span={3}>

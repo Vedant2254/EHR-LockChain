@@ -23,7 +23,7 @@ const EditCertificateBtn = () => (
   </ActionIcon>
 );
 
-export default function Certifications({ certificates, setEditedCertificates }) {
+export default function Certifications({ access, certificates, setEditedCertificates }) {
   async function insertCertificate(index, certificate) {
     const { media } = certificate;
     if (media && media.constructor.name == "File")
@@ -49,35 +49,41 @@ export default function Certifications({ certificates, setEditedCertificates }) 
                 <Button component="a" href={certificate.media} download compact>
                   Download certificate
                 </Button>
-                <InsertCertificate
-                  index={index}
-                  certificate={certificate}
-                  insertCertificate={insertCertificate}
-                  BtnIcon={EditCertificateBtn}
-                />
-                <Button
-                  onClick={() => {
-                    setEditedCertificates([
-                      ...certificates.slice(0, index),
-                      ...certificates.slice(index + 1, certificates.length),
-                    ]);
-                  }}
-                  variant="subtle"
-                  color="red"
-                  compact
-                >
-                  Delete
-                </Button>
+                {access == 2 && (
+                  <InsertCertificate
+                    index={index}
+                    certificate={certificate}
+                    insertCertificate={insertCertificate}
+                    BtnIcon={EditCertificateBtn}
+                  />
+                )}
+                {access == 2 && (
+                  <Button
+                    onClick={() => {
+                      setEditedCertificates([
+                        ...certificates.slice(0, index),
+                        ...certificates.slice(index + 1, certificates.length),
+                      ]);
+                    }}
+                    variant="subtle"
+                    color="red"
+                    compact
+                  >
+                    Delete
+                  </Button>
+                )}
               </Group>
             </Card>
           );
         })}
-      <InsertCertificate
-        index={certificates ? certificates.length : 1}
-        certificate={{ media: "", title: "", description: "" }}
-        insertCertificate={insertCertificate}
-        BtnIcon={AddCertificateBtn}
-      />
+      {access == 2 && (
+        <InsertCertificate
+          index={certificates ? certificates.length : 1}
+          certificate={{ media: "", title: "", description: "" }}
+          insertCertificate={insertCertificate}
+          BtnIcon={AddCertificateBtn}
+        />
+      )}
     </div>
   );
 }

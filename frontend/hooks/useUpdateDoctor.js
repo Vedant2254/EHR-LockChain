@@ -17,13 +17,17 @@ export default function useUpdateDoctor() {
   useEffect(() => {
     dataCID &&
       (async () => {
-        await setDrHash();
+        try {
+          await setDrHash();
+        } catch (err) {
+          console.log(err);
+        }
       })();
   }, [dataCID]);
 
-  async function updateData(data) {
+  async function updateData(generalData, certificates) {
     try {
-      await setupCID(data);
+      await setupCID({ ...generalData, certificates });
     } catch (err) {
       console.log(err);
     }
