@@ -132,7 +132,7 @@ This data has encrypted keys, only individual keys are encrypted
 #### Patient medical records
 
 This data is stored in encrypted format, only accessible (read / read-write permission decided by smart contract)
-by addresses present in keys of [Patient General Details](#patient-general-details). `data` is encrypted. `signatures` are not encrypted.
+by addresses present in keys of [Patient key data](#patient-key-data). Data is encrypted.
 
 ```
 [
@@ -140,13 +140,11 @@ by addresses present in keys of [Patient General Details](#patient-general-detai
         title: ---
         description: ---
         media (image, pdf, docx, video, etc.): ---
-        quality: ---
     }
     {
         title: ---
         description: ---
         media (image, pdf, docx, video, etc.): ---
-        quality: ---
     }
     .
     .
