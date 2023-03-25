@@ -1,8 +1,9 @@
 import useIsDoctorPending from "@/hooks/useIsDoctorPending";
 import useRegisterDoctorConfirm from "@/hooks/useRegisterDoctorConfirm";
-import { Badge, Button, Group } from "@mantine/core";
+import { ActionIcon, Badge, Button, Group } from "@mantine/core";
+import { IconKey } from "@tabler/icons-react";
 
-export default function DoctorButtons({ user, address }) {
+export default function DoctorButtons({ access, address }) {
   const { isDoctorPending } = useIsDoctorPending(address);
   const { isDoctor, registerDrConfirm } = useRegisterDoctorConfirm();
 
@@ -14,11 +15,13 @@ export default function DoctorButtons({ user, address }) {
         <Badge color="green">Approved</Badge>
       )}
 
-      {/* <Group mt="xs"> */}
-      {user == "doctor" && (
+      {access == 2 && (
         <>
           {!isDoctorPending && !isDoctor && (
-            <Button onClick={registerDrConfirm} compact>
+            <Button onClick={registerDrConfirm} variant="subtle" compact>
+              <ActionIcon size="sm" color="blue">
+                <IconKey />
+              </ActionIcon>{" "}
               Confirm Registration
             </Button>
           )}

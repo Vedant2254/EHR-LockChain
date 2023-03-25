@@ -5,14 +5,15 @@ export default function CertificateInput({ index, initialValues, insertCertifica
   const form = useForm({
     initialValues: initialValues || { media: null, title: "", description: "" },
     validate: {
-      // media: (value) =>
-      //   !value
-      //     ? "Photo cannot be empty"
-      //     : value.size / 1024 > 250
-      //     ? "Size of file must be less than or equal to 250KB"
-      //     : null,
-      // title: isNotEmpty("Title cannot be empty"),
-      // description: isNotEmpty("Description cannot be empty"),
+      media: (value) => {
+        return !value
+          ? "Photo cannot be empty"
+          : value.size / 1024 > 250
+          ? "Size of file must be less than or equal to 250KB"
+          : null;
+      },
+      title: isNotEmpty("Title cannot be empty"),
+      description: isNotEmpty("Description cannot be empty"),
     },
   });
 

@@ -47,7 +47,7 @@ export default function PatientList({ patients, setActiveTab }) {
   return (
     <SimpleGrid px="xl">
       <Text fz="xl" fw={500}>
-        All Patient addresses (Not allowed to view data)
+        All Patients
       </Text>
       <Divider />
       {patients &&

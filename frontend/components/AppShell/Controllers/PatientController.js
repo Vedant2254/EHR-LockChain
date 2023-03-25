@@ -44,7 +44,7 @@ export default function PatientController() {
             </Button>
           </>
         ) : (
-          <Text>You don't have any doctor</Text>
+          <Text>{"You don't have any doctor"}</Text>
         )}
       </Tabs.Panel>
 

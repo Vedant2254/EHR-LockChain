@@ -41,7 +41,7 @@ export default function Doctor({ user, address, setDoctor }) {
         </Tabs.List>
 
         <Box my="md">
-          <DoctorButtons user={user} address={address} />
+          <DoctorButtons access={access} address={address} />
 
           <Tabs.Panel value="general-details" mt="md">
             <GeneralDetails

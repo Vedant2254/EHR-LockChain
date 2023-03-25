@@ -53,14 +53,16 @@ export default function DoctorList({ allDoctors, pendingDoctors, setActiveTab })
       {allDoctors &&
         allDoctors.map((doctor, index) => {
           return (
-            <div key={index}>
-              <DoctorListItem
-                index={index}
-                doctor={doctor}
-                pending={pendingDoctors.indexOf(doctor) == -1}
-                onClick={() => setActiveTab(doctor)}
-              />
-            </div>
+            pendingDoctors && (
+              <div key={index}>
+                <DoctorListItem
+                  index={index}
+                  doctor={doctor}
+                  pending={pendingDoctors.indexOf(doctor) == -1}
+                  onClick={() => setActiveTab(doctor)}
+                />
+              </div>
+            )
           );
         })}
     </SimpleGrid>
