@@ -1,5 +1,21 @@
 # EHR data management system
 
+## Project Folder Structure
+
+`/` root folder
+
+`/backend` smart contract built using solidity. [Hardhat](https://hardhat.org/) is used as development environment, provides easy testing and deploying functionalities, javascript can be used for writing testing and deployment scripts.
+
+`/frontend` nextjs application
+
+`/frontend/utils` all pure functions, takes some parameters -> does some computation -> returns the result, depends on pre-built modules like `crypto`, `web3.storage`, `@metamask/eth-sig-util`.
+
+`/frontend/hooks` all communication functions (custom react hooks), establishes communications between frontend, backend and IPFS, depends on functions in `/frontend/utils` to fulfill functionalities.
+
+`/frontend/components` all UI components, handles UI and user interaction. Built using [Mantine.dev](https://mantine.dev/) UI library, and is highly dependent on custom react hooks in `/frontend/hooks`.
+
+`/frontend/pages` contains routes of application that users can visit. Depends on `/frontend/components`.
+
 ## Modules
 
 ### Files related
@@ -40,7 +56,7 @@ Encryption can be done using `crypto` module.
 
 1. The output from `FileReader().readAsDataURL()` can be either be directly encrypted using `utf-8` to `hex`/`base64` encryption, then it can be decrypted using `hex`/`base64` to `utf-8` encryption. (This method seems better as output can directly be give to iframe to display the data)
 
-1. Or the ouput can be split using a ',', donig this will give us an array with second element as `base64` format of data. This can then be encrypted using `base64` to `hex`/`base64` and decrypted vice versa.
+1. Or the ouput can be split using a ',', dog this will give us an array with second element as `base64` format of data. This can then be encrypted using `base64` to `hex`/`base64` and decrypted vice versa.
 
 ## Mechanisms
 
@@ -86,14 +102,12 @@ This data is encrypted
 
 ```
 {
-    details: {
-        name: ----
-        address: ---
-        phoneno: ---
-        .
-        .
-        .
-    },
+    name: ----
+    address: ---
+    phoneno: ---
+    .
+    .
+    .
 }
 ```
 
@@ -121,50 +135,35 @@ This data is stored in encrypted format, only accessible (read / read-write perm
 by addresses present in keys of [Patient General Details](#patient-general-details). `data` is encrypted. `signatures` are not encrypted.
 
 ```
-{
-    previousVersion: {
-        hash: ---,
-        key: ---
-    },
-    data: [
-        {
-            title: ---
-            description: ---
-            media (image, pdf, docx, video, etc.): ---
-            quality: ---
-        }
-        {
-            title: ---
-            description: ---
-            media (image, pdf, docx, video, etc.): ---
-            quality: ---
-        }
-        .
-        .
-        .
-    ]
-    metadata: {
-        version: ---
-        lastUpdateDateTime: ---
-        lastUpdateByAddress: ---
+[
+    {
+        title: ---
+        description: ---
+        media (image, pdf, docx, video, etc.): ---
+        quality: ---
     }
-    digitalSignatureOfDoctor: ---
-    digitalSignatureOfPatient: ---
-}
+    {
+        title: ---
+        description: ---
+        media (image, pdf, docx, video, etc.): ---
+        quality: ---
+    }
+    .
+    .
+    .
+]
 ```
 
 #### Doctor general details
 
 ```
 {
-    details: {
-        name: ----
-        address: ---
-        phoneno: ---
-        .
-        .
-        .
-    },
+    name: ----
+    address: ---
+    phoneno: ---
+    .
+    .
+    .
     certificates: {
         certificate1: ---
         certificate2: ---
