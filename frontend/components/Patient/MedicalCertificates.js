@@ -5,9 +5,9 @@ import { IconEdit, IconPlus } from "@tabler/icons-react";
 
 const AddCertificateBtn = () => (
   <Center>
-    <ActionIcon component={Button} color="blue" variant="filled" radius="xl" size="lg">
+    <Button variant="subtle">
       <IconPlus />
-    </ActionIcon>
+    </Button>
   </Center>
 );
 

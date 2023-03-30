@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useGetDoctorPubKey from "./useGetDoctorPubKey";
+import useGetPatientHash from "./useGetPatientHash";
+import useSignCertificates from "@/hooks/useSignCertificates";
 import { generateKey, symmetricEncrypt } from "@/utils/cryptography";
 import { encryptData, decryptData, sign } from "@/utils/metamask";
 import { makeFileObjects, storeIPFS } from "@/utils/ipfs";
-import useGetPatientHash from "./useGetPatientHash";
-import { readAsDataURLAsync } from "@/utils/readFileAsync";
-import { useSignTypedData } from "wagmi";
 
 // this thing can be converted to a simple function rather than a hook
 // will be done later
@@ -20,39 +19,8 @@ import { useSignTypedData } from "wagmi";
 // 4. setCIDs
 // 5. Further actions are performed by functions that use this hook
 
-const domain = {
-  name: "MedicalRecord signature",
-  chainId: 31337,
-  version: "1",
-};
-
-const types = {
-  EIP712Domain: [
-    { name: "name", type: "string" },
-    { name: "chainId", type: "uint256" },
-    { name: "version", type: "string" },
-  ],
-
-  Certificate: [
-    { name: "title", type: "string" },
-    { name: "description", type: "string" },
-    { name: "media", type: "string" },
-  ],
-
-  MetaData: [
-    { name: "lastUpdatedDate", type: "string" },
-    { name: "lastUpdatedBy", type: "address" },
-    { name: "version", type: "int256" },
-  ],
-
-  Data: [
-    { name: "certificates", type: "Certificate[]" },
-    { name: "metadata", type: "MetaData" },
-  ],
-};
-
 export default function useAddPatientData(ptAddress, drAddress) {
-  const { signTypedDataAsync } = useSignTypedData({});
+  const signCertificates = useSignCertificates();
   const { publicKey: drPublicKey } = useGetDoctorPubKey(drAddress || null);
   const { certificatesHash } = useGetPatientHash(ptAddress);
 
@@ -127,11 +95,7 @@ export default function useAddPatientData(ptAddress, drAddress) {
             key: prevKeyData && prevKeyData.keys && prevKeyData.keys[ptAddress],
           },
           data: cipherCertificatesData,
-          digitalSignatureOfLastUpdater: await signTypedDataAsync({
-            domain,
-            types,
-            value: certificatesData,
-          }),
+          digitalSignatureOfLastUpdater: await signCertificates(certificatesData),
         };
 
         const certificatesFiles = await makeFileObjects([certificatesFile], [drAddress]);
