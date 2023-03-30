@@ -14,7 +14,6 @@ import { useEffect } from "react";
 import useUpdateDoctor from "@/hooks/useUpdateDoctor";
 
 export default function TestPage() {
-  const { updateData } = useUpdateDoctor();
-
-  return <button onClick={() => updateData({ name: "Doctor" }, [])}>click here</button>;
+  const 
+  const {} = useAddPatientData()
 }

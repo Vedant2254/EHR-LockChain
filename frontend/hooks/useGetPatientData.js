@@ -11,33 +11,48 @@ export default function useGetPatientData(address, enabled = true) {
   const { generalHash, keyHash, certificatesHash } = useGetPatientHash(address);
 
   const [isLoading, setIsLoading] = useState(enabled);
-  const [data, setData] = useState({ generalData: {}, certificates: [], keyData: {} });
+  const [data, setData] = useState({ generalData: {}, certificatesData: {}, keyData: {} });
 
   async function getFromIPFS() {
     const cipherDataFile = (await retrieveIPFS(generalHash))[0];
-    const cipherDataEnc = await readAsTextAsync(cipherDataFile);
+    const cipherGeneralData = await readAsTextAsync(cipherDataFile);
 
     const cipherKeyFile = (await retrieveIPFS(keyHash))[0];
-    const cipherKeyEnc = JSON.parse(await readAsTextAsync(cipherKeyFile));
+    const cipherKey = JSON.parse(await readAsTextAsync(cipherKeyFile));
 
     const cipherCertificatesFile = (await retrieveIPFS(certificatesHash))[0];
-    const cipherCertificatesEnc = await readAsTextAsync(cipherCertificatesFile);
+    const cipherCertificatesData = JSON.parse(await readAsTextAsync(cipherCertificatesFile));
 
-    return { cipherDataEnc, cipherKeyEnc, cipherCertificatesEnc };
+    return { cipherGeneralData, cipherKey, cipherCertificatesData };
   }
 
   async function finalStepDecryption(ciphers) {
-    const { cipherDataEnc, cipherKeyEnc, cipherCertificatesEnc } = ciphers;
+    const { cipherGeneralData, cipherKey, cipherCertificatesData } = ciphers;
 
-    const { key, iv } = JSON.parse(await decryptData(curraddress, cipherKeyEnc.keys[curraddress]));
+    const { key, iv } = JSON.parse(await decryptData(curraddress, cipherKey.keys[curraddress]));
+
     const generalData = JSON.parse(
-      symmetricDecrypt(cipherDataEnc, Buffer.from(key, "hex"), Buffer.from(iv, "hex"))
-    );
-    const certificates = JSON.parse(
-      symmetricDecrypt(cipherCertificatesEnc, Buffer.from(key, "hex"), Buffer.from(iv, "hex"))
+      symmetricDecrypt(cipherGeneralData, Buffer.from(key, "hex"), Buffer.from(iv, "hex"))
     );
 
-    generalData && certificates && setData({ generalData, certificates, keyData: cipherKeyEnc });
+    const certificatesData = {
+      ...cipherCertificatesData,
+      data: JSON.parse(
+        symmetricDecrypt(
+          cipherCertificatesData.data,
+          Buffer.from(key, "hex"),
+          Buffer.from(iv, "hex")
+        )
+      ),
+    };
+
+    generalData &&
+      certificatesData &&
+      setData({
+        generalData,
+        certificatesData,
+        keyData: cipherKey,
+      });
   }
 
   async function master() {

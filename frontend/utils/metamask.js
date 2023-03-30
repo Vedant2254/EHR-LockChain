@@ -26,4 +26,23 @@ async function decryptData(address, data) {
   return decrypt;
 }
 
-module.exports = { getPublicKey, encryptData, decryptData };
+async function sign(address, message) {
+  console.log(address);
+  console.log(message);
+
+  window.ethereum
+    .request({
+      method: "eth_signTypedData_v4",
+      params: [address, JSON.stringify(message)],
+    })
+    .then((retVal) => {
+      console.log(retVal);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  // return signature;
+}
+
+module.exports = { getPublicKey, encryptData, decryptData, sign };

@@ -78,7 +78,7 @@ export default function useRegisterPatient() {
           certificates[i].media = await readAsDataURLAsync(media);
       }
 
-      await setupCIDs(data, certificates);
+      await setupCIDs({ prevCertificatesData: {}, prevKeyData: {} }, data, certificates);
     } catch (err) {
       console.log(err);
       setStatus({ message: "Idle", error: "Data upload failed" });

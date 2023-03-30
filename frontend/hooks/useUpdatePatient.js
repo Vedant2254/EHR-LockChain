@@ -35,9 +35,9 @@ export default function useUpdatePatient(ptAddress, updater) {
       })();
   }, [CIDs.keyDataCID]);
 
-  async function updateData(generalData, certificates, keyData) {
+  async function updateData(previousData, generalData, certificates, keyData) {
     try {
-      await setupCIDs(generalData, certificates, keyData);
+      await setupCIDs(previousData, generalData, certificates, keyData);
     } catch (err) {
       console.log(err);
     }

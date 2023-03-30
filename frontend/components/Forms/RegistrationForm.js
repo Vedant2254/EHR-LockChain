@@ -25,24 +25,24 @@ export default function RegistrationForm({
   const form = useForm({
     initialValues: { ...initialValues, certificates: initialValues.certificates || [] },
     validate: {
-      photo: (value) =>
-        !value
-          ? "Photo cannot be empty"
-          : value.size / 1024 > 250
-          ? "Size of file must be less than or equal to 250KB"
-          : null,
-      name: hasLength({ min: 2, max: 25 }, "Name must be 2-25 characters"),
-      dob: isNotEmpty("Date of birth cannot be empty"),
-      age: (value) =>
-        !value
-          ? "Age cannot be empty"
-          : value < 18 || value > 99
-          ? "You must be 18-99 years old to register"
-          : null,
-      gender: matches(/^(male|female|Male|Female)$/, "Input must be Male/male or Female/female"),
-      address: isNotEmpty("Address cannot be empty"),
-      phone: matches(/^\d{10}$/, "Phone number must be a 10 digit number"),
-      email: isEmail("Invalid Email"),
+      // photo: (value) =>
+      //   !value
+      //     ? "Photo cannot be empty"
+      //     : value.size / 1024 > 250
+      //     ? "Size of file must be less than or equal to 250KB"
+      //     : null,
+      // name: hasLength({ min: 2, max: 25 }, "Name must be 2-25 characters"),
+      // dob: isNotEmpty("Date of birth cannot be empty"),
+      // age: (value) =>
+      //   !value
+      //     ? "Age cannot be empty"
+      //     : value < 18 || value > 99
+      //     ? "You must be 18-99 years old to register"
+      //     : null,
+      // gender: matches(/^(male|female|Male|Female)$/, "Input must be Male/male or Female/female"),
+      // address: isNotEmpty("Address cannot be empty"),
+      // phone: matches(/^\d{10}$/, "Phone number must be a 10 digit number"),
+      // email: isEmail("Invalid Email"),
       // instagram: matches(/^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/\S*)?$/, "Invalid url"),
       // facebook: matches(/^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/\S*)?$/, "Invalid url"),
       // twitter: matches(/^https:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,}(\/\S*)?$/, "Invalid url"),

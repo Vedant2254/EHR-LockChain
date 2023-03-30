@@ -12,7 +12,11 @@ import useCheckAccess from "@/hooks/useCheckAccess";
 export default function Patient({ user, address, setData }) {
   // get data
   const { address: curraddress } = useAccount();
-  const { generalData, certificates, keyData } = useGetPatientData(address);
+  const {
+    generalData,
+    certificatesData: { previousVersion, data, digitalSignatureOfLastUpdater },
+    keyData,
+  } = useGetPatientData(address);
   const { updateData } = useUpdatePatient(address, curraddress);
   const { access } = useCheckAccess(address);
 
@@ -22,13 +26,17 @@ export default function Patient({ user, address, setData }) {
   const [isEdited, setIsEdited] = useState(false);
 
   useEffect(() => {
-    setEditedGeneralData(generalData);
-    setEditedCertificates(certificates);
-    setData && setData({ generalData, certificates });
-  }, [generalData, certificates]);
+    if (generalData && data) {
+      setEditedGeneralData(generalData);
+      data && setEditedCertificates(data.certificates);
+      setData && setData({ generalData, certificates: data.certificates });
+    }
+  }, [generalData, data]);
 
   useEffect(() => {
-    setIsEdited(!(editedGeneralData == generalData && editedCertificates == certificates));
+    generalData &&
+      data &&
+      setIsEdited(!(editedGeneralData == generalData && editedCertificates == data.certificates));
   }, [editedGeneralData, editedCertificates]);
 
   return (
@@ -58,14 +66,18 @@ export default function Patient({ user, address, setData }) {
         isEdited={isEdited}
         handleOnConfirm={() =>
           updateData(
+            {
+              prevCertificatesData: { previousVersion, data, digitalSignatureOfLastUpdater },
+              prevKeyData: keyData,
+            },
             editedGeneralData != generalData ? editedGeneralData : null,
-            editedCertificates != certificates ? editedCertificates : null,
+            editedCertificates != data.certificates ? editedCertificates : null,
             keyData
           )
         }
         handleOnReset={() => {
           setEditedGeneralData(generalData);
-          setEditedCertificates(certificates);
+          setEditedCertificates(data.certificates);
         }}
       />
     </>

@@ -1,10 +1,11 @@
 import { useState } from "react";
 import useGetDoctorPubKey from "./useGetDoctorPubKey";
 import { generateKey, symmetricEncrypt } from "@/utils/cryptography";
-import { encryptData, decryptData } from "@/utils/metamask";
+import { encryptData, decryptData, sign } from "@/utils/metamask";
 import { makeFileObjects, storeIPFS } from "@/utils/ipfs";
 import useGetPatientHash from "./useGetPatientHash";
 import { readAsDataURLAsync } from "@/utils/readFileAsync";
+import { useSignTypedData } from "wagmi";
 
 // this thing can be converted to a simple function rather than a hook
 // will be done later
@@ -19,12 +20,44 @@ import { readAsDataURLAsync } from "@/utils/readFileAsync";
 // 4. setCIDs
 // 5. Further actions are performed by functions that use this hook
 
+const domain = {
+  name: "MedicalRecord signature",
+  chainId: 31337,
+  version: "1",
+};
+
+const types = {
+  EIP712Domain: [
+    { name: "name", type: "string" },
+    { name: "chainId", type: "uint256" },
+    { name: "version", type: "string" },
+  ],
+
+  Certificate: [
+    { name: "title", type: "string" },
+    { name: "description", type: "string" },
+    { name: "media", type: "string" },
+  ],
+
+  MetaData: [
+    { name: "lastUpdatedDate", type: "string" },
+    { name: "lastUpdatedBy", type: "address" },
+    { name: "version", type: "int256" },
+  ],
+
+  Data: [
+    { name: "certificates", type: "Certificate[]" },
+    { name: "metadata", type: "MetaData" },
+  ],
+};
+
 export default function useAddPatientData(ptAddress, drAddress) {
-  const [CIDs, setCIDs] = useState({ generalDataCID: null, keyDataCID: null });
+  const { signTypedDataAsync } = useSignTypedData({});
   const { publicKey: drPublicKey } = useGetDoctorPubKey(drAddress || null);
   const { certificatesHash } = useGetPatientHash(ptAddress);
 
   const [isLoading, setIsLoading] = useState(false);
+  const [CIDs, setCIDs] = useState({ generalDataCID: null, keyDataCID: null });
 
   function resetCIDs() {
     setCIDs({ generalDataCID: null, keyDataCID: null });
@@ -39,7 +72,12 @@ export default function useAddPatientData(ptAddress, drAddress) {
   // if keyData is provided, use the provided key, do not generate a new key
   // change keyData if keyData, certificates are changed or drAddress is provided and drAddress is not the decrypter
   // update keyData such that, keys are encrypted if they have changed
-  async function setupCIDs(generalData, certificates, keyData) {
+  async function setupCIDs(
+    { prevCertificatesData, prevKeyData },
+    generalData,
+    certificates,
+    keyData
+  ) {
     setIsLoading(true);
     try {
       const decrypter =
@@ -69,8 +107,34 @@ export default function useAddPatientData(ptAddress, drAddress) {
         // store encrypted certificates to IPFS
         console.log("changing certificates");
 
-        const cipherCertificates = symmetricEncrypt(JSON.stringify(certificates), key, iv);
-        const certificatesFiles = await makeFileObjects([cipherCertificates], [drAddress]);
+        const certificatesData = {
+          certificates,
+          metadata: {
+            version:
+              prevCertificatesData && prevCertificatesData.metadata
+                ? prevCertificatesData.metadata.version + 1
+                : 1,
+            lastUpdatedDate: new Date(Date.now()).toDateString(),
+            lastUpdatedBy: decrypter,
+          },
+        };
+
+        const cipherCertificatesData = symmetricEncrypt(JSON.stringify(certificatesData), key, iv);
+
+        const certificatesFile = {
+          previousVersion: {
+            hash: certificatesHash,
+            key: prevKeyData && prevKeyData.keys && prevKeyData.keys[ptAddress],
+          },
+          data: cipherCertificatesData,
+          digitalSignatureOfLastUpdater: await signTypedDataAsync({
+            domain,
+            types,
+            value: certificatesData,
+          }),
+        };
+
+        const certificatesFiles = await makeFileObjects([certificatesFile], [drAddress]);
         certificatesCID = await storeIPFS(certificatesFiles, { wrapWithDirectory: false });
       } else certificatesCID = null;
 
