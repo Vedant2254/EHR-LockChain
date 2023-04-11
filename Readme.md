@@ -1,5 +1,18 @@
 # EHR data management system
 
+## What is blockchain
+
+Blockchain is a decentralized
+
+## What is IPFS
+
+IPFS stands for Interplanetary Filesystem. It is a distributed database where data is not stored on a single server, instead it is broken down into parts and is stored on multiple nodes in the network.
+
+### Storage mechanism
+
+1. IPFS generates a unique hash for the data that is stored on IPFS. This hash is also called as CID (Content Identifier) which can be used to retrieve data from IPFS.
+1. To retrieve data we can either directly use the IPFS protocol by typing `ipfs://<cid>`, or we can use a gateway like `https://ipfs.io/ipfs/<cid>`.
+
 ## Project Folder Structure
 
 `/` root folder
@@ -10,7 +23,7 @@
 
 `/frontend/utils` all pure functions, takes some parameters -> does some computation -> returns the result, depends on pre-built modules like `crypto`, `web3.storage`, `@metamask/eth-sig-util`.
 
-`/frontend/hooks` all communication functions (custom react hooks), establishes communications between frontend, backend and IPFS, depends on functions in `/frontend/utils` to fulfill functionalities.
+`/frontend/hooks` all communication functions (custom react hooks), establishes communications between frontend, backend and IPFS, depends on functions in `/frontend/utils` to fulfill their functionalities.
 
 `/frontend/components` all UI components, handles UI and user interaction. Built using [Mantine.dev](https://mantine.dev/) UI library, and is highly dependent on custom react hooks in `/frontend/hooks`.
 
@@ -22,7 +35,7 @@
 
 These help getting file from user, converting file to textual form, making it encryption compatible, finally storing it to IPFS.
 
-1. `Blob` - converts object to array buffer, not quite used, but mentioned here.
+1. `Blob` - converts object to array buffer, not quite used, but mentioned.
 
 2. `File` - object of this type is returned from `<input type="file" />`
 
@@ -37,6 +50,10 @@ These help getting file from user, converting file to textual form, making it en
 1. `crypto` - use for symmetric encryption of data
 
 2. `@metamask/eth-sig-util` - used for asymmetric encryption using public keys of users, decrypting using user's private key, signing data using user's private keys, verifying data integrity using user's public key.
+
+### File storage
+
+1. `web3.storage` - is used to programmatically upload and retrieve data from IPFS network.
 
 ## Files and file formats in textual format
 
@@ -56,7 +73,7 @@ Encryption can be done using `crypto` module.
 
 1. The output from `FileReader().readAsDataURL()` can be either be directly encrypted using `utf-8` to `hex`/`base64` encryption, then it can be decrypted using `hex`/`base64` to `utf-8` encryption. (This method seems better as output can directly be give to iframe to display the data)
 
-1. Or the ouput can be split using a ',', dog this will give us an array with second element as `base64` format of data. This can then be encrypted using `base64` to `hex`/`base64` and decrypted vice versa.
+1. Or the ouput can be split using a ',', this will give us an array with second element as `base64` format of data. This can then be encrypted using `base64` to `hex`/`base64` and decrypted vice versa.
 
 ## Mechanisms
 
@@ -92,6 +109,7 @@ Encryption can be done using `crypto` module.
 ### Where is hash stored?
 
 **Patient and Doctor general data hash** is stored inside [Roles library](/backend/contracts/Roles.sol), Roles.Role stores address to hash mapping.
+
 **Patient medical records** are stored in a mapping of patient address to MedicalRecord where MedicalRecord is a struct
 
 ### How data is structured?
@@ -100,7 +118,7 @@ Encryption can be done using `crypto` module.
 
 This data is encrypted
 
-```
+```json
 {
     name: ----
     address: ---
@@ -115,7 +133,7 @@ This data is encrypted
 
 This data has encrypted keys, only individual keys are encrypted
 
-```
+```json
 {
     keys: {
         address1: encKeySForAddress1
@@ -134,27 +152,40 @@ This data has encrypted keys, only individual keys are encrypted
 This data is stored in encrypted format, only accessible (read / read-write permission decided by smart contract)
 by addresses present in keys of [Patient key data](#patient-key-data). Data is encrypted.
 
-```
-[
-    {
-        title: ---
-        description: ---
-        media (image, pdf, docx, video, etc.): ---
-    }
-    {
-        title: ---
-        description: ---
-        media (image, pdf, docx, video, etc.): ---
-    }
-    .
-    .
-    .
-]
+```json
+{
+    previousVersion: {
+        hash: "",
+        key: ""
+    },
+    data: {
+        certificates: [
+            {
+                title: ---
+                description: ---
+                media (image, pdf, docx, video, etc.): ---
+            }
+            {
+                title: ---
+                description: ---
+                media (image, pdf, docx, video, etc.): ---
+            }
+            .
+            .
+            .
+        ],
+        metadata: {
+            lastUpdatedBy: ""
+            lastUpdatedDate: ""
+        }
+    },
+    digitalSignatureOfLastUpdater: ""
+}
 ```
 
 #### Doctor general details
 
-```
+```json
 {
     name: ----
     address: ---
@@ -162,13 +193,21 @@ by addresses present in keys of [Patient key data](#patient-key-data). Data is e
     .
     .
     .
-    certificates: {
-        certificate1: ---
-        certificate2: ---
+    certificates: [
+        {
+            title: ---
+            description: ---
+            media (image, pdf, docx, video, etc.): ---
+        }
+        {
+            title: ---
+            description: ---
+            media (image, pdf, docx, video, etc.): ---
+        }
         .
         .
         .
-    }
+    ]
 }
 ```
 
@@ -184,7 +223,7 @@ by addresses present in keys of [Patient key data](#patient-key-data). Data is e
 
 ### Issues that occured during development
 
-#### Cheating of Metamask
+#### Metamask default account for contract read
 
 1. Metamask sends transactions that needs to be signed through the account that is currently selected
 2. But, when calling a view function on contract it sends it may be sent through any account that is connected, not necessarily through the selected account
