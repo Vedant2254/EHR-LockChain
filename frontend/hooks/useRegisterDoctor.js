@@ -45,6 +45,7 @@ export default function useRegisterDoctor() {
         } catch (err) {
           console.log(err);
         }
+
         resetCID();
       })();
   }, [dataCID]);

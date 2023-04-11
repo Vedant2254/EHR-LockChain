@@ -9,7 +9,9 @@ import SocialInput from "./CustomInputs/SocialInput";
 export default function EditGeneralDataForm({ initialValues, setEditedGeneralData }) {
   const [opened, { open, close }] = useDisclosure(false);
 
-  const form = useForm({ initialValues: {} });
+  const form = useForm({
+    initialValues: {},
+  });
 
   return (
     <Box mb="xs">
@@ -35,6 +37,8 @@ export default function EditGeneralDataForm({ initialValues, setEditedGeneralDat
             const { photo } = data;
             if (photo && photo.constructor.name == "File")
               data.photo = await readAsDataURLAsync(photo);
+
+            Object.keys(data).forEach((key) => data[key] == "" && delete data[key]);
 
             setEditedGeneralData({ ...initialValues, ...data });
             form.reset();

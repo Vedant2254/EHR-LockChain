@@ -5,7 +5,7 @@ import { IconKey } from "@tabler/icons-react";
 
 export default function DoctorButtons({ access, address }) {
   const { isDoctorPending } = useIsDoctorPending(address);
-  const { isDoctor, registerDrConfirm } = useRegisterDoctorConfirm();
+  const { isLoading, isDoctor, registerDrConfirm } = useRegisterDoctorConfirm();
 
   return (
     <Group>
@@ -18,7 +18,7 @@ export default function DoctorButtons({ access, address }) {
       {access == 2 && (
         <>
           {!isDoctorPending && !isDoctor && (
-            <Button onClick={registerDrConfirm} variant="subtle" compact>
+            <Button onClick={registerDrConfirm} variant="subtle" disabled={isLoading} compact>
               <ActionIcon size="sm" color="blue">
                 <IconKey />
               </ActionIcon>{" "}

@@ -9,6 +9,7 @@ export default function useRegisterDoctorConfirm() {
   const { isDoctor, runIsDoctor } = useIsDoctor(address);
 
   const [publicKey, setPublicKey] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { writeAsync: runRegisterDrConfirm } = useContractWrite({
     address: contractAddress,
@@ -29,12 +30,19 @@ export default function useRegisterDoctorConfirm() {
           console.log(err);
         }
         setPublicKey(null);
+        setIsLoading(false);
       })();
   }, [publicKey]);
 
   async function registerDrConfirm() {
-    setPublicKey(await getPublicKey(address));
+    setIsLoading(true);
+    try {
+      setPublicKey(await getPublicKey(address));
+    } catch (err) {
+      console.log(err);
+      setIsLoading(false);
+    }
   }
 
-  return { isDoctor, runIsDoctor, registerDrConfirm };
+  return { isLoading, isDoctor, runIsDoctor, registerDrConfirm };
 }

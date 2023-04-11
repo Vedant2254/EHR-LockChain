@@ -14,7 +14,7 @@ export default function SocialInput({ form }) {
             <IconBrandInstagram />
           </ActionIcon>
         }
-        placeholder="Instagram username"
+        placeholder="Instagram account link"
         {...form.getInputProps("instagram")}
       />
       <TextInput
@@ -23,7 +23,7 @@ export default function SocialInput({ form }) {
             <IconBrandFacebook />
           </ActionIcon>
         }
-        placeholder="Facebook username"
+        placeholder="Facebook account link"
         {...form.getInputProps("facebook")}
       />
       <TextInput
@@ -32,7 +32,7 @@ export default function SocialInput({ form }) {
             <IconBrandTwitter />
           </ActionIcon>
         }
-        placeholder="Twitter username"
+        placeholder="Twitter account link"
         {...form.getInputProps("twitter")}
       />
     </>

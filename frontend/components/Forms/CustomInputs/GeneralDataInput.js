@@ -1,4 +1,4 @@
-import { TextInput, FileInput } from "@mantine/core";
+import { TextInput, FileInput, NumberInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 
 export default function GeneralDataInputs({ form }) {
@@ -12,7 +12,7 @@ export default function GeneralDataInputs({ form }) {
         valueFormat="DD MMM YYYY"
         {...form.getInputProps("dob")}
       />
-      <TextInput placeholder="Age" {...form.getInputProps("age")} />
+      <NumberInput placeholder="Age" {...form.getInputProps("age")} />
       <TextInput placeholder="Gender" {...form.getInputProps("gender")} />
 
       {/* Contact details */}

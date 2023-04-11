@@ -1,26 +1,36 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useContractWrite } from "wagmi";
 import useAddDoctorData from "./useAddDoctorData";
 import useValidTxnData from "./useValidTxnData";
+import useStatus from "./useStatus";
 
 export default function useUpdateDoctor() {
   const { address, contractAddress, abi } = useValidTxnData();
-  const { isLoading: isUploadingData, dataCID, setupCID } = useAddDoctorData(address);
+  const { isLoading: uploading, dataCID, setupCID, resetCID } = useAddDoctorData(address);
 
-  const { writeAsync: setDrHash, isLoading: isTxnLoading } = useContractWrite({
+  const { writeAsync: setDrHash, isLoading: txnLoading } = useContractWrite({
     address: contractAddress,
     abi,
     functionName: "setDrHash",
     args: [dataCID],
   });
 
+  const [txnWaiting, setTxnWaiting] = useState(false);
+
+  const message = useStatus({ uploading, txnLoading, txnWaiting });
+
   useEffect(() => {
     dataCID &&
       (async () => {
         try {
-          await setDrHash();
+          const res = await setDrHash();
+
+          setTxnWaiting(true);
+          await res.wait(1);
+          setTxnWaiting(false);
         } catch (err) {
           console.log(err);
+          resetCID();
         }
       })();
   }, [dataCID]);
@@ -33,5 +43,8 @@ export default function useUpdateDoctor() {
     }
   }
 
-  return { isLoading: isUploadingData || isTxnLoading, isUploadingData, isTxnLoading, updateData };
+  return {
+    status: message,
+    updateData,
+  };
 }

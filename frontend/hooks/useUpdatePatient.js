@@ -6,7 +6,12 @@ import useStatus from "./useStatus";
 
 export default function useUpdatePatient(ptAddress, updater) {
   const { contractAddress, abi } = useValidTxnData();
-  const { isLoading: uploading, CIDs, setupCIDs } = useAddPatientData(ptAddress, updater);
+  const {
+    isLoading: uploading,
+    CIDs,
+    setupCIDs,
+    resetCIDs,
+  } = useAddPatientData(ptAddress, updater);
 
   const [txnWaiting, setTxnWaiting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -48,6 +53,7 @@ export default function useUpdatePatient(ptAddress, updater) {
         setSuccess(true);
       } catch (err) {
         console.log(err);
+        resetCIDs();
       }
     })();
   }, [CIDs]);

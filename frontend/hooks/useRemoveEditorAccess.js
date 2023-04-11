@@ -30,9 +30,13 @@ export default function useRemoveEditorAccess() {
       })();
   }, [CIDs]);
 
-  async function runRemoveEditorAccess({ generalData, certificates }) {
+  async function runRemoveEditorAccess({ generalData, certificatesData, keyData }) {
     try {
-      await setupCIDs(generalData, certificates);
+      await setupCIDs(
+        { prevCertificatesData: certificatesData, prevKeyData: keyData },
+        generalData,
+        certificatesData.data.certificates
+      );
     } catch (err) {
       console.log(err);
     }

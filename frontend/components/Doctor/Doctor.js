@@ -1,5 +1,5 @@
 import useGetDoctorData from "@/hooks/useGetDoctorData";
-import { Box, Tabs } from "@mantine/core";
+import { Box, Center, Flex, Loader, LoadingOverlay, Tabs, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 import GeneralDetails from "./GeneralDetails";
 import Certifications from "./Certifications";
@@ -10,8 +10,8 @@ import useCheckAccess from "@/hooks/useCheckAccess";
 
 export default function Doctor({ user, address, setDoctor }) {
   // get data
-  const { generalData, certificates } = useGetDoctorData(address);
-  const { updateData } = useUpdateDoctor();
+  const { status: statusOfGet, generalData, certificates } = useGetDoctorData(address);
+  const { status: statusOfUpdate, updateData } = useUpdateDoctor();
   const { access } = useCheckAccess(address);
 
   const [activeTab, setActiveTab] = useState("general-details");
@@ -34,39 +34,66 @@ export default function Doctor({ user, address, setDoctor }) {
 
   return (
     <>
-      <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal" px="xl" mt="md">
-        <Tabs.List grow>
-          <Tabs.Tab value="general-details">General Details</Tabs.Tab>
-          <Tabs.Tab value="certificates">Doctor's Certificates</Tabs.Tab>
-        </Tabs.List>
+      {statusOfGet != "success" ? (
+        <Flex direction="column" align="center">
+          <Loader variant="dots" />
+          <Text>{statusOfGet}</Text>
+        </Flex>
+      ) : (
+        <>
+          <LoadingOverlay
+            visible={statusOfUpdate && statusOfUpdate != "success"}
+            overlayBlur={4}
+            loader={
+              <>
+                <Center>
+                  <Loader />
+                </Center>
+                <Text>{statusOfUpdate}</Text>
+              </>
+            }
+          />
+          <Tabs
+            value={activeTab}
+            onTabChange={setActiveTab}
+            orientation="horizontal"
+            px="xl"
+            mt="md"
+          >
+            <Tabs.List grow>
+              <Tabs.Tab value="general-details">General Details</Tabs.Tab>
+              <Tabs.Tab value="certificates">Doctor's Certificates</Tabs.Tab>
+            </Tabs.List>
 
-        <Box my="md">
-          <DoctorButtons access={access} address={address} />
+            <Box my="md">
+              <DoctorButtons access={access} address={address} />
 
-          <Tabs.Panel value="general-details" mt="md">
-            <GeneralDetails
-              access={access}
-              data={editedGeneralData}
-              setEditedGeneralData={setEditedGeneralData}
-            />
-          </Tabs.Panel>
-          <Tabs.Panel value="certificates" mt="md">
-            <Certifications
-              access={access}
-              certificates={editedCertificates}
-              setEditedCertificates={setEditedCertificates}
-            />
-          </Tabs.Panel>
-        </Box>
-      </Tabs>
-      <ConfirmChangesDialog
-        isEdited={isEdited}
-        handleOnConfirm={() => updateData(editedGeneralData, editedCertificates)}
-        handleOnReset={() => {
-          setEditedGeneralData(generalData);
-          setEditedCertificates(certificates);
-        }}
-      />
+              <Tabs.Panel value="general-details" mt="md">
+                <GeneralDetails
+                  access={access}
+                  data={editedGeneralData}
+                  setEditedGeneralData={setEditedGeneralData}
+                />
+              </Tabs.Panel>
+              <Tabs.Panel value="certificates" mt="md">
+                <Certifications
+                  access={access}
+                  certificates={editedCertificates}
+                  setEditedCertificates={setEditedCertificates}
+                />
+              </Tabs.Panel>
+            </Box>
+          </Tabs>
+          <ConfirmChangesDialog
+            isEdited={isEdited}
+            handleOnConfirm={() => updateData(editedGeneralData, editedCertificates)}
+            handleOnReset={() => {
+              setEditedGeneralData(generalData);
+              setEditedCertificates(certificates);
+            }}
+          />
+        </>
+      )}
     </>
   );
 }

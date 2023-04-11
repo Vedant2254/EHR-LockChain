@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useGetPatientData from "@/hooks/useGetPatientData";
 
-import { Center, Loader, LoadingOverlay, Tabs, Text } from "@mantine/core";
+import { Center, Flex, Loader, LoadingOverlay, Tabs, Text } from "@mantine/core";
 import GeneralDetails from "./GeneralDetails";
 import MedicalCertificates from "./MedicalCertificates";
 import ConfirmChangesDialog from "../Utils/ConfirmChangesDialog";
@@ -26,87 +26,107 @@ export default function Patient({ user, address, setData }) {
   const [editedCertificates, setEditedCertificates] = useState();
   const [isEdited, setIsEdited] = useState(false);
 
+  function deepEqual(x, y) {
+    return x && y && typeof x === "object" && typeof y === "object"
+      ? Object.keys(x).length === Object.keys(y).length &&
+          Object.keys(x).reduce(function (isEqual, key) {
+            return isEqual && deepEqual(x[key], y[key]);
+          }, true)
+      : x === y;
+  }
+
   useEffect(() => {
     if (generalData && data) {
       setEditedGeneralData(generalData);
       data && setEditedCertificates(data.certificates);
-      setData && setData({ generalData, certificates: data.certificates });
+      setData &&
+        setData({
+          generalData,
+          certificatesData: { previousVersion, data, digitalSignatureOfLastUpdater },
+          keyData,
+        });
     }
   }, [generalData, data]);
 
   useEffect(() => {
     generalData &&
       data &&
-      setIsEdited(!(editedGeneralData == generalData && editedCertificates == data.certificates));
+      setIsEdited(
+        !(
+          deepEqual(generalData, editedGeneralData) &&
+          deepEqual(data.certificates, editedCertificates)
+        )
+      );
   }, [editedGeneralData, editedCertificates]);
-
-  console.log(statusOfGet);
 
   return (
     <>
-      <LoadingOverlay
-        visible={statusOfGet != "success"}
-        overlayBlur={4}
-        loader={
-          <>
-            <Center>
-              <Loader />
-            </Center>
-            <Text>{statusOfGet}</Text>
-          </>
-        }
-      />
-      <LoadingOverlay
-        visible={statusOfUpdate && statusOfUpdate != "success"}
-        overlayBlur={4}
-        loader={
-          <>
-            <Center>
-              <Loader />
-            </Center>
-            <Text>{statusOfUpdate}</Text>
-          </>
-        }
-      />
-      <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal" px="xl" mt="md">
-        <Tabs.List grow>
-          <Tabs.Tab value="general-details">General Details</Tabs.Tab>
-          <Tabs.Tab value="certificates">Medical Certificates</Tabs.Tab>
-        </Tabs.List>
+      {statusOfGet != "success" ? (
+        <Flex direction="column" align="center">
+          <Loader variant="dots" />
+          <Text>{statusOfGet}</Text>
+        </Flex>
+      ) : (
+        <>
+          <LoadingOverlay
+            visible={statusOfUpdate && statusOfUpdate != "success"}
+            overlayBlur={4}
+            loader={
+              <>
+                <Center>
+                  <Loader />
+                </Center>
+                <Text>{statusOfUpdate}</Text>
+              </>
+            }
+          />
+          <Tabs
+            value={activeTab}
+            onTabChange={setActiveTab}
+            orientation="horizontal"
+            px="xl"
+            mt="md"
+          >
+            <Tabs.List grow>
+              <Tabs.Tab value="general-details">General Details</Tabs.Tab>
+              <Tabs.Tab value="certificates">Medical Certificates</Tabs.Tab>
+            </Tabs.List>
 
-        <Tabs.Panel value="general-details" mt="md" h="100%">
-          <GeneralDetails
-            access={access}
-            data={editedGeneralData}
-            setEditedGeneralData={setEditedGeneralData}
+            <Tabs.Panel value="general-details" mt="md" h="100%">
+              <GeneralDetails
+                access={access}
+                data={editedGeneralData}
+                setEditedGeneralData={setEditedGeneralData}
+              />
+            </Tabs.Panel>
+            <Tabs.Panel value="certificates" mt="md" h="100%">
+              <MedicalCertificates
+                access={access}
+                certificates={editedCertificates}
+                setEditedCertificates={setEditedCertificates}
+              />
+            </Tabs.Panel>
+          </Tabs>
+          <ConfirmChangesDialog
+            isEdited={isEdited}
+            handleOnConfirm={async () => {
+              await updateData(
+                {
+                  prevCertificatesData: { previousVersion, data, digitalSignatureOfLastUpdater },
+                  prevKeyData: keyData,
+                },
+                !deepEqual(generalData, editedGeneralData) ? editedGeneralData : null,
+                !deepEqual(data.certificates, editedCertificates) ? editedCertificates : null,
+                keyData
+              );
+            }}
+            handleOnReset={() => {
+              setEditedGeneralData(generalData);
+              setEditedCertificates(data.certificates);
+            }}
           />
-        </Tabs.Panel>
-        <Tabs.Panel value="certificates" mt="md" h="100%">
-          <MedicalCertificates
-            access={access}
-            certificates={editedCertificates}
-            setEditedCertificates={setEditedCertificates}
-          />
-        </Tabs.Panel>
-      </Tabs>
-      <ConfirmChangesDialog
-        isEdited={isEdited}
-        handleOnConfirm={async () => {
-          await updateData(
-            {
-              prevCertificatesData: { previousVersion, data, digitalSignatureOfLastUpdater },
-              prevKeyData: keyData,
-            },
-            editedGeneralData != generalData ? editedGeneralData : null,
-            editedCertificates != data.certificates ? editedCertificates : null,
-            keyData
-          );
-        }}
-        handleOnReset={() => {
-          setEditedGeneralData(generalData);
-          setEditedCertificates(data.certificates);
-        }}
-      />
+        </>
+      )}
     </>
   );
 }

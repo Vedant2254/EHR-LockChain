@@ -31,7 +31,7 @@ export default function PatientsOfDoctor({ user }) {
               >
                 Back to all doctors
               </Button>
-              <Divider mt="sm" />
+              <Divider my="sm" />
               <Patient address={patient} user={user} />
             </Tabs.Panel>
           );
