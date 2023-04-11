@@ -42,7 +42,7 @@ export default function MedicalCertificates({ access, certificates, setEditedCer
       {certificates &&
         certificates.map((certificate, index) => {
           return (
-            <Card key={index} shadow="sm" padding="lg" mb="lg" radius="lg">
+            <Card key={index} shadow="xs" padding="lg" mb="lg" radius="md">
               <Text weight={500}>{certificate.title}</Text>
               <Text size="sm" color="dimmed">
                 {certificate.description}

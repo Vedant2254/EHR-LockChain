@@ -3,12 +3,13 @@ import { useContractRead, useContractWrite } from "wagmi";
 import useValidTxnData from "@/hooks/useValidTxnData";
 import useAddPatientData from "./useAddPatientData";
 import { readAsDataURLAsync } from "@/utils/readFileAsync";
+import useStatus from "./useStatus";
 
 export default function useRegisterPatient() {
   const { address, contractAddress, abi, enabled } = useValidTxnData();
-  const { isLoading: isUploadingData, CIDs, setupCIDs, resetCIDs } = useAddPatientData(address);
+  const { isLoading: uploading, CIDs, setupCIDs, resetCIDs } = useAddPatientData(address);
 
-  const [status, setStatus] = useState({ message: null, error: "" });
+  const [txnWaiting, setTxnWaiting] = useState(false);
 
   // check if user is patient
   const { data: isPatient, refetch: runIsPatient } = useContractRead({
@@ -20,7 +21,7 @@ export default function useRegisterPatient() {
   });
 
   // perform registration
-  const { writeAsync: registerPatient, isLoading: isTxnLoading } = useContractWrite({
+  const { writeAsync: registerPatient, isLoading: txnLoading } = useContractWrite({
     address: contractAddress,
     abi,
     functionName: "registerPt",
@@ -36,29 +37,25 @@ export default function useRegisterPatient() {
       keyCID &&
       (async () => {
         try {
-          // do
-          setStatus({ message: "Sending transaction", error: null });
           const response = await registerPatient();
 
-          // wait
-          setStatus({ message: "Waiting for transaction confirmation", error: null });
+          setTxnWaiting(true);
           await response.wait(1);
+          setTxnWaiting(false);
 
-          // verify
-          setStatus({ message: null, error: null });
           await runIsPatient();
         } catch (err) {
           console.log(err);
-          setStatus({ message: null, error: err });
         }
 
         resetCIDs();
       })();
   }, [CIDs]);
 
+  const message = useStatus({ uploading, txnLoading, txnWaiting });
+
   /* Handler functions */
   async function handleOnSumbit(data) {
-    setStatus({ message: "Uploading data", error: null });
     try {
       const { certificates } = data;
       delete data.certificates;
@@ -81,7 +78,6 @@ export default function useRegisterPatient() {
       await setupCIDs({ prevCertificatesData: {}, prevKeyData: {} }, data, certificates);
     } catch (err) {
       console.log(err);
-      setStatus({ message: "Idle", error: "Data upload failed" });
     }
 
     /* Contract function runAddPatient (addPatient) is performed in
@@ -91,10 +87,7 @@ export default function useRegisterPatient() {
 
   return {
     isPatient,
-    status,
-    isLoading: isUploadingData || isTxnLoading,
-    isUploadingData,
-    isTxnLoading,
+    status: message,
     handleOnSumbit,
   };
 }

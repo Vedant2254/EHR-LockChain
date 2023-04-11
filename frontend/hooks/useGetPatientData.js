@@ -5,13 +5,17 @@ import { readAsTextAsync } from "@/utils/readFileAsync";
 import { decryptData } from "@/utils/metamask";
 import { symmetricDecrypt } from "@/utils/cryptography";
 import useGetPatientHash from "./useGetPatientHash";
+import useStatus from "./useStatus";
 
 export default function useGetPatientData(address, enabled = true) {
   const { address: curraddress } = useAccount();
   const { generalHash, keyHash, certificatesHash } = useGetPatientHash(address);
 
-  const [isLoading, setIsLoading] = useState(enabled);
   const [data, setData] = useState({ generalData: {}, certificatesData: {}, keyData: {} });
+  const [isRetrieving, setIsRetrieving] = useState(false);
+  const [retrieved, setHasRetrieved] = useState(false);
+  const [failed, setHasFailed] = useState(false);
+  const message = useStatus({ retrieving: isRetrieving, success: retrieved, failure: failed });
 
   async function getFromIPFS() {
     const cipherDataFile = (await retrieveIPFS(generalHash))[0];
@@ -56,14 +60,16 @@ export default function useGetPatientData(address, enabled = true) {
   }
 
   async function master() {
-    setIsLoading(true);
+    setIsRetrieving(true);
     try {
       const ciphers = await getFromIPFS();
       ciphers && (await finalStepDecryption(ciphers));
+      setHasRetrieved(true);
     } catch (err) {
       console.log(err);
+      setHasFailed(true);
     }
-    setIsLoading(false);
+    setIsRetrieving(false);
   }
 
   // this useEffect is triggered when hashes are available
@@ -72,5 +78,5 @@ export default function useGetPatientData(address, enabled = true) {
     enabled && generalHash && keyHash && master();
   }, [enabled, generalHash, keyHash]);
 
-  return { isLoading, generalHash, keyHash, certificatesHash, ...data, getData: master };
+  return { status: message, generalHash, keyHash, certificatesHash, ...data, getData: master };
 }

@@ -1,12 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useContractRead, useContractWrite } from "wagmi";
 import useValidTxnData from "@/hooks/useValidTxnData";
 import useAddDoctorData from "./useAddDoctorData";
 import { readAsDataURLAsync } from "@/utils/readFileAsync";
+import useStatus from "./useStatus";
 
 export default function useRegisterDoctor() {
   const { address, contractAddress, abi, enabled } = useValidTxnData();
-  const { isLoading: isUploadingData, dataCID, setupCID, resetCID } = useAddDoctorData(address);
+  const { isLoading: uploading, dataCID, setupCID, resetCID } = useAddDoctorData(address);
+
+  const [txnWaiting, setTxnWaiting] = useState(false);
 
   /* Contract functions */
   const { data: isDoctorRegistered, refetch: runIsDoctorRegistered } = useContractRead({
@@ -17,7 +20,7 @@ export default function useRegisterDoctor() {
     enabled,
   });
 
-  const { writeAsync: registerDr, isLoading: isTxnLoading } = useContractWrite({
+  const { writeAsync: registerDr, isLoading: txnLoading } = useContractWrite({
     address: contractAddress,
     abi,
     functionName: "registerDr",
@@ -25,13 +28,19 @@ export default function useRegisterDoctor() {
     enabled: enabled && dataCID,
   });
 
+  const message = useStatus({ uploading, txnLoading, txnWaiting });
+
   /* useEffects */
   useEffect(() => {
     dataCID &&
       (async () => {
         try {
           const response = await registerDr();
+
+          setTxnWaiting(true);
           await response.wait(1);
+          setTxnWaiting(false);
+
           await runIsDoctorRegistered();
         } catch (err) {
           console.log(err);
@@ -66,9 +75,7 @@ export default function useRegisterDoctor() {
 
   return {
     isDoctorRegistered,
-    isLoading: isUploadingData || isTxnLoading,
-    isUploadingData,
-    isTxnLoading,
+    status: message,
     handleOnSubmit,
   };
 }

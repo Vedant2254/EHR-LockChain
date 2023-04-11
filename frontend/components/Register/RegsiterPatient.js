@@ -1,15 +1,30 @@
 import useRegisterPatient from "@/hooks/useRegisterPatient";
 import RegistrationForm from "@/components/Forms/RegistrationForm";
+import { LoadingOverlay, Text, Loader, Center } from "@mantine/core";
 
 export default function RegisterPatient() {
-  const { isLoading, handleOnSumbit } = useRegisterPatient();
+  const { status, handleOnSumbit } = useRegisterPatient();
 
   return (
-    <RegistrationForm
-      user="patient"
-      initialValues={{}}
-      handleOnSubmit={handleOnSumbit}
-      submitIsDisabled={isLoading}
-    />
+    <>
+      <LoadingOverlay
+        visible={status}
+        overlayBlur={4}
+        loader={
+          <>
+            <Center>
+              <Loader />
+            </Center>
+            <Text>{status}</Text>
+          </>
+        }
+      />
+      <RegistrationForm
+        user="patient"
+        initialValues={{}}
+        handleOnSubmit={handleOnSumbit}
+        submitIsDisabled={status}
+      />
+    </>
   );
 }

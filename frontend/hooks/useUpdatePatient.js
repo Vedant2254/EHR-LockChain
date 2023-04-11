@@ -1,39 +1,56 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useContractWrite } from "wagmi";
 import useAddPatientData from "./useAddPatientData";
 import useValidTxnData from "./useValidTxnData";
+import useStatus from "./useStatus";
 
 export default function useUpdatePatient(ptAddress, updater) {
   const { contractAddress, abi } = useValidTxnData();
-  const { isLoading: isUploadingData, CIDs, setupCIDs } = useAddPatientData(ptAddress, updater);
+  const { isLoading: uploading, CIDs, setupCIDs } = useAddPatientData(ptAddress, updater);
 
-  const { writeAsync: setPtGeneralHash, isLoading: isSettingGeneralHash } = useContractWrite({
+  const [txnWaiting, setTxnWaiting] = useState(false);
+  const [success, setSuccess] = useState(false);
+
+  const { writeAsync: setPtGeneralHash, isLoading: txnGeneralLoading } = useContractWrite({
     address: contractAddress,
     abi,
     functionName: "setPtGeneralHash",
     args: [CIDs.generalDataCID],
   });
 
-  const { writeAsync: setPtRecordHash, isLoading: isSettingRecordHash } = useContractWrite({
+  const { writeAsync: setPtRecordHash, isLoading: txnRecordLoading } = useContractWrite({
     address: contractAddress,
     abi,
     functionName: "setPtRecordHash",
     args: [ptAddress, CIDs.keyDataCID],
   });
 
-  useEffect(() => {
-    CIDs.generalDataCID &&
-      (async () => {
-        await setPtGeneralHash();
-      })();
-  }, [CIDs.generalDataCID]);
+  const message = useStatus({
+    uploading,
+    txnLoading: txnGeneralLoading || txnRecordLoading,
+    txnWaiting,
+    success,
+  });
 
   useEffect(() => {
-    CIDs.keyDataCID &&
-      (async () => {
-        await setPtRecordHash();
-      })();
-  }, [CIDs.keyDataCID]);
+    const { generalDataCID, keyDataCID } = CIDs;
+
+    (async () => {
+      try {
+        const res1 = generalDataCID && (await setPtGeneralHash());
+        const res2 = keyDataCID && (await setPtRecordHash());
+
+        setTxnWaiting(true);
+        res1 && (await res1.wait(1));
+        res2 && (await res2.wait(1));
+        setTxnWaiting(false);
+
+        setSuccess(true);
+      } catch (err) {
+        console.log(err);
+      }
+    })();
+  }, [CIDs]);
 
   async function updateData(previousData, generalData, certificates, keyData) {
     try {
@@ -44,9 +61,7 @@ export default function useUpdatePatient(ptAddress, updater) {
   }
 
   return {
-    isLoading: isUploadingData || isSettingGeneralHash || isSettingRecordHash,
-    isUploadingData,
-    isTxnLoading: isSettingGeneralHash || isSettingRecordHash,
+    status: message,
     updateData,
   };
 }

@@ -14,6 +14,5 @@ import { useEffect } from "react";
 import useUpdateDoctor from "@/hooks/useUpdateDoctor";
 
 export default function TestPage() {
-  const 
-  const {} = useAddPatientData()
+  const {} = useAddPatientData();
 }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useGetPatientData from "@/hooks/useGetPatientData";
 
-import { Tabs } from "@mantine/core";
+import { Center, Loader, LoadingOverlay, Tabs, Text } from "@mantine/core";
 import GeneralDetails from "./GeneralDetails";
 import MedicalCertificates from "./MedicalCertificates";
 import ConfirmChangesDialog from "../Utils/ConfirmChangesDialog";
@@ -13,11 +13,12 @@ export default function Patient({ user, address, setData }) {
   // get data
   const { address: curraddress } = useAccount();
   const {
+    status: statusOfGet,
     generalData,
     certificatesData: { previousVersion, data, digitalSignatureOfLastUpdater },
     keyData,
   } = useGetPatientData(address);
-  const { updateData } = useUpdatePatient(address, curraddress);
+  const { status: statusOfUpdate, updateData } = useUpdatePatient(address, curraddress);
   const { access } = useCheckAccess(address);
 
   const [activeTab, setActiveTab] = useState("general-details");
@@ -39,8 +40,34 @@ export default function Patient({ user, address, setData }) {
       setIsEdited(!(editedGeneralData == generalData && editedCertificates == data.certificates));
   }, [editedGeneralData, editedCertificates]);
 
+  console.log(statusOfGet);
+
   return (
     <>
+      <LoadingOverlay
+        visible={statusOfGet != "success"}
+        overlayBlur={4}
+        loader={
+          <>
+            <Center>
+              <Loader />
+            </Center>
+            <Text>{statusOfGet}</Text>
+          </>
+        }
+      />
+      <LoadingOverlay
+        visible={statusOfUpdate && statusOfUpdate != "success"}
+        overlayBlur={4}
+        loader={
+          <>
+            <Center>
+              <Loader />
+            </Center>
+            <Text>{statusOfUpdate}</Text>
+          </>
+        }
+      />
       <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal" px="xl" mt="md">
         <Tabs.List grow>
           <Tabs.Tab value="general-details">General Details</Tabs.Tab>
@@ -64,8 +91,8 @@ export default function Patient({ user, address, setData }) {
       </Tabs>
       <ConfirmChangesDialog
         isEdited={isEdited}
-        handleOnConfirm={() =>
-          updateData(
+        handleOnConfirm={async () => {
+          await updateData(
             {
               prevCertificatesData: { previousVersion, data, digitalSignatureOfLastUpdater },
               prevKeyData: keyData,
@@ -73,8 +100,8 @@ export default function Patient({ user, address, setData }) {
             editedGeneralData != generalData ? editedGeneralData : null,
             editedCertificates != data.certificates ? editedCertificates : null,
             keyData
-          )
-        }
+          );
+        }}
         handleOnReset={() => {
           setEditedGeneralData(generalData);
           setEditedCertificates(data.certificates);
