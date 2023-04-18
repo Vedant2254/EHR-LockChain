@@ -2,13 +2,15 @@
 
 ## What is blockchain
 
-Blockchain is a decentralized
+Blockchain is a decentralized database that stores a record of transactions happening on blockchain in the form of blocks linked through their hashes.
+
+Eheterum blockchain can not only store transactions but also allows to execute the smart contract code deployed on blockchain. Contracts are simply accounts on blockchain that store the logic the defines how the contract will react to an incoming transaction.
 
 ## What is IPFS
 
 IPFS stands for Interplanetary Filesystem. It is a distributed database where data is not stored on a single server, instead it is broken down into parts and is stored on multiple nodes in the network.
 
-### Storage mechanism
+### Storage and retrieval on IPFS
 
 1. IPFS generates a unique hash for the data that is stored on IPFS. This hash is also called as CID (Content Identifier) which can be used to retrieve data from IPFS.
 1. To retrieve data we can either directly use the IPFS protocol by typing `ipfs://<cid>`, or we can use a gateway like `https://ipfs.io/ipfs/<cid>`.
@@ -47,13 +49,17 @@ These help getting file from user, converting file to textual form, making it en
 
 ### Cryptography
 
-1. `crypto` - use for symmetric encryption of data
+1. `crypto` - use for symmetric encryption of data.
 
 2. `@metamask/eth-sig-util` - used for asymmetric encryption using public keys of users, decrypting using user's private key, signing data using user's private keys, verifying data integrity using user's public key.
 
 ### File storage
 
 1. `web3.storage` - is used to programmatically upload and retrieve data from IPFS network.
+
+### Contract interaction
+
+1. `wagmi` - is used to interact with contract, read and write data to contract using contract functions.
 
 ## Files and file formats in textual format
 
