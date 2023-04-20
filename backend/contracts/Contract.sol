@@ -86,7 +86,7 @@ contract Contract {
 
     function registerDr(string memory _hash) public {
         if (isPatient(msg.sender)) revert("Contract: Address already registered as patient");
-        if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed!");
+        if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed");
         doctors.users.add(msg.sender, _hash);
         admin.pending_doctors.set(msg.sender);
     }
@@ -94,6 +94,12 @@ contract Contract {
     function approveDr(address _address) public onlyAdmin {
         if (isDoctor(_address)) return;
         if (!doctors.users.has(_address)) return;
+        admin.pending_doctors.unset(_address);
+    }
+
+    function disapproveDr(address _address) public onlyAdmin {
+        if (!isDrPending(_address)) revert("Contract: Doctor not registered");
+        doctors.users.remove(_address);
         admin.pending_doctors.unset(_address);
     }
 

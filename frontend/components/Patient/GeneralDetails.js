@@ -25,7 +25,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function GeneralDetails({ access, data, setEditedGeneralData }) {
+export default function GeneralDetails({ address, access, data, setEditedGeneralData }) {
   const { classes } = useStyles();
 
   return (
@@ -44,14 +44,32 @@ export default function GeneralDetails({ access, data, setEditedGeneralData }) {
               radius={100}
               classNames={{ image: "mantine-Image-image" }}
               styles={{ image: classes.image }}
-              caption={<Text fw={500}>{data.name}</Text>}
+              caption={
+                <>
+                  <Text fw={500}>{data.name}</Text>
+                  {`${address && address.slice(0, 6)}...${address.slice(
+                    address.length - 6,
+                    address.length
+                  )}`}
+                </>
+              }
             />
           </Grid.Col>
           <Grid.Col span={5}>
             <Table verticalSpacing="sm">
               <tbody>
+                <tr>
+                  <td>
+                    <Text tt="capitalize">Chain Address</Text>
+                  </td>
+                  <td>
+                    <Text c="dimmed" tt="capitalize" span>
+                      {address}
+                    </Text>
+                  </td>
+                </tr>
                 {Object.keys(data).map((key, index) => {
-                  if (key == "photo") return;
+                  if (["photo", "instagram", "facebook", "twitter"].indexOf(key) != -1) return;
                   return (
                     <tr key={index}>
                       <td>
@@ -75,17 +93,27 @@ export default function GeneralDetails({ access, data, setEditedGeneralData }) {
               <Group mt="lg">
                 <ActionIcon
                   component="a"
-                  href={data.instagram}
+                  href={`https://instagram.com/${data.instagram}`}
                   target="_blank"
                   variant="gradient"
                   gradient={{ from: "yellow", to: "purple", deg: 45 }}
                 >
                   <IconBrandInstagram />
                 </ActionIcon>
-                <ActionIcon component="a" href={data.facebook} target="_blank" color="indigo">
+                <ActionIcon
+                  component="a"
+                  href={`https://facebook.com/${data.facebook}`}
+                  target="_blank"
+                  color="indigo"
+                >
                   <IconBrandFacebookFilled />
                 </ActionIcon>
-                <ActionIcon component="a" href={data.twitter} target="_blank" color="blue">
+                <ActionIcon
+                  component="a"
+                  href={`https://twitter.com/${data.twitter}`}
+                  target="_blank"
+                  color="blue"
+                >
                   <IconBrandTwitterFilled />
                 </ActionIcon>
               </Group>

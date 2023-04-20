@@ -1,16 +1,45 @@
 import { readAsDataURLAsync } from "@/utils/readFileAsync";
 import { Box, Button, Modal, SimpleGrid, Text } from "@mantine/core";
-import { useForm } from "@mantine/form";
+import { hasLength, useForm } from "@mantine/form";
 import { useDisclosure } from "@mantine/hooks";
 import { IconEdit } from "@tabler/icons-react";
 import GeneralDataInput from "./CustomInputs/GeneralDataInput";
 import SocialInput from "./CustomInputs/SocialInput";
+import { matches } from "@mantine/form";
+import { isEmail } from "@mantine/form";
 
 export default function EditGeneralDataForm({ initialValues, setEditedGeneralData }) {
   const [opened, { open, close }] = useDisclosure(false);
 
   const form = useForm({
     initialValues: {},
+    validate: {
+      photo: (value) =>
+        value
+          ? value.size / 1024 > 250
+            ? "Size of file must be less than or equal to 250KB"
+            : null
+          : null,
+      name: (value) =>
+        value ? hasLength({ min: 2, max: 25 }, "Name must be 2-25 characters")(value) : null,
+      age: (value) =>
+        value
+          ? value < 18 || value > 99
+            ? "You must be 18-99 years old to register"
+            : null
+          : null,
+      gender: (value) =>
+        value
+          ? matches(
+              /^(male|female|Male|Female)$/,
+              "Input must be Male/male or Female/female"
+            )(value)
+          : null,
+      phone: (value) =>
+        value ? hasLength(10, "Phone number must be a 10 digit number")(value) : null,
+      email: (value) => (value ? isEmail("Invalid Email") : null),
+    },
+    validateInputOnChange: ["photo"],
   });
 
   return (

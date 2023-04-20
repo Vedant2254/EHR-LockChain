@@ -30,7 +30,5 @@ export default function useGetPatientHash(address) {
     contract && address && getHash();
   }, [contract, address]);
 
-  console.log(hashData);
-
   return hashData;
 }

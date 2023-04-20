@@ -43,7 +43,7 @@ export default function AllDoctors({ user, setDoctor }) {
                 >
                   Back to all doctors
                 </Button>
-                <Divider mt="sm" />
+                <Divider my="sm" />
                 <Doctor address={doctor} user={user} setDoctor={setDoctor} />
               </Tabs.Panel>
             );

@@ -10,7 +10,9 @@ export default function useContractCall() {
   const [contract, setContract] = useState(null);
 
   useEffect(() => {
-    enabled && signer && setContract(new ethers.Contract(contractAddress, abi, signer));
+    try {
+      enabled && signer && setContract(new ethers.Contract(contractAddress, abi, signer));
+    } catch (err) {}
   }, [enabled, signer]);
 
   return { contract };

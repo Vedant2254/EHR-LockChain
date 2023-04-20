@@ -70,6 +70,7 @@ export default function Doctor({ user, address, setDoctor }) {
 
               <Tabs.Panel value="general-details" mt="md">
                 <GeneralDetails
+                  address={address}
                   access={access}
                   data={editedGeneralData}
                   setEditedGeneralData={setEditedGeneralData}

@@ -94,6 +94,7 @@ export default function Patient({ user, address, setData }) {
 
             <Tabs.Panel value="general-details" mt="md" h="100%">
               <GeneralDetails
+                address={address}
                 access={access}
                 data={editedGeneralData}
                 setEditedGeneralData={setEditedGeneralData}
