@@ -50,7 +50,7 @@ export default function useUpdatePatient(ptAddress, updater) {
         res2 && (await res2.wait(1));
         setTxnWaiting(false);
 
-        setSuccess(true);
+        (generalDataCID || keyDataCID) && setSuccess(true);
       } catch (err) {
         console.log(err);
         resetCIDs();

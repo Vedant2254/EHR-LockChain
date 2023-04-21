@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Button, Tabs } from "@mantine/core";
+import { Button, Center, Loader, LoadingOverlay, Tabs, Text } from "@mantine/core";
 import AllDoctors from "@/components/Doctor/AllDoctors";
 import AllPatients from "@/components/Patient/AllPatients";
 import useApproveDoctor from "@/hooks/useApproveDoctor";
@@ -11,44 +11,62 @@ export default function AdminController() {
   const { location } = router.query;
 
   const [doctor, setDoctor] = useState(null);
-  const { isDoctorPending, isApproving, runApproveDoctor } = useApproveDoctor(doctor);
-  const { isDoctorRegistered, isDisapproving, runDisapproveDoctor } = useDisapproveDoctor(doctor);
+  const { status: statusOfApprove, isDoctorPending, runApproveDoctor } = useApproveDoctor(doctor);
+  const {
+    status: statusOfDisapprove,
+    isDoctorRegistered,
+    runDisapproveDoctor,
+  } = useDisapproveDoctor(doctor);
 
   return (
-    <Tabs value={location}>
-      <Tabs.Panel value="all-doctors">
-        <AllDoctors user="admin" setDoctor={setDoctor} />
-
-        {doctor && isDoctorRegistered && isDoctorPending && (
+    <>
+      <LoadingOverlay
+        visible={doctor && (statusOfApprove || statusOfDisapprove)}
+        loader={
           <>
-            <Button
-              onClick={runApproveDoctor}
-              variant="white"
-              ml="xl"
-              px="xl"
-              compact
-              disabled={isApproving}
-            >
-              Approve Doctor
-            </Button>
-            <Button
-              onClick={async () => {
-                await runDisapproveDoctor();
-              }}
-              variant="white"
-              ml="xl"
-              px="xl"
-              compact
-              disabled={isDisapproving}
-            >
-              Disapprove Doctor
-            </Button>
+            <Center>
+              <Loader />
+            </Center>
+            <Text>{statusOfApprove || statusOfDisapprove}</Text>
           </>
-        )}
-      </Tabs.Panel>
-      <Tabs.Panel value="all-patients">
-        <AllPatients />
-      </Tabs.Panel>
-    </Tabs>
+        }
+        overlayBlur={4}
+      />
+      <Tabs value={location} keepMounted={false}>
+        <Tabs.Panel value="all-doctors">
+          <AllDoctors user="admin" setDoctor={setDoctor} />
+
+          {doctor && isDoctorRegistered && isDoctorPending && (
+            <>
+              <Button
+                onClick={runApproveDoctor}
+                variant="white"
+                ml="xl"
+                px="xl"
+                compact
+                disabled={statusOfApprove}
+              >
+                Approve Doctor
+              </Button>
+              <Button
+                onClick={async () => {
+                  await runDisapproveDoctor();
+                }}
+                variant="white"
+                ml="xl"
+                px="xl"
+                compact
+                disabled={statusOfDisapprove}
+              >
+                Disapprove Doctor
+              </Button>
+            </>
+          )}
+        </Tabs.Panel>
+        <Tabs.Panel value="all-patients">
+          <AllPatients />
+        </Tabs.Panel>
+      </Tabs>
+    </>
   );
 }

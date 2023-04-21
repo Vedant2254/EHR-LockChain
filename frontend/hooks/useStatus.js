@@ -9,7 +9,7 @@ const messages = [
   "signing",
   "transaction",
   "waiting",
-  "success",
+  "success, please reload the page",
   "failure, please reload the page",
 ];
 

@@ -1,5 +1,5 @@
 import { readAsDataURLAsync } from "@/utils/readFileAsync";
-import { Card, Text, Button, Group, ActionIcon, Center } from "@mantine/core";
+import { Card, Text, Button, Group, ActionIcon, Center, Dialog } from "@mantine/core";
 import InsertCertificate from "@/components/Utils/InsertCertificate";
 import { IconEdit, IconPlus } from "@tabler/icons-react";
 

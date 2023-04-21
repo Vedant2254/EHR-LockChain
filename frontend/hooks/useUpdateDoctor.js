@@ -16,8 +16,9 @@ export default function useUpdateDoctor() {
   });
 
   const [txnWaiting, setTxnWaiting] = useState(false);
+  const [success, setSuccess] = useState(false);
 
-  const message = useStatus({ uploading, txnLoading, txnWaiting });
+  const message = useStatus({ uploading, txnLoading, txnWaiting, success });
 
   useEffect(() => {
     dataCID &&
@@ -28,6 +29,8 @@ export default function useUpdateDoctor() {
           setTxnWaiting(true);
           await res.wait(1);
           setTxnWaiting(false);
+
+          setSuccess(true);
         } catch (err) {
           console.log(err);
           resetCID();

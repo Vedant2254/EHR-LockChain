@@ -61,7 +61,7 @@ export default function Patient({ user, address, setData }) {
 
   return (
     <>
-      {statusOfGet != "success" ? (
+      {statusOfGet != "success, please reload the page" ? (
         <Flex direction="column" align="center">
           <Loader variant="dots" />
           <Text>{statusOfGet}</Text>
@@ -69,7 +69,7 @@ export default function Patient({ user, address, setData }) {
       ) : (
         <>
           <LoadingOverlay
-            visible={statusOfUpdate && statusOfUpdate != "success"}
+            visible={statusOfUpdate}
             overlayBlur={4}
             loader={
               <>
