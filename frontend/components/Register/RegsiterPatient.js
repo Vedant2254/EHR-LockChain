@@ -1,6 +1,7 @@
 import useRegisterPatient from "@/hooks/useRegisterPatient";
 import RegistrationForm from "@/components/Forms/RegistrationForm";
 import { LoadingOverlay, Text, Loader, Center } from "@mantine/core";
+import messages from "@/utils/messages";
 
 export default function RegisterPatient() {
   const { status, handleOnSumbit } = useRegisterPatient();
@@ -15,7 +16,7 @@ export default function RegisterPatient() {
             <Center>
               <Loader />
             </Center>
-            <Text>{status}</Text>
+            <Text>{messages[status]}</Text>
           </>
         }
       />

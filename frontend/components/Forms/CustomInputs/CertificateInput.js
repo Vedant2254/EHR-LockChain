@@ -19,7 +19,7 @@ export default function CertificateInput({ index, initialValues, insertCertifica
 
   function runInsertCertificate() {
     if (form.validate().hasErrors) return;
-    form.setValues({ media: null, title: "", description: "" });
+    form.setValues({ media: "", title: "", description: "" });
     insertCertificate(index, form.values);
   }
 

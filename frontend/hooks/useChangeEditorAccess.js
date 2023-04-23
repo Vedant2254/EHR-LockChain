@@ -3,18 +3,21 @@ import { useContractWrite } from "wagmi";
 import useValidTxnData from "./useValidTxnData";
 import useAddPatientData from "./useAddPatientData";
 import useGetPatientData from "./useGetPatientData";
+import useStatus from "./useStatus";
 
 export default function useChangeEditorAccess(drAddress) {
   const { address: curraddress, contractAddress, abi, enabled } = useValidTxnData();
 
+  const [txnWaiting, setTxnWaiting] = useState(false);
+
   const {
-    isLoading: isUploadingData,
+    isLoading: uploading,
     CIDs,
     setupCIDs,
     resetCIDs,
   } = useAddPatientData(curraddress, drAddress);
 
-  const { writeAsync: changeEditorAccess, isLoading: isTxnLoading } = useContractWrite({
+  const { writeAsync: changeEditorAccess, isLoading: txnLoading } = useContractWrite({
     address: contractAddress,
     abi,
     functionName: "changeEditorAccess",
@@ -22,13 +25,19 @@ export default function useChangeEditorAccess(drAddress) {
     enabled: enabled && drAddress && CIDs.generalDataCID && CIDs.keyDataCID,
   });
 
+  const status = useStatus({ uploading, txnLoading, txnWaiting });
+
   // storing hashes (CIDs) to smart contract happens here
   useEffect(() => {
     CIDs.generalDataCID &&
       CIDs.keyDataCID &&
       (async () => {
         try {
-          await changeEditorAccess();
+          const res = await changeEditorAccess();
+
+          setTxnWaiting(true);
+          await res.wait(1);
+          setTxnWaiting(false);
         } catch (err) {
           console.log(err);
         }
@@ -50,9 +59,7 @@ export default function useChangeEditorAccess(drAddress) {
   }
 
   return {
-    isLoading: isUploadingData || isTxnLoading,
-    isUploadingData,
-    isTxnLoading,
+    status,
     runChangeEditorAccess,
   };
 }

@@ -12,7 +12,11 @@ import { decryptData } from "@/utils/metamask";
 import { symmetricDecrypt } from "@/utils/cryptography";
 import { useEffect } from "react";
 import useUpdateDoctor from "@/hooks/useUpdateDoctor";
+import { useRouter } from "next/router";
+import { Button } from "@mantine/core";
 
 export default function TestPage() {
-  const {} = useAddPatientData();
+  const router = useRouter();
+
+  return <Button onClick={() => router.reload(window.location.pathname)}>reload</Button>;
 }

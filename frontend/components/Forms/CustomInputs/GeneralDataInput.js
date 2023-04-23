@@ -1,7 +1,19 @@
 import { TextInput, FileInput, NumberInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
+import { useEffect } from "react";
 
 export default function GeneralDataInputs({ form }) {
+  useEffect(() => {
+    form.setValues({
+      ...form.values,
+      age:
+        form.values.dob &&
+        new Date().getYear() -
+          form.values.dob.getYear() -
+          (new Date().getMonth() - form.values.dob.getMonth() < 0 ? 1 : 0),
+    });
+  }, [form.values.dob]);
+
   return (
     <>
       {/* General details */}
@@ -12,7 +24,11 @@ export default function GeneralDataInputs({ form }) {
         valueFormat="DD MMM YYYY"
         {...form.getInputProps("dob")}
       />
-      <NumberInput placeholder="Age" {...form.getInputProps("age")} />
+      <NumberInput
+        placeholder="Age, autofilled using DOB"
+        {...form.getInputProps("age")}
+        disabled
+      />
       <TextInput placeholder="Gender" {...form.getInputProps("gender")} />
 
       {/* Contact details */}

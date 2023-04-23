@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useGetPatientData from "@/hooks/useGetPatientData";
 
-import { Center, Flex, Loader, LoadingOverlay, Tabs, Text } from "@mantine/core";
+import { Center, Loader, LoadingOverlay, Tabs, Text } from "@mantine/core";
 import GeneralDetails from "./GeneralDetails";
 import MedicalCertificates from "./MedicalCertificates";
 import ConfirmChangesDialog from "../Utils/ConfirmChangesDialog";
@@ -10,15 +10,19 @@ import { useAccount } from "wagmi";
 import useCheckAccess from "@/hooks/useCheckAccess";
 import GeneralDataSkeleton from "../Utils/GeneralDataSkeleton";
 import CertificatesSkeleton from "../Utils/CertificatesSkeleton";
+import messages from "../../utils/messages";
+import { useRouter } from "next/router";
 
 export default function Patient({ user, address, setData }) {
   // get data
+  const router = useRouter();
   const { address: curraddress } = useAccount();
   const {
     status: statusOfGet,
     generalData,
     certificatesData: { previousVersion, data, digitalSignatureOfLastUpdater },
     keyData,
+    getData,
   } = useGetPatientData(address);
   const { status: statusOfUpdate, updateData } = useUpdatePatient(address, curraddress);
   const { access } = useCheckAccess(address);
@@ -61,6 +65,10 @@ export default function Patient({ user, address, setData }) {
       );
   }, [editedGeneralData, editedCertificates]);
 
+  useEffect(() => {
+    statusOfUpdate == "success" && router.reload(window.location.pathname);
+  }, [statusOfUpdate]);
+
   return (
     <>
       <LoadingOverlay
@@ -71,7 +79,7 @@ export default function Patient({ user, address, setData }) {
             <Center>
               <Loader />
             </Center>
-            <Text>{statusOfUpdate}</Text>
+            <Text>{messages[statusOfUpdate]}</Text>
           </>
         }
       />
@@ -82,8 +90,11 @@ export default function Patient({ user, address, setData }) {
         </Tabs.List>
 
         <Tabs.Panel value="general-details" mt="md" h="100%">
-          {statusOfGet != "success, please reload the page" ? (
-            <GeneralDataSkeleton />
+          {statusOfGet != "success" ? (
+            <>
+              <GeneralDataSkeleton />
+              <Text>{messages[statusOfGet]}</Text>
+            </>
           ) : (
             <GeneralDetails
               address={address}
@@ -94,8 +105,11 @@ export default function Patient({ user, address, setData }) {
           )}
         </Tabs.Panel>
         <Tabs.Panel value="certificates" mt="md" h="100%">
-          {statusOfGet != "success, please reload the page" ? (
-            <CertificatesSkeleton />
+          {statusOfGet != "success" ? (
+            <>
+              <CertificatesSkeleton />
+              <Text>{messages[statusOfGet]}</Text>
+            </>
           ) : (
             <MedicalCertificates
               access={access}

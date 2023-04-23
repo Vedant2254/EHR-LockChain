@@ -9,6 +9,8 @@ import useUpdateDoctor from "@/hooks/useUpdateDoctor";
 import useCheckAccess from "@/hooks/useCheckAccess";
 import GeneralDataSkeleton from "../Utils/GeneralDataSkeleton";
 import CertificatesSkeleton from "../Utils/CertificatesSkeleton";
+import messages from "@/utils/messages";
+import { useRouter } from "next/router";
 
 const useStyles = createStyles((theme) => ({
   tabs: {},
@@ -16,6 +18,7 @@ const useStyles = createStyles((theme) => ({
 
 export default function Doctor({ user, address, setDoctor }) {
   // get data
+  const router = useRouter();
   const { status: statusOfGet, generalData, certificates } = useGetDoctorData(address);
   const { status: statusOfUpdate, updateData } = useUpdateDoctor();
   const { access } = useCheckAccess(address);
@@ -37,6 +40,10 @@ export default function Doctor({ user, address, setDoctor }) {
   }, [editedGeneralData, editedCertificates]);
 
   useEffect(() => {
+    statusOfUpdate == "success" && router.reload(window.location.pathname);
+  }, [statusOfUpdate]);
+
+  useEffect(() => {
     setDoctor && setDoctor(address);
   }, [address]);
 
@@ -50,7 +57,7 @@ export default function Doctor({ user, address, setDoctor }) {
             <Center>
               <Loader />
             </Center>
-            <Text>{statusOfUpdate}</Text>
+            <Text>{messages[statusOfUpdate]}</Text>
           </>
         }
       />
@@ -64,8 +71,11 @@ export default function Doctor({ user, address, setDoctor }) {
           <DoctorButtons access={access} address={address} />
 
           <Tabs.Panel value="general-details" mt="md">
-            {statusOfGet != "success, please reload the page" ? (
-              <GeneralDataSkeleton />
+            {statusOfGet != "success" ? (
+              <>
+                <GeneralDataSkeleton />
+                <Text>{messages[statusOfGet]}</Text>
+              </>
             ) : (
               <GeneralDetails
                 address={address}
@@ -76,8 +86,11 @@ export default function Doctor({ user, address, setDoctor }) {
             )}
           </Tabs.Panel>
           <Tabs.Panel value="certificates" mt="md">
-            {statusOfGet != "success, please reload the page" ? (
-              <CertificatesSkeleton />
+            {statusOfGet != "success" ? (
+              <>
+                <CertificatesSkeleton />
+                <Text>{messages[statusOfGet]}</Text>
+              </>
             ) : (
               <Certifications
                 access={access}
@@ -90,7 +103,9 @@ export default function Doctor({ user, address, setDoctor }) {
       </Tabs>
       <ConfirmChangesDialog
         isEdited={isEdited}
-        handleOnConfirm={() => updateData(editedGeneralData, editedCertificates)}
+        handleOnConfirm={async () => {
+          await updateData(editedGeneralData, editedCertificates);
+        }}
         handleOnReset={() => {
           setEditedGeneralData(generalData);
           setEditedCertificates(certificates);

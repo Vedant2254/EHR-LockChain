@@ -1,21 +1,8 @@
 import { useEffect, useState } from "react";
 
-const messages = [
-  null,
-  "uploading",
-  "retrieving",
-  "encrypting",
-  "decrypting",
-  "signing",
-  "transaction",
-  "waiting",
-  "success, please reload the page",
-  "failure, please reload the page",
-];
-
 // {uploading, retrieving, encrypting, decrypting, signing, txnLoading, txnWaiting}
-export default function useStatus(status) {
-  const [message, setMessage] = useState(messages[0]);
+export default function useStatus(statuses) {
+  const [status, setStatus] = useState(null);
 
   useEffect(() => {
     const {
@@ -28,19 +15,19 @@ export default function useStatus(status) {
       txnWaiting,
       success,
       failure,
-    } = status;
+    } = statuses;
 
-    if (uploading) setMessage(messages[1]);
-    else if (retrieving) setMessage(messages[2]);
-    else if (encrypting) setMessage(messages[3]);
-    else if (decrypting) setMessage(messages[4]);
-    else if (signing) setMessage(messages[5]);
-    else if (txnLoading) setMessage(messages[6]);
-    else if (txnWaiting) setMessage(messages[7]);
-    else if (success) setMessage(messages[8]);
-    else if (failure) setMessage(messages[9]);
-    else setMessage(messages[0]);
-  }, [status]);
+    if (uploading) setStatus("uploading");
+    else if (retrieving) setStatus("retrieving");
+    else if (encrypting) setStatus("encrypting");
+    else if (decrypting) setStatus("decrypting");
+    else if (signing) setStatus("signing");
+    else if (txnLoading) setStatus("txnLoading");
+    else if (txnWaiting) setStatus("txnWaiting");
+    else if (success) setStatus("success");
+    else if (failure) setStatus("failure");
+    else setStatus(null);
+  }, [statuses]);
 
-  return message;
+  return status;
 }

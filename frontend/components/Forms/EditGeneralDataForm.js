@@ -27,6 +27,8 @@ export default function EditGeneralDataForm({ initialValues, setEditedGeneralDat
           ? value < 18 || value > 99
             ? "You must be 18-99 years old to register"
             : null
+          : value == 0
+          ? "Age cannot be 0"
           : null,
       gender: (value) =>
         value
@@ -37,9 +39,10 @@ export default function EditGeneralDataForm({ initialValues, setEditedGeneralDat
           : null,
       phone: (value) =>
         value ? hasLength(10, "Phone number must be a 10 digit number")(value) : null,
-      email: (value) => (value ? isEmail("Invalid Email") : null),
+      email: (value) => (value ? isEmail("Invalid Email")(value) : null),
     },
     validateInputOnChange: ["photo"],
+    validateInputOnBlur: ["name", "age", "gender", "phone", "email"],
   });
 
   return (
@@ -71,6 +74,7 @@ export default function EditGeneralDataForm({ initialValues, setEditedGeneralDat
 
             setEditedGeneralData({ ...initialValues, ...data });
             form.reset();
+            close();
           })}
         >
           <SimpleGrid cols={1}>
