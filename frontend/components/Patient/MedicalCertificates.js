@@ -1,31 +1,10 @@
 import { readAsDataURLAsync } from "@/utils/readFileAsync";
-import { Card, Text, Button, Group, ActionIcon, Center, Dialog } from "@mantine/core";
+import { Card, Text, Button, Group } from "@mantine/core";
+import AddCertificateBtn from "../Utils/AddCertificateButton";
+import EditCertificateBtn from "../Utils/EditCertificateButton";
 import InsertCertificate from "@/components/Utils/InsertCertificate";
-import { IconEdit, IconPlus } from "@tabler/icons-react";
-
-const AddCertificateBtn = () => (
-  <Center>
-    <Button variant="subtle">
-      <IconPlus />
-    </Button>
-  </Center>
-);
-
-const EditCertificateBtn = () => (
-  <ActionIcon
-    component="button"
-    color="blue"
-    variant="subtle"
-    radius="xl"
-    sx={{ "&:hover": { backgroundColor: "none" } }}
-  >
-    <IconEdit />
-  </ActionIcon>
-);
 
 export default function MedicalCertificates({ access, certificates, setEditedCertificates }) {
-  // console.log(access);
-
   async function insertCertificate(index, certificate) {
     const { media } = certificate;
     if (media && media.constructor.name == "File")

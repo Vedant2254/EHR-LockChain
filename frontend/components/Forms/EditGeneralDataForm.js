@@ -81,7 +81,7 @@ export default function EditGeneralDataForm({ initialValues, setEditedGeneralDat
         </form>
       </Modal>
 
-      <Button onClick={open} variant="subtle" compact>
+      <Button onClick={open} variant="subtle" p="0" compact>
         <IconEdit /> Edit data
       </Button>
     </Box>

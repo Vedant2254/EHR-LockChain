@@ -1,5 +1,5 @@
 import useGetDoctorData from "@/hooks/useGetDoctorData";
-import { Box, Center, Flex, Loader, LoadingOverlay, Tabs, Text } from "@mantine/core";
+import { Box, Center, Flex, Loader, LoadingOverlay, Tabs, Text, createStyles } from "@mantine/core";
 import { useEffect, useState } from "react";
 import GeneralDetails from "./GeneralDetails";
 import Certifications from "./Certifications";
@@ -7,6 +7,12 @@ import DoctorButtons from "./DoctorButtons";
 import ConfirmChangesDialog from "../Utils/ConfirmChangesDialog";
 import useUpdateDoctor from "@/hooks/useUpdateDoctor";
 import useCheckAccess from "@/hooks/useCheckAccess";
+import GeneralDataSkeleton from "../Utils/GeneralDataSkeleton";
+import CertificatesSkeleton from "../Utils/CertificatesSkeleton";
+
+const useStyles = createStyles((theme) => ({
+  tabs: {},
+}));
 
 export default function Doctor({ user, address, setDoctor }) {
   // get data
@@ -18,6 +24,8 @@ export default function Doctor({ user, address, setDoctor }) {
   const [editedGeneralData, setEditedGeneralData] = useState();
   const [editedCertificates, setEditedCertificates] = useState();
   const [isEdited, setIsEdited] = useState(false);
+
+  const { classes } = useStyles();
 
   useEffect(() => {
     setEditedGeneralData(generalData);
@@ -34,67 +42,60 @@ export default function Doctor({ user, address, setDoctor }) {
 
   return (
     <>
-      {statusOfGet != "success, please reload the page" ? (
-        <Flex direction="column" align="center">
-          <Loader variant="dots" />
-          <Text>{statusOfGet}</Text>
-        </Flex>
-      ) : (
-        <>
-          <LoadingOverlay
-            visible={statusOfUpdate}
-            overlayBlur={4}
-            loader={
-              <>
-                <Center>
-                  <Loader />
-                </Center>
-                <Text>{statusOfUpdate}</Text>
-              </>
-            }
-          />
-          <Tabs
-            value={activeTab}
-            onTabChange={setActiveTab}
-            orientation="horizontal"
-            px="xl"
-            mt="md"
-          >
-            <Tabs.List grow>
-              <Tabs.Tab value="general-details">General Details</Tabs.Tab>
-              <Tabs.Tab value="certificates">Doctor's Certificates</Tabs.Tab>
-            </Tabs.List>
+      <LoadingOverlay
+        visible={statusOfUpdate}
+        overlayBlur={4}
+        loader={
+          <>
+            <Center>
+              <Loader />
+            </Center>
+            <Text>{statusOfUpdate}</Text>
+          </>
+        }
+      />
+      <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal" px="xl" mt="md">
+        <Tabs.List className={classes.tabs} grow>
+          <Tabs.Tab value="general-details">General Details</Tabs.Tab>
+          <Tabs.Tab value="certificates">Doctor's Certificates</Tabs.Tab>
+        </Tabs.List>
 
-            <Box my="md">
-              <DoctorButtons access={access} address={address} />
+        <Box my="md">
+          <DoctorButtons access={access} address={address} />
 
-              <Tabs.Panel value="general-details" mt="md">
-                <GeneralDetails
-                  address={address}
-                  access={access}
-                  data={editedGeneralData}
-                  setEditedGeneralData={setEditedGeneralData}
-                />
-              </Tabs.Panel>
-              <Tabs.Panel value="certificates" mt="md">
-                <Certifications
-                  access={access}
-                  certificates={editedCertificates}
-                  setEditedCertificates={setEditedCertificates}
-                />
-              </Tabs.Panel>
-            </Box>
-          </Tabs>
-          <ConfirmChangesDialog
-            isEdited={isEdited}
-            handleOnConfirm={() => updateData(editedGeneralData, editedCertificates)}
-            handleOnReset={() => {
-              setEditedGeneralData(generalData);
-              setEditedCertificates(certificates);
-            }}
-          />
-        </>
-      )}
+          <Tabs.Panel value="general-details" mt="md">
+            {statusOfGet != "success, please reload the page" ? (
+              <GeneralDataSkeleton />
+            ) : (
+              <GeneralDetails
+                address={address}
+                access={access}
+                data={editedGeneralData}
+                setEditedGeneralData={setEditedGeneralData}
+              />
+            )}
+          </Tabs.Panel>
+          <Tabs.Panel value="certificates" mt="md">
+            {statusOfGet != "success, please reload the page" ? (
+              <CertificatesSkeleton />
+            ) : (
+              <Certifications
+                access={access}
+                certificates={editedCertificates}
+                setEditedCertificates={setEditedCertificates}
+              />
+            )}
+          </Tabs.Panel>
+        </Box>
+      </Tabs>
+      <ConfirmChangesDialog
+        isEdited={isEdited}
+        handleOnConfirm={() => updateData(editedGeneralData, editedCertificates)}
+        handleOnReset={() => {
+          setEditedGeneralData(generalData);
+          setEditedCertificates(certificates);
+        }}
+      />
     </>
   );
 }

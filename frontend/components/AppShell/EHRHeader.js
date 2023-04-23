@@ -8,6 +8,7 @@ import {
   useMantineTheme,
   NavLink,
   Button,
+  createStyles,
 } from "@mantine/core";
 import ConnectButton from "@/components/AppShell/ConnectButton";
 import Link from "next/link";
@@ -16,16 +17,26 @@ import useIsDoctorRegistered from "@/hooks/useIsDoctorRegistered";
 import useIsAdmin from "@/hooks/useIsAdmin";
 import { useAccount } from "wagmi";
 
+const useStyles = createStyles((theme) => ({
+  header: {
+    padding: theme.spacing.lg,
+    // borderBottom: `1px solid ${theme.colors.blue[3]}`,
+    boxShadow: "1px -7px 10px 0px black",
+    zIndex: 101,
+  },
+}));
+
 export default function EHRHeader({ opened, setOpened }) {
   const { address } = useAccount();
   const { isPatient } = useIsPatient(address);
   const { isDoctorRegistered } = useIsDoctorRegistered(address);
   const { isAdmin } = useIsAdmin(address);
+  const { classes } = useStyles();
 
   const theme = useMantineTheme();
 
   return (
-    <Header height={{ base: 50, md: 70 }} p="md">
+    <Header height={{ base: 50, md: 70 }} className={classes.header}>
       <Flex justify="space-between" align="center" h="100%">
         <MediaQuery largerThan="sm" styles={{ display: "none" }}>
           <Burger

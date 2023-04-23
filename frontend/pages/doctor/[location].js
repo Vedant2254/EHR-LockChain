@@ -8,7 +8,7 @@ import EHRAppShell from "@/components/AppShell/EHRAppShell";
 export default function MainScreen() {
   const navlinks = [
     { label: "Dashboard", location: "dashboard" },
-    { label: "My patients", location: "my-patients" },
+    { label: "Patients", location: "my-patients" },
   ];
 
   const { address } = useAccount();

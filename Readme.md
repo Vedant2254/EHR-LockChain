@@ -124,7 +124,7 @@ Encryption can be done using `crypto` module.
 
 This data is encrypted
 
-```json
+```
 {
     name: ----
     address: ---
@@ -139,7 +139,7 @@ This data is encrypted
 
 This data has encrypted keys, only individual keys are encrypted
 
-```json
+```
 {
     keys: {
         address1: encKeySForAddress1
@@ -158,7 +158,7 @@ This data has encrypted keys, only individual keys are encrypted
 This data is stored in encrypted format, only accessible (read / read-write permission decided by smart contract)
 by addresses present in keys of [Patient key data](#patient-key-data). Data is encrypted.
 
-```json
+```
 {
     previousVersion: {
         hash: "",
@@ -191,7 +191,7 @@ by addresses present in keys of [Patient key data](#patient-key-data). Data is e
 
 #### Doctor general details
 
-```json
+```
 {
     name: ----
     address: ---

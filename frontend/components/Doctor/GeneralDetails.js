@@ -8,6 +8,7 @@ import {
   Group,
   ActionIcon,
   Container,
+  Flex,
 } from "@mantine/core";
 import {
   IconBrandFacebookFilled,
@@ -25,6 +26,7 @@ const useStyles = createStyles((theme) => ({
   socialcard: {
     border: `1px solid ${theme.colors.dark[0]}`,
     borderRadius: theme.radius.md,
+    padding: theme.spacing.md,
   },
 }));
 
@@ -38,9 +40,8 @@ export default function GeneralDetails({ address, access, data, setEditedGeneral
           <EditGeneralDataForm initialValues={data} setEditedGeneralData={setEditedGeneralData} />
         )}
         <Title order={3}>Dr. {data.name}'s profile </Title>
-
         <Grid mt="xs">
-          <Grid.Col span={3}>
+          <Grid.Col span={3} bor>
             <Image
               src={data.photo}
               height={200}
@@ -90,7 +91,7 @@ export default function GeneralDetails({ address, access, data, setEditedGeneral
           </Grid.Col>
           <Grid.Col span={1}></Grid.Col>
           <Grid.Col span={3}>
-            <Container className={classes.socialcard} p="md">
+            <Container className={classes.socialcard}>
               <Text fw="bold">Social</Text>
               <Group mt="lg">
                 <ActionIcon

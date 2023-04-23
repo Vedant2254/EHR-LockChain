@@ -1,27 +1,8 @@
 import { readAsDataURLAsync } from "@/utils/readFileAsync";
-import { Card, Text, Button, Center, ActionIcon, Group } from "@mantine/core";
-import { IconEdit, IconPlus } from "@tabler/icons-react";
+import { Card, Text, Button, Group } from "@mantine/core";
+import AddCertificateBtn from "../Utils/AddCertificateButton";
+import EditCertificateBtn from "../Utils/EditCertificateButton";
 import InsertCertificate from "../Utils/InsertCertificate";
-
-const AddCertificateBtn = () => (
-  <Center>
-    <Button variant="subtle">
-      <IconPlus />
-    </Button>
-  </Center>
-);
-
-const EditCertificateBtn = () => (
-  <ActionIcon
-    component="button"
-    color="blue"
-    variant="subtle"
-    radius="xl"
-    sx={{ "&:hover": { backgroundColor: "none" } }}
-  >
-    <IconEdit />
-  </ActionIcon>
-);
 
 export default function Certifications({ access, certificates, setEditedCertificates }) {
   async function insertCertificate(index, certificate) {

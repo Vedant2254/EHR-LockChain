@@ -8,6 +8,8 @@ import ConfirmChangesDialog from "../Utils/ConfirmChangesDialog";
 import useUpdatePatient from "@/hooks/useUpdatePatient";
 import { useAccount } from "wagmi";
 import useCheckAccess from "@/hooks/useCheckAccess";
+import GeneralDataSkeleton from "../Utils/GeneralDataSkeleton";
+import CertificatesSkeleton from "../Utils/CertificatesSkeleton";
 
 export default function Patient({ user, address, setData }) {
   // get data
@@ -61,73 +63,66 @@ export default function Patient({ user, address, setData }) {
 
   return (
     <>
-      {statusOfGet != "success, please reload the page" ? (
-        <Flex direction="column" align="center">
-          <Loader variant="dots" />
-          <Text>{statusOfGet}</Text>
-        </Flex>
-      ) : (
-        <>
-          <LoadingOverlay
-            visible={statusOfUpdate}
-            overlayBlur={4}
-            loader={
-              <>
-                <Center>
-                  <Loader />
-                </Center>
-                <Text>{statusOfUpdate}</Text>
-              </>
-            }
-          />
-          <Tabs
-            value={activeTab}
-            onTabChange={setActiveTab}
-            orientation="horizontal"
-            px="xl"
-            mt="md"
-          >
-            <Tabs.List grow>
-              <Tabs.Tab value="general-details">General Details</Tabs.Tab>
-              <Tabs.Tab value="certificates">Medical Certificates</Tabs.Tab>
-            </Tabs.List>
+      <LoadingOverlay
+        visible={statusOfUpdate}
+        overlayBlur={4}
+        loader={
+          <>
+            <Center>
+              <Loader />
+            </Center>
+            <Text>{statusOfUpdate}</Text>
+          </>
+        }
+      />
+      <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal" px="xl" mt="md">
+        <Tabs.List grow>
+          <Tabs.Tab value="general-details">General Details</Tabs.Tab>
+          <Tabs.Tab value="certificates">Medical Certificates</Tabs.Tab>
+        </Tabs.List>
 
-            <Tabs.Panel value="general-details" mt="md" h="100%">
-              <GeneralDetails
-                address={address}
-                access={access}
-                data={editedGeneralData}
-                setEditedGeneralData={setEditedGeneralData}
-              />
-            </Tabs.Panel>
-            <Tabs.Panel value="certificates" mt="md" h="100%">
-              <MedicalCertificates
-                access={access}
-                certificates={editedCertificates}
-                setEditedCertificates={setEditedCertificates}
-              />
-            </Tabs.Panel>
-          </Tabs>
-          <ConfirmChangesDialog
-            isEdited={isEdited}
-            handleOnConfirm={async () => {
-              await updateData(
-                {
-                  prevCertificatesData: { previousVersion, data, digitalSignatureOfLastUpdater },
-                  prevKeyData: keyData,
-                },
-                !deepEqual(generalData, editedGeneralData) ? editedGeneralData : null,
-                !deepEqual(data.certificates, editedCertificates) ? editedCertificates : null,
-                keyData
-              );
-            }}
-            handleOnReset={() => {
-              setEditedGeneralData(generalData);
-              setEditedCertificates(data.certificates);
-            }}
-          />
-        </>
-      )}
+        <Tabs.Panel value="general-details" mt="md" h="100%">
+          {statusOfGet != "success, please reload the page" ? (
+            <GeneralDataSkeleton />
+          ) : (
+            <GeneralDetails
+              address={address}
+              access={access}
+              data={editedGeneralData}
+              setEditedGeneralData={setEditedGeneralData}
+            />
+          )}
+        </Tabs.Panel>
+        <Tabs.Panel value="certificates" mt="md" h="100%">
+          {statusOfGet != "success, please reload the page" ? (
+            <CertificatesSkeleton />
+          ) : (
+            <MedicalCertificates
+              access={access}
+              certificates={editedCertificates}
+              setEditedCertificates={setEditedCertificates}
+            />
+          )}
+        </Tabs.Panel>
+      </Tabs>
+      <ConfirmChangesDialog
+        isEdited={isEdited}
+        handleOnConfirm={async () => {
+          await updateData(
+            {
+              prevCertificatesData: { previousVersion, data, digitalSignatureOfLastUpdater },
+              prevKeyData: keyData,
+            },
+            !deepEqual(generalData, editedGeneralData) ? editedGeneralData : null,
+            !deepEqual(data.certificates, editedCertificates) ? editedCertificates : null,
+            keyData
+          );
+        }}
+        handleOnReset={() => {
+          setEditedGeneralData(generalData);
+          setEditedCertificates(data.certificates);
+        }}
+      />
     </>
   );
 }

@@ -29,7 +29,7 @@ export default function PatientsOfDoctor({ user }) {
                 w="100%"
                 leftIcon={<IconArrowLeft />}
               >
-                Back to all doctors
+                Back to all patients
               </Button>
               <Divider my="sm" />
               <Patient address={patient} user={user} />
