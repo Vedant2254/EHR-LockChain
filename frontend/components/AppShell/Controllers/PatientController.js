@@ -11,11 +11,7 @@ import { Button, Center, Loader, LoadingOverlay, Tabs, Text } from "@mantine/cor
 
 export default function PatientController() {
   const { address } = useAccount();
-  const {
-    status: statusOfGet,
-    doctor: doctorOfPatient,
-    getDoctorOfPatient,
-  } = useGetDoctorOfPatient();
+  const { status: statusOfGet, doctor: doctorOfPatient } = useGetDoctorOfPatient();
 
   const router = useRouter();
   const { location } = router.query;
@@ -28,8 +24,8 @@ export default function PatientController() {
   const { status: statusOfRemove, runRemoveEditorAccess } = useRemoveEditorAccess();
 
   useEffect(() => {
-    console.log(!statusOfGet && !statusOfChange && !statusOfRemove);
-    // !statusOfGet && !statusOfChange && !statusOfRemove && router.reload(window.location.pathname);
+    (statusOfChange == "success" || statusOfRemove == "success") &&
+      router.reload(window.location.pathname);
   }, [statusOfChange, statusOfRemove]);
 
   return (

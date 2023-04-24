@@ -15,7 +15,11 @@ export default function useGetPatientData(address, enabled = true) {
   const [isRetrieving, setIsRetrieving] = useState(false);
   const [retrieved, setHasRetrieved] = useState(false);
   const [failed, setHasFailed] = useState(false);
-  const message = useStatus({ retrieving: isRetrieving, success: retrieved, failure: failed });
+  const message = useStatus({
+    retrieving: isRetrieving,
+    success: retrieved,
+    failure: failed,
+  });
 
   async function getFromIPFS() {
     const cipherDataFile = (await retrieveIPFS(generalHash))[0];
@@ -61,14 +65,16 @@ export default function useGetPatientData(address, enabled = true) {
 
   async function master() {
     setIsRetrieving(true);
+
     try {
       const ciphers = await getFromIPFS();
-      ciphers && (await finalStepDecryption(ciphers));
+      await finalStepDecryption(ciphers);
       setHasRetrieved(true);
     } catch (err) {
       console.log(err);
       setHasFailed(true);
     }
+
     setIsRetrieving(false);
   }
 

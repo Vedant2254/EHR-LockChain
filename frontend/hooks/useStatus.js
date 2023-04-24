@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 // {uploading, retrieving, encrypting, decrypting, signing, txnLoading, txnWaiting}
-export default function useStatus(statuses) {
+export default function useStatus(statuses, print) {
   const [status, setStatus] = useState(null);
 
   useEffect(() => {

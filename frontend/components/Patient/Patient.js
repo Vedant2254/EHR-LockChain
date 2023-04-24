@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useGetPatientData from "@/hooks/useGetPatientData";
 
-import { Center, Loader, LoadingOverlay, Tabs, Text } from "@mantine/core";
+import { Button, Center, Loader, LoadingOverlay, Tabs, Text } from "@mantine/core";
 import GeneralDetails from "./GeneralDetails";
 import MedicalCertificates from "./MedicalCertificates";
 import ConfirmChangesDialog from "../Utils/ConfirmChangesDialog";
@@ -12,6 +12,9 @@ import GeneralDataSkeleton from "../Utils/GeneralDataSkeleton";
 import CertificatesSkeleton from "../Utils/CertificatesSkeleton";
 import messages from "../../utils/messages";
 import { useRouter } from "next/router";
+import { IconError404 } from "@tabler/icons-react";
+import Retry from "../Utils/Retry";
+import SkeletonLoader from "../Utils/SkeletonLoader";
 
 export default function Patient({ user, address, setData }) {
   // get data
@@ -90,33 +93,33 @@ export default function Patient({ user, address, setData }) {
         </Tabs.List>
 
         <Tabs.Panel value="general-details" mt="md" h="100%">
-          {statusOfGet != "success" ? (
-            <>
-              <GeneralDataSkeleton />
-              <Text>{messages[statusOfGet]}</Text>
-            </>
-          ) : (
-            <GeneralDetails
-              address={address}
-              access={access}
-              data={editedGeneralData}
-              setEditedGeneralData={setEditedGeneralData}
-            />
-          )}
+          <SkeletonLoader
+            status={statusOfGet}
+            SkeletonComponent={() => <GeneralDataSkeleton status={statusOfGet} />}
+            RetryComponent={() => <Retry status={statusOfGet} retryHandler={getData} />}
+            DataComponent={() => (
+              <GeneralDetails
+                address={address}
+                access={access}
+                data={editedGeneralData}
+                setEditedGeneralData={setEditedGeneralData}
+              />
+            )}
+          />
         </Tabs.Panel>
         <Tabs.Panel value="certificates" mt="md" h="100%">
-          {statusOfGet != "success" ? (
-            <>
-              <CertificatesSkeleton />
-              <Text>{messages[statusOfGet]}</Text>
-            </>
-          ) : (
-            <MedicalCertificates
-              access={access}
-              certificates={editedCertificates}
-              setEditedCertificates={setEditedCertificates}
-            />
-          )}
+          <SkeletonLoader
+            status={statusOfGet}
+            SkeletonComponent={() => <CertificatesSkeleton status={statusOfGet} />}
+            RetryComponent={() => <Retry status={statusOfGet} retryHandler={getData} />}
+            DataComponent={() => (
+              <MedicalCertificates
+                access={access}
+                certificates={editedCertificates}
+                setEditedCertificates={setEditedCertificates}
+              />
+            )}
+          />
         </Tabs.Panel>
       </Tabs>
       <ConfirmChangesDialog

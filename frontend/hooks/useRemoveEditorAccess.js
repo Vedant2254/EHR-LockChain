@@ -8,6 +8,7 @@ export default function useRemoveEditorAccess() {
   const { address: curraddress, contractAddress, abi, enabled } = useValidTxnData();
 
   const [txnWaiting, setTxnWaiting] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const { isLoading: uploading, CIDs, setupCIDs, resetCIDs } = useAddPatientData(curraddress);
 
@@ -19,7 +20,7 @@ export default function useRemoveEditorAccess() {
     enabled: enabled && CIDs.generalDataCID && CIDs.keyDataCID,
   });
 
-  const status = useStatus({ uploading, txnLoading, txnWaiting });
+  const status = useStatus({ uploading, txnLoading, txnWaiting, success });
 
   // storing hashes (CIDs) to smart contract happens here
   useEffect(() => {
@@ -32,6 +33,8 @@ export default function useRemoveEditorAccess() {
           setTxnWaiting(true);
           await res.wait(1);
           setTxnWaiting(false);
+
+          setSuccess(true);
         } catch (err) {
           console.log(err);
         }

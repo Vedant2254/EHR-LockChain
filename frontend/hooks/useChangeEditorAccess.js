@@ -9,6 +9,7 @@ export default function useChangeEditorAccess(drAddress) {
   const { address: curraddress, contractAddress, abi, enabled } = useValidTxnData();
 
   const [txnWaiting, setTxnWaiting] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const {
     isLoading: uploading,
@@ -25,7 +26,7 @@ export default function useChangeEditorAccess(drAddress) {
     enabled: enabled && drAddress && CIDs.generalDataCID && CIDs.keyDataCID,
   });
 
-  const status = useStatus({ uploading, txnLoading, txnWaiting });
+  const status = useStatus({ uploading, txnLoading, txnWaiting, success });
 
   // storing hashes (CIDs) to smart contract happens here
   useEffect(() => {
@@ -38,6 +39,8 @@ export default function useChangeEditorAccess(drAddress) {
           setTxnWaiting(true);
           await res.wait(1);
           setTxnWaiting(false);
+
+          setSuccess(true);
         } catch (err) {
           console.log(err);
         }

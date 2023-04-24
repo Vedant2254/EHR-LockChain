@@ -21,10 +21,13 @@ export default function useGetDoctorOfPatient() {
   useEffect(() => {
     (async () => {
       try {
-        setTxnLoading(true);
-        enabled && signer && setDoctor(await getDoctorOfPatient());
-        setTxnLoading(false);
-        setSuccess(true);
+        if (enabled && signer) {
+          setTxnLoading(true);
+          const drAddress = await getDoctorOfPatient();
+          setDoctor(drAddress);
+          setTxnLoading(false);
+          setSuccess(true);
+        }
       } catch (err) {
         console.log(err);
       }
