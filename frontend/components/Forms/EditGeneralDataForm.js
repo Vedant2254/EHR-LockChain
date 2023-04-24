@@ -70,7 +70,7 @@ export default function EditGeneralDataForm({ initialValues, setEditedGeneralDat
             if (photo && photo.constructor.name == "File")
               data.photo = await readAsDataURLAsync(photo);
 
-            Object.keys(data).forEach((key) => data[key] == "" && delete data[key]);
+            Object.keys(data).forEach((key) => !data[key] && delete data[key]);
 
             setEditedGeneralData({ ...initialValues, ...data });
             form.reset();

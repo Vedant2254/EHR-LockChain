@@ -1,5 +1,6 @@
 import { Text, Dialog, Group, TextInput, Button } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconCheck, IconCross } from "@tabler/icons-react";
 import { useEffect } from "react";
 
 export default function ConfirmChangesDialog({ isEdited, handleOnConfirm, handleOnReset }) {

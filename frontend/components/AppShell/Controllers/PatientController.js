@@ -7,7 +7,8 @@ import useRemoveEditorAccess from "@/hooks/useRemoveEditorAccess";
 import AllDoctors from "@/components/Doctor/AllDoctors";
 import Doctor from "@/components/Doctor/Doctor";
 import Patient from "@/components/Patient/Patient";
-import { Button, Center, Loader, LoadingOverlay, Tabs, Text } from "@mantine/core";
+import { Button, Tabs, Text } from "@mantine/core";
+import BlurLoader from "@/components/Utils/BlurLoader";
 
 export default function PatientController() {
   const { address } = useAccount();
@@ -30,17 +31,9 @@ export default function PatientController() {
 
   return (
     <>
-      <LoadingOverlay
+      <BlurLoader
         visible={statusOfChange || statusOfRemove}
-        loader={
-          <>
-            <Center>
-              <Loader />
-            </Center>
-            <Text>{statusOfChange || statusOfRemove}</Text>
-          </>
-        }
-        overlayBlur={4}
+        status={statusOfChange || statusOfRemove}
       />
       <Tabs value={location}>
         <Tabs.Panel value="dashboard">

@@ -1,10 +1,10 @@
 import messages from "@/utils/messages";
-import { Grid, Group, Skeleton, Text } from "@mantine/core";
+import { Alert, Center, Grid, Group, Notification, Progress, Skeleton, Text } from "@mantine/core";
 
 export default function GeneralDataSkeleton({ status, details }) {
   return (
     <>
-      <Skeleton height={25} w="20%" mt={15} radius="xl" />
+      <Skeleton height={25} w="20%" my="lg" radius="xl" />
       <Grid my="xs">
         <Grid.Col span={3} bor>
           <Skeleton height={200} mt={15} circle />
@@ -28,8 +28,6 @@ export default function GeneralDataSkeleton({ status, details }) {
           </Group>
         </Grid.Col>
       </Grid>
-
-      <Text>{messages[status]}</Text>
     </>
   );
 }

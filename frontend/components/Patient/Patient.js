@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useGetPatientData from "@/hooks/useGetPatientData";
 
-import { Button, Center, Loader, LoadingOverlay, Tabs, Text } from "@mantine/core";
+import { Tabs } from "@mantine/core";
 import GeneralDetails from "./GeneralDetails";
 import MedicalCertificates from "./MedicalCertificates";
 import ConfirmChangesDialog from "../Utils/ConfirmChangesDialog";
@@ -10,11 +10,11 @@ import { useAccount } from "wagmi";
 import useCheckAccess from "@/hooks/useCheckAccess";
 import GeneralDataSkeleton from "../Utils/GeneralDataSkeleton";
 import CertificatesSkeleton from "../Utils/CertificatesSkeleton";
-import messages from "../../utils/messages";
 import { useRouter } from "next/router";
-import { IconError404 } from "@tabler/icons-react";
 import Retry from "../Utils/Retry";
 import SkeletonLoader from "../Utils/SkeletonLoader";
+import BlurLoader from "../Utils/BlurLoader";
+import deepEqual from "@/utils/deepEqual";
 
 export default function Patient({ user, address, setData }) {
   // get data
@@ -34,15 +34,6 @@ export default function Patient({ user, address, setData }) {
   const [editedGeneralData, setEditedGeneralData] = useState();
   const [editedCertificates, setEditedCertificates] = useState();
   const [isEdited, setIsEdited] = useState(false);
-
-  function deepEqual(x, y) {
-    return x && y && typeof x === "object" && typeof y === "object"
-      ? Object.keys(x).length === Object.keys(y).length &&
-          Object.keys(x).reduce(function (isEqual, key) {
-            return isEqual && deepEqual(x[key], y[key]);
-          }, true)
-      : x === y;
-  }
 
   useEffect(() => {
     if (generalData && data) {
@@ -74,18 +65,7 @@ export default function Patient({ user, address, setData }) {
 
   return (
     <>
-      <LoadingOverlay
-        visible={statusOfUpdate}
-        overlayBlur={4}
-        loader={
-          <>
-            <Center>
-              <Loader />
-            </Center>
-            <Text>{messages[statusOfUpdate]}</Text>
-          </>
-        }
-      />
+      <BlurLoader visible={Boolean(statusOfUpdate)} status={statusOfUpdate} />
       <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal" px="xl" mt="md">
         <Tabs.List grow>
           <Tabs.Tab value="general-details">General Details</Tabs.Tab>

@@ -1,5 +1,5 @@
 import useGetDoctorData from "@/hooks/useGetDoctorData";
-import { Box, Center, Flex, Loader, LoadingOverlay, Tabs, Text, createStyles } from "@mantine/core";
+import { Box, Tabs, createStyles } from "@mantine/core";
 import { useEffect, useState } from "react";
 import GeneralDetails from "./GeneralDetails";
 import Certifications from "./Certifications";
@@ -9,8 +9,11 @@ import useUpdateDoctor from "@/hooks/useUpdateDoctor";
 import useCheckAccess from "@/hooks/useCheckAccess";
 import GeneralDataSkeleton from "../Utils/GeneralDataSkeleton";
 import CertificatesSkeleton from "../Utils/CertificatesSkeleton";
-import messages from "@/utils/messages";
 import { useRouter } from "next/router";
+import Retry from "../Utils/Retry";
+import SkeletonLoader from "../Utils/SkeletonLoader";
+import BlurLoader from "../Utils/BlurLoader";
+import deepEqual from "@/utils/deepEqual";
 
 const useStyles = createStyles((theme) => ({
   tabs: {},
@@ -19,7 +22,7 @@ const useStyles = createStyles((theme) => ({
 export default function Doctor({ user, address, setDoctor }) {
   // get data
   const router = useRouter();
-  const { status: statusOfGet, generalData, certificates } = useGetDoctorData(address);
+  const { status: statusOfGet, generalData, certificates, getData } = useGetDoctorData(address);
   const { status: statusOfUpdate, updateData } = useUpdateDoctor();
   const { access } = useCheckAccess(address);
 
@@ -36,7 +39,9 @@ export default function Doctor({ user, address, setDoctor }) {
   }, [generalData, certificates]);
 
   useEffect(() => {
-    setIsEdited(!(editedGeneralData == generalData && editedCertificates == certificates));
+    setIsEdited(
+      !(deepEqual(generalData, editedGeneralData) && deepEqual(certificates, editedCertificates))
+    );
   }, [editedGeneralData, editedCertificates]);
 
   useEffect(() => {
@@ -49,18 +54,8 @@ export default function Doctor({ user, address, setDoctor }) {
 
   return (
     <>
-      <LoadingOverlay
-        visible={statusOfUpdate}
-        overlayBlur={4}
-        loader={
-          <>
-            <Center>
-              <Loader />
-            </Center>
-            <Text>{messages[statusOfUpdate]}</Text>
-          </>
-        }
-      />
+      <BlurLoader visible={Boolean(statusOfUpdate)} status={statusOfUpdate} />
+
       <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal" px="xl" mt="md">
         <Tabs.List className={classes.tabs} grow>
           <Tabs.Tab value="general-details">General Details</Tabs.Tab>
@@ -71,33 +66,33 @@ export default function Doctor({ user, address, setDoctor }) {
           <DoctorButtons access={access} address={address} />
 
           <Tabs.Panel value="general-details" mt="md">
-            {statusOfGet != "success" ? (
-              <>
-                <GeneralDataSkeleton />
-                <Text>{messages[statusOfGet]}</Text>
-              </>
-            ) : (
-              <GeneralDetails
-                address={address}
-                access={access}
-                data={editedGeneralData}
-                setEditedGeneralData={setEditedGeneralData}
-              />
-            )}
+            <SkeletonLoader
+              status={statusOfGet}
+              SkeletonComponent={() => <GeneralDataSkeleton status={statusOfGet} />}
+              RetryComponent={() => <Retry status={statusOfGet} retryHandler={getData} />}
+              DataComponent={() => (
+                <GeneralDetails
+                  address={address}
+                  access={access}
+                  data={editedGeneralData}
+                  setEditedGeneralData={setEditedGeneralData}
+                />
+              )}
+            />
           </Tabs.Panel>
           <Tabs.Panel value="certificates" mt="md">
-            {statusOfGet != "success" ? (
-              <>
-                <CertificatesSkeleton />
-                <Text>{messages[statusOfGet]}</Text>
-              </>
-            ) : (
-              <Certifications
-                access={access}
-                certificates={editedCertificates}
-                setEditedCertificates={setEditedCertificates}
-              />
-            )}
+            <SkeletonLoader
+              status={statusOfGet}
+              SkeletonComponent={() => <CertificatesSkeleton status={statusOfGet} />}
+              RetryComponent={() => <Retry status={statusOfGet} retryHandler={getData} />}
+              DataComponent={() => (
+                <Certifications
+                  access={access}
+                  certificates={editedCertificates}
+                  setEditedCertificates={setEditedCertificates}
+                />
+              )}
+            />
           </Tabs.Panel>
         </Box>
       </Tabs>

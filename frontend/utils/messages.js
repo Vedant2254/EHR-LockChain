@@ -1,4 +1,5 @@
 module.exports = {
+  loading: "Loading",
   uploading: "Uploading data",
   retrieving: "Retrieving data",
   encrypting: "Encrypting data",

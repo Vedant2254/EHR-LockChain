@@ -1,6 +1,6 @@
 import useIsDoctorPending from "@/hooks/useIsDoctorPending";
 import useRegisterDoctorConfirm from "@/hooks/useRegisterDoctorConfirm";
-import { ActionIcon, Badge, Button, Group, Text } from "@mantine/core";
+import { ActionIcon, Badge, Button, Group } from "@mantine/core";
 import { IconKey } from "@tabler/icons-react";
 
 export default function DoctorButtons({ access, address }) {

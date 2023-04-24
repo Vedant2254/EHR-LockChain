@@ -5,6 +5,7 @@ import AllPatients from "@/components/Patient/AllPatients";
 import useApproveDoctor from "@/hooks/useApproveDoctor";
 import { useState } from "react";
 import useDisapproveDoctor from "@/hooks/useDisapproveDoctor";
+import BlurLoader from "@/components/Utils/BlurLoader";
 
 export default function AdminController() {
   const router = useRouter();
@@ -20,17 +21,9 @@ export default function AdminController() {
 
   return (
     <>
-      <LoadingOverlay
-        visible={doctor && (statusOfApprove || statusOfDisapprove)}
-        loader={
-          <>
-            <Center>
-              <Loader />
-            </Center>
-            <Text>{statusOfApprove || statusOfDisapprove}</Text>
-          </>
-        }
-        overlayBlur={4}
+      <BlurLoader
+        visible={statusOfApprove || statusOfDisapprove}
+        status={statusOfApprove || statusOfDisapprove}
       />
       <Tabs value={location} keepMounted={false}>
         <Tabs.Panel value="all-doctors">

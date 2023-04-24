@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 
 // {uploading, retrieving, encrypting, decrypting, signing, txnLoading, txnWaiting}
-export default function useStatus(statuses, print) {
+export default function useStatus(statuses) {
   const [status, setStatus] = useState(null);
 
   useEffect(() => {
     const {
+      loading,
       uploading,
       retrieving,
       encrypting,
@@ -17,7 +18,8 @@ export default function useStatus(statuses, print) {
       failure,
     } = statuses;
 
-    if (uploading) setStatus("uploading");
+    if (loading) setStatus("loading");
+    else if (uploading) setStatus("uploading");
     else if (retrieving) setStatus("retrieving");
     else if (encrypting) setStatus("encrypting");
     else if (decrypting) setStatus("decrypting");
