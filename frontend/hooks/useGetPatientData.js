@@ -22,14 +22,9 @@ export default function useGetPatientData(address, enabled = true) {
   });
 
   async function getFromIPFS() {
-    const cipherDataFile = (await retrieveIPFS(generalHash))[0];
-    const cipherGeneralData = await readAsTextAsync(cipherDataFile);
-
-    const cipherKeyFile = (await retrieveIPFS(keyHash))[0];
-    const cipherKey = JSON.parse(await readAsTextAsync(cipherKeyFile));
-
-    const cipherCertificatesFile = (await retrieveIPFS(certificatesHash))[0];
-    const cipherCertificatesData = JSON.parse(await readAsTextAsync(cipherCertificatesFile));
+    const cipherGeneralData = await retrieveIPFS(generalHash);
+    const cipherKey = await retrieveIPFS(keyHash);
+    const cipherCertificatesData = await retrieveIPFS(certificatesHash);
 
     return { cipherGeneralData, cipherKey, cipherCertificatesData };
   }

@@ -28,9 +28,7 @@ export default function useGetDoctorData(address) {
   async function getData() {
     setIsRetrieving(true);
     try {
-      const files = await retrieveIPFS(hashData);
-      const file = files[0];
-      const ipfsData = JSON.parse(await readAsTextAsync(file));
+      const ipfsData = await retrieveIPFS(hashData);
       const certificates = ipfsData.certificates;
       delete ipfsData.certificates;
       ipfsData && certificates && setData({ generalData: ipfsData, certificates });

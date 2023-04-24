@@ -1,4 +1,5 @@
 import { Web3Storage } from "web3.storage";
+import axios from "axios";
 
 async function makeStorageClient() {
   const token = process.env.NEXT_PUBLIC_WEB3STORAGE_TOKEN;
@@ -28,9 +29,8 @@ async function storeIPFS(files, options) {
 }
 
 async function retrieveIPFS(cid) {
-  const client = await makeStorageClient();
-  const res = await client.get(cid);
-  return res.ok ? await res.files() : null;
+  const res = await axios.get(`https://w3s.link/ipfs/${cid}`);
+  return res.data;
 }
 
 module.exports = { makeFileObjects, storeIPFS, retrieveIPFS };

@@ -16,8 +16,7 @@ export default function useGetPatientHash(address) {
       const generalHash = await contract.getPtGeneralHash(address);
       const keyHash = await contract.getPtRecordHash(address);
 
-      const cipherKeyFile = (await retrieveIPFS(keyHash))[0];
-      const cipherKeyEnc = JSON.parse(await readAsTextAsync(cipherKeyFile));
+      const cipherKeyEnc = await retrieveIPFS(keyHash);
       const certificatesHash = cipherKeyEnc.medicalRecordCID;
 
       setHashData({ generalHash, keyHash, certificatesHash });
