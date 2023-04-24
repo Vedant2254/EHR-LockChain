@@ -20,7 +20,12 @@ export default function Home() {
   const [isDefinitelyConnected, setIsDefinitelyConnected] = useState(false);
 
   useEffect(() => {
+    window && window.localStorage.getItem("connected") && connect({ connector: connectors.at(0) });
+  }, []);
+
+  useEffect(() => {
     setIsDefinitelyConnected(isConnected);
+    isConnected && window && window.localStorage.setItem("connected", "metamask");
   }, [isConnected]);
 
   return isDefinitelyConnected ? (
@@ -33,7 +38,14 @@ export default function Home() {
       </Menu.Target>
 
       <Menu.Dropdown>
-        <Menu.Item icon={<IconConnectDisconnect />} p="7px" onClick={disconnect}>
+        <Menu.Item
+          icon={<IconConnectDisconnect />}
+          p="7px"
+          onClick={() => {
+            disconnect();
+            window && window.localStorage.removeItem("connected");
+          }}
+        >
           Disconnect
         </Menu.Item>
       </Menu.Dropdown>
@@ -42,7 +54,7 @@ export default function Home() {
     <Button
       variant="light"
       leftIcon={<LogosMetamaskIcon />}
-      onClick={() => {
+      onClick={async () => {
         connect({ connector: connectors.at(0) });
       }}
     >
