@@ -1,6 +1,7 @@
 import PatientController from "@/components/AppShell/Controllers/PatientController";
 import EHRAppShell from "@/components/AppShell/EHRAppShell";
 import useIsPatient from "@/hooks/useIsPatient";
+import { IconHome, IconUserPlus, IconUsers } from "@tabler/icons-react";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useAccount } from "wagmi";
@@ -11,9 +12,9 @@ export default function MainScreen() {
   const router = useRouter();
 
   const navlinks = [
-    { label: "Dashboard", location: "dashboard" },
-    { label: "My doctor", location: "my-doctor" },
-    { label: "All doctors", location: "all-doctors" },
+    { label: "Dashboard", location: "dashboard", icon: IconHome },
+    { label: "My doctor", location: "my-doctor", icon: IconUserPlus },
+    { label: "All doctors", location: "all-doctors", icon: IconUsers },
   ];
 
   useEffect(() => {

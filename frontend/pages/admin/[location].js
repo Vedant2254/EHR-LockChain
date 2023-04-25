@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 
 import AdminController from "@/components/AppShell/Controllers/AdminController";
 import EHRAppShell from "@/components/AppShell/EHRAppShell";
+import { IconUsers } from "@tabler/icons-react";
 
 export default function MainScreen() {
   const { address } = useAccount();
@@ -17,8 +18,8 @@ export default function MainScreen() {
   }, [address, isAdmin]);
 
   const navlinks = [
-    { label: "All doctors", location: "all-doctors" },
-    { label: "All patients", location: "all-patients" },
+    { label: "All doctors", location: "all-doctors", icon: IconUsers },
+    { label: "All patients", location: "all-patients", icon: IconUsers },
   ];
 
   return (

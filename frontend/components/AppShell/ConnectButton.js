@@ -1,22 +1,22 @@
 import { useEffect, useState } from "react";
 import { useConnect, useAccount, useDisconnect } from "wagmi";
-import { ActionIcon, Button, Menu } from "@mantine/core";
-import { IconPlugConnected } from "@tabler/icons-react";
+import { ActionIcon, Box, Button, Menu, Text } from "@mantine/core";
 import { ArrowDownIcon } from "@modulz/radix-icons";
 import LogosMetamaskIcon from "@/components/Utils/Icons/MetamaskIcon";
+import { IconPlugConnectedX } from "@tabler/icons-react";
 
-const IconConnectDisconnect = () => {
+const IconDisconnect = () => {
   return (
     <ActionIcon color="blue" size="xs">
-      <IconPlugConnected />
+      <IconPlugConnectedX />
     </ActionIcon>
   );
 };
 
-export default function Home() {
+export default function ConnectButton() {
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
-  const { isConnected, address } = useAccount();
+  const { isConnected, isDisconnected, address } = useAccount();
   const [isDefinitelyConnected, setIsDefinitelyConnected] = useState(false);
 
   useEffect(() => {
@@ -26,39 +26,27 @@ export default function Home() {
   useEffect(() => {
     setIsDefinitelyConnected(isConnected);
     isConnected && window && window.localStorage.setItem("connected", "metamask");
-  }, [isConnected]);
+    isDisconnected && window && window.localStorage.removeItem("connected");
+  }, [isConnected, isDisconnected]);
 
   return isDefinitelyConnected ? (
-    <Menu showdow="md" trigger="hover">
-      <Menu.Target>
-        <Button variant="light" radius="sm" leftIcon={<ArrowDownIcon />}>
-          {address &&
-            `${address.substring(0, 6)}...${address.substring(address.length - 6, address.length)}`}
-        </Button>
-      </Menu.Target>
-
-      <Menu.Dropdown>
-        <Menu.Item
-          icon={<IconConnectDisconnect />}
-          p="7px"
-          onClick={() => {
-            disconnect();
-            window && window.localStorage.removeItem("connected");
-          }}
-        >
-          Disconnect
-        </Menu.Item>
-      </Menu.Dropdown>
-    </Menu>
+    <Box onClick={disconnect} w="100%" h="100%" sx={{ cursor: "pointer" }}>
+      {address &&
+        `${address.substring(0, 6)}...${address.substring(address.length - 6, address.length)}`}
+      <Text c="dimmed" size="xs">
+        Disconnect
+      </Text>
+    </Box>
   ) : (
-    <Button
-      variant="light"
-      leftIcon={<LogosMetamaskIcon />}
+    <Box
       onClick={async () => {
         connect({ connector: connectors.at(0) });
       }}
+      w="100%"
+      h="100%"
+      sx={{ cursor: "pointer" }}
     >
       Connect
-    </Button>
+    </Box>
   );
 }

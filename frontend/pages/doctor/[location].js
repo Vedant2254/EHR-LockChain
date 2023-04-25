@@ -4,11 +4,12 @@ import { useRouter } from "next/router";
 import useIsDoctorRegistered from "@/hooks/useIsDoctorRegistered";
 import DoctorController from "@/components/AppShell/Controllers/DoctorController";
 import EHRAppShell from "@/components/AppShell/EHRAppShell";
+import { IconHome, IconUsers } from "@tabler/icons-react";
 
 export default function MainScreen() {
   const navlinks = [
-    { label: "Dashboard", location: "dashboard" },
-    { label: "Patients", location: "my-patients" },
+    { label: "Dashboard", location: "dashboard", icon: IconHome },
+    { label: "Patients", location: "my-patients", icon: IconUsers },
   ];
 
   const { address } = useAccount();

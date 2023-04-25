@@ -8,6 +8,7 @@ import { Tabs } from "@mantine/core";
 import EHRAppShell from "@/components/AppShell/EHRAppShell";
 import RegisterPatient from "@/components/Register/RegsiterPatient";
 import RegisterDoctor from "@/components/Register/RegisterDoctor";
+import { IconLogin } from "@tabler/icons-react";
 
 export default function RegisterUser() {
   const [activeTab, setActiveTab] = useState("patient");
@@ -29,7 +30,7 @@ export default function RegisterUser() {
   return (
     <EHRAppShell
       loading={!isDRFetched || !isPtFetched || isPatient || isDoctorRegistered}
-      navlinks={[{ label: "Registration", location: "" }]}
+      navlinks={[{ label: "Registration", location: "", icon: IconLogin }]}
       Controller={() => (
         <Tabs value={activeTab} onTabChange={setActiveTab} px="xl" pt="md" keepMounted={false}>
           <Tabs.List grow mb="xl">
