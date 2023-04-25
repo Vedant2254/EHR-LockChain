@@ -1,5 +1,7 @@
 # EHR data management system
 
+<img src="./readme-data/ehr-logo-main-animated.gif" width="150" height="150" />
+
 ## What is blockchain
 
 Blockchain is a decentralized database that stores a record of transactions happening on blockchain in the form of blocks linked through their hashes.

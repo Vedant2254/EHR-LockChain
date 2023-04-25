@@ -10,6 +10,9 @@ import {
   createStyles,
   Center,
   ActionIcon,
+  Image,
+  Avatar,
+  Group,
 } from "@mantine/core";
 import ConnectButton from "@/components/AppShell/ConnectButton";
 import Link from "next/link";
@@ -62,7 +65,12 @@ export default function EHRHeader({ opened, setOpened }) {
           />
         </MediaQuery>
 
-        <Text>EHR data management system</Text>
+        <Group onClick={() => router.replace("/")} sx={{ cursor: "pointer" }}>
+          <Avatar src="/ehr-logo-main.png" />
+          <Text size="lg" fw="bold" variant="gradient">
+            EHR data management system
+          </Text>
+        </Group>
 
         <Box>
           <Button component={Link} href="/" variant="subtle">

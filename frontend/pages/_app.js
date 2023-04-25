@@ -28,6 +28,7 @@ export default function App({ Component, pageProps }) {
       theme={{
         colorScheme: "light",
         loader: "bars",
+        defaultGradient: { from: "purple", to: "blue", deg: 90 },
         components: {
           Button: {
             styles: {

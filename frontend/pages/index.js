@@ -1,7 +1,7 @@
 import Head from "next/head";
 import EHRHeader from "@/components/AppShell/EHRHeader";
 import Link from "next/link";
-import { NavLink, Button, Group } from "@mantine/core";
+import { NavLink, Button, Group, Image, BackgroundImage } from "@mantine/core";
 
 export default function Home() {
   return (
@@ -11,7 +11,7 @@ export default function Home() {
       </Head>
       <main>
         <EHRHeader />
-        <Group m="md">
+        {/* <Group m="md">
           <Button component={Link} href="/register">
             Register
           </Button>
@@ -24,7 +24,8 @@ export default function Home() {
           <Button component={Link} href="/patient">
             Patient
           </Button>
-        </Group>
+        </Group> */}
+        <Image maw="240px" radius="md" src="/ehr-logo-main-animated.gif" alt="Random image" />
       </main>
     </>
   );
