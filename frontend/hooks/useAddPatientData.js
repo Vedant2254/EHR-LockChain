@@ -3,7 +3,7 @@ import useGetDoctorPubKey from "./useGetDoctorPubKey";
 import useGetPatientHash from "./useGetPatientHash";
 import useSignCertificates from "@/hooks/useSignCertificates";
 import { generateKey, symmetricEncrypt } from "@/utils/cryptography";
-import { encryptData, decryptData, sign } from "@/utils/metamask";
+import { encryptData, decryptData } from "@/utils/metamask";
 import { makeFileObjects, storeIPFS } from "@/utils/ipfs";
 
 // this thing can be converted to a simple function rather than a hook
@@ -20,7 +20,7 @@ import { makeFileObjects, storeIPFS } from "@/utils/ipfs";
 // 5. Further actions are performed by functions that use this hook
 
 export default function useAddPatientData(ptAddress, drAddress) {
-  const signCertificates = useSignCertificates();
+  const { signCertificates, recoverSigner } = useSignCertificates();
   const { publicKey: drPublicKey } = useGetDoctorPubKey(drAddress || null);
   const { certificatesHash } = useGetPatientHash(ptAddress);
 

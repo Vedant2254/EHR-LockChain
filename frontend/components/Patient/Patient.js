@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useGetPatientData from "@/hooks/useGetPatientData";
 
-import { Tabs } from "@mantine/core";
+import { Badge, Group, Tabs, Text } from "@mantine/core";
 import GeneralDetails from "./GeneralDetails";
 import MedicalCertificates from "./MedicalCertificates";
 import ConfirmChangesDialog from "../Utils/ConfirmChangesDialog";
@@ -15,6 +15,7 @@ import Retry from "../Utils/Retry";
 import SkeletonLoader from "../Utils/SkeletonLoader";
 import BlurLoader from "../Utils/BlurLoader";
 import deepEqual from "@/utils/deepEqual";
+import useSignCertificates from "@/hooks/useSignCertificates";
 
 export default function Patient({ user, address, setData }) {
   // get data
@@ -29,6 +30,9 @@ export default function Patient({ user, address, setData }) {
   } = useGetPatientData(address);
   const { status: statusOfUpdate, updateData } = useUpdatePatient(address, curraddress);
   const { access } = useCheckAccess(address);
+  const { recoverSigner } = useSignCertificates();
+
+  // console.log(data);
 
   const [activeTab, setActiveTab] = useState("general-details");
   const [editedGeneralData, setEditedGeneralData] = useState();
@@ -93,11 +97,39 @@ export default function Patient({ user, address, setData }) {
             SkeletonComponent={() => <CertificatesSkeleton status={statusOfGet} />}
             RetryComponent={() => <Retry status={statusOfGet} retryHandler={getData} />}
             DataComponent={() => (
-              <MedicalCertificates
-                access={access}
-                certificates={editedCertificates}
-                setEditedCertificates={setEditedCertificates}
-              />
+              <>
+                <Group mb="xs">
+                  <Text c="blue" size="sm" fw="bold">
+                    Last Updated by:{" "}
+                    <Text c="dimmed" span>
+                      {data.metadata.lastUpdatedBy}
+                    </Text>
+                  </Text>
+                  <Text c="blue" size="sm" fw="bold">
+                    Last Updated Date:{" "}
+                    <Text c="dimmed" span>
+                      {data.metadata.lastUpdatedDate}
+                    </Text>
+                  </Text>
+                  <Text c="blue" size="sm" fw="bold">
+                    Version:{" "}
+                    <Text c="dimmed" span>
+                      {data.metadata.version}
+                    </Text>
+                  </Text>
+                  {recoverSigner(data, digitalSignatureOfLastUpdater) ===
+                  data.metadata.lastUpdatedBy.toLowerCase() ? (
+                    <Badge color="green">Valid signature</Badge>
+                  ) : (
+                    <Badge color="red">Invalid signature</Badge>
+                  )}
+                </Group>
+                <MedicalCertificates
+                  access={access}
+                  certificates={editedCertificates}
+                  setEditedCertificates={setEditedCertificates}
+                />
+              </>
             )}
           />
         </Tabs.Panel>
