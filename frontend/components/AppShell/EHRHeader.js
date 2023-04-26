@@ -27,7 +27,6 @@ import { IconPlug } from "@tabler/icons-react";
 const useStyles = createStyles((theme) => ({
   header: {
     padding: theme.spacing.lg,
-    // borderBottom: `1px solid ${theme.colors.gray[3]}`,
     boxShadow: `1px -7px 10px 0px ${theme.black}`,
     zIndex: 101,
   },
@@ -65,7 +64,7 @@ export default function EHRHeader({ opened, setOpened }) {
           />
         </MediaQuery>
 
-        <Group onClick={() => router.replace("/")} sx={{ cursor: "pointer" }}>
+        <Group onClick={() => router.push("/")} sx={{ cursor: "pointer" }}>
           <Avatar src="/ehr-logo-main.png" />
           <Text size="lg" fw="bold" variant="gradient">
             EHR data management system
