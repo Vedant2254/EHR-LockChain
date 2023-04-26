@@ -13,6 +13,8 @@ import {
   Image,
   Avatar,
   Group,
+  useMantineColorScheme,
+  ColorSchemeProvider,
 } from "@mantine/core";
 import ConnectButton from "@/components/AppShell/ConnectButton";
 import Link from "next/link";
@@ -22,7 +24,7 @@ import useIsAdmin from "@/hooks/useIsAdmin";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/router";
 import LogosMetamaskIcon from "../Utils/Icons/MetamaskIcon";
-import { IconPlug } from "@tabler/icons-react";
+import { IconMoonStars, IconPlug, IconSun, IconSunFilled } from "@tabler/icons-react";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -41,15 +43,16 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function EHRHeader({ opened, setOpened }) {
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const { address } = useAccount();
   const { isPatient } = useIsPatient(address);
   const { isDoctorRegistered } = useIsDoctorRegistered(address);
   const { isAdmin } = useIsAdmin(address);
   const { classes } = useStyles();
-
   const router = useRouter();
-
   const theme = useMantineTheme();
+
+  const dark = colorScheme === "dark";
 
   return (
     <Header height={{ base: 50, md: 70 }} className={classes.header}>
@@ -97,14 +100,24 @@ export default function EHRHeader({ opened, setOpened }) {
           )}
         </Box>
 
-        {router.asPath == "/" && (
-          <Box leftIcon={<LogosMetamaskIcon />} className={classes.connectBtn}>
-            <Flex align="center">
-              <IconPlug />
-              <ConnectButton />
-            </Flex>
-          </Box>
-        )}
+        <Group>
+          {router.asPath == "/" && (
+            <Box className={classes.connectBtn}>
+              <Flex align="center">
+                <IconPlug />
+                <ConnectButton />
+              </Flex>
+            </Box>
+          )}
+          <ActionIcon
+            variant="outline"
+            color={dark ? "yellow" : "blue"}
+            onClick={toggleColorScheme}
+            title="Toggle color scheme"
+          >
+            {dark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
+          </ActionIcon>
+        </Group>
       </Flex>
     </Header>
   );

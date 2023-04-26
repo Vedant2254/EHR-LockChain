@@ -1,21 +1,14 @@
-import Head from "next/head";
+import { Flex } from "@mantine/core";
 import EHRHeader from "@/components/AppShell/EHRHeader";
-import Link from "next/link";
-import { NavLink, Button, Group, Image, BackgroundImage, Flex, Box } from "@mantine/core";
-import IndexMain from "@/components/IndexMain";
+import EHRMain from "@/components/AppShell/EHRMain";
 
 export default function Home() {
   return (
-    <>
-      <Head>
-        <title>EHR data management system</title>
-      </Head>
-      <main>
-        <Flex h="100vh" direction="column">
-          <EHRHeader />
-          <IndexMain />
-        </Flex>
-      </main>
-    </>
+    <main>
+      <Flex h="100vh" direction="column">
+        <EHRHeader />
+        <EHRMain />
+      </Flex>
+    </main>
   );
 }

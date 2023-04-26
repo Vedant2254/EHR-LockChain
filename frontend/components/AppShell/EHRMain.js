@@ -13,14 +13,18 @@ import {
   Grid,
   Center,
 } from "@mantine/core";
-import { IconBrandGithubFilled, IconCheck } from "@tabler/icons-react";
+import { IconCheck } from "@tabler/icons-react";
 import { useAccount, useNetwork } from "wagmi";
-import ConnectButton from "./AppShell/ConnectButton";
+import ConnectButton from "./ConnectButton";
 import useValidTxnData from "@/hooks/useValidTxnData";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 const useStyles = createStyles((theme) => ({
+  back: {
+    backgroundColor: theme.colorScheme === "dark" ? theme.black : theme.white,
+  },
+
   title: {
     color: theme.colorScheme === "dark" ? theme.white : theme.black,
     fontFamily: `Greycliff CF, ${theme.fontFamily}`,
@@ -55,7 +59,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export default function IndexMain() {
+export default function EHRMain() {
   const { classes } = useStyles();
   const { isConnected } = useAccount();
   const { contractAddress } = useValidTxnData();
@@ -68,7 +72,7 @@ export default function IndexMain() {
   }, [isConnected]);
 
   return (
-    <Flex sx={{ flexGrow: 1 }} justify="center" align="center">
+    <Flex sx={{ flexGrow: 1 }} justify="center" align="center" className={classes.back}>
       <Container>
         <Grid>
           <Grid.Col span="auto">

@@ -3,8 +3,10 @@ import { hardhat, goerli, sepolia } from "wagmi/chains";
 import { publicProvider } from "wagmi/providers/public";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { MantineProvider } from "@mantine/core";
+import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import "@/styles/globals.css";
+import HeadComponent from "@/components/HeadComponent";
+import { useState } from "react";
 
 const { chains, provider, webSocketProvider } = configureChains(
   [hardhat, goerli, sepolia],
@@ -23,10 +25,16 @@ const client = createClient({
 });
 
 export default function App({ Component, pageProps }) {
+  const [colorScheme, setColorScheme] = useState("light");
+
+  function toggleColorScheme() {
+    setColorScheme(colorScheme === "light" ? "dark" : "light");
+  }
+
   return (
     <MantineProvider
       theme={{
-        colorScheme: "light",
+        colorScheme,
         loader: "bars",
         defaultGradient: { from: "purple", to: "blue", deg: 90 },
         components: {
@@ -34,17 +42,18 @@ export default function App({ Component, pageProps }) {
             styles: {
               root: {
                 transition: "150ms",
-                "&:hover": { transform: "scale(1.005)" },
-                "&:active": { transform: "scale(0.98)" },
               },
             },
           },
         },
       }}
     >
-      <WagmiConfig client={client}>
-        <Component {...pageProps} />
-      </WagmiConfig>
+      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+        <WagmiConfig client={client}>
+          <HeadComponent />
+          <Component {...pageProps} />
+        </WagmiConfig>
+      </ColorSchemeProvider>
     </MantineProvider>
   );
 }
