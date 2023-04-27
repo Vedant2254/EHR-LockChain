@@ -1,97 +1,205 @@
 # EHR data management system
 
-<img src="./readme-data/ehr-logo-main-animated.gif" width="150" height="150" />
+<!-- Project Intro -->
+<div align="center">
+  <img src="./readme-data/ehr-logo-main.png" width="150" height="150" />
 
-## What is blockchain
+  <h3 align="center">A <span style="color:#197ae0;">decentralized</span> EHR data management system</h3>
 
-Blockchain is a decentralized database that stores a record of transactions happening on blockchain in the form of blocks linked through their hashes.
+  <p align="center">
+    A decentralized application (dApp) that runs it's backend on a decentralized server, i.e. <a href="https://ethereum.org/en/">Ethereum blockchain</a>.
+    <br />
+    <span >Patients can use the application to manage sharing and access control of their medical records with respective doctors registered on application<span>
+    <br />
+    <a href="https://github.com/Vedant2254/Fundme-hardhat-blockchain"><strong>Explore the source code »</strong></a>
+    <br />
+    <br />
+    <a href="https://ehr-data-management-system.vercel.app/" target="_blank">Live dapp</a>
+    ·
+    <a href="https://github.com/Vedant2254/Fundme-hardhat-blockchain/issues">Report Issue</a>
+  </p>
+</div>
 
-Eheterum blockchain can not only store transactions but also allows to execute the smart contract code deployed on blockchain. Contracts are simply accounts on blockchain that store the logic the defines how the contract will react to an incoming transaction.
+<!-- Table of Contents -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#about">About</a></li>
+    <!-- purpose, current problem, potential solution, how project implements solution -->
+    <li><a href="#technologies-used">Technologies used</a></li>
+    <!-- Technologies from minor to major technologies -->
+    <li><a href="#basic-terminologies">Basic terminologies</a></li>
+    <!-- Basic terminologies like blockchain, ipfs, cryptography, hybrid encryption, etc. -->
+    <li><a href="#how-to-install-the-project">How to install the project</a></li>
+    <!-- How others can install the run the project locally -->
+    <li><a href="#how-to-use-the-project">How to use the project</a></li>
+    <!-- How to use the project, locally installed or deployed -->
+    <li><a href="#technical-details">Technical details</a></li>
+    <!-- Technical details like data structure, folder structure, mechanisms, etc. -->
+    <li><a href="#acknowledgements">Acknowledgements</a></li>
+    <!-- Every source that helped me solve problems that occured during development -->
+    <li><a href="#future-scop">Future Scope</a></li>
+    <!-- actions that can be taken to make application more usable and featured -->
+  </ol>
+</details>
 
-## What is IPFS
+## About
+
+The project provides a secure and decentralized application designed to store and manage electronic health records (EHRs). Leveraging the power of the Ethereum blockchain, smart contracts, Interplanetary File System (IPFS) and hybrid encryption, the application provides patients with complete control over their medical data, while ensuring that their records remain secure and private.
+
+With the application, patients can easily grant and revoke access to doctors as needed. Our decentralized access control system ensures that only the autorized parties can view and edit medical records, while also ensuring that patients maintain control over their own data.
+
+### Advantage over traditional systems
+
+While today's traditional EHR systems store data and manage access control through a centralized server in healthcare centers, users have to trust these organizations and their trust-based contracts for security of their data.
+
+Our system takes a different approach. With our platform, both storage and access control is decentralized and transparent. The application executes in a trustless and verifiable environment powered by smart contracts on Ethereum blockchain where users can see the code of contract managing the access control and can view exactly how the data is stored on distributed IPFS network. In addition to distributed storage, the encryption and decryption of data is done using the user's own public and private key pairs so none other than user and his trusted parties can decrypt the data.
+
+## Technologies Used
+
+[![HTML][html]][html-url] [![Javascript][javascript]][javascript-url] [![Ethereum][ethereum]][ethereum-url] [![Solidity][solidity]][solidity-url] [![Hardhat][hardhat]][hardhat-url] [![Ethers][ethers.js]][ethers-url]
+
+nextjs
+wagmi
+mantine
+metamask
+
+## Basic Terminologies
+
+### What is a blockchain and Ethereum blockchain?
+
+**Blockchain** is a decentralized database that stores a record of transactions happening on blockchain in the form of blocks linked through their hashes. **Eheterum blockchain** can not only store transactions but also allows to execute the smart contract code deployed on blockchain.
+
+### What are smart contracts?
+
+Smart Contracts are self-executing programs stored on blockchain that automates the actions required in an agreement or contract. When deployed on blockchain these contracts possess a unique address just like EOA accounts, and can also have balance. Unlike EOA accounts contract addresses don't own a key pair, instead they contain a code that defines the logic abot how the contract will respond to an incoming call or transaction.
+
+### What is IPFS?
 
 IPFS stands for Interplanetary Filesystem. It is a distributed database where data is not stored on a single server, instead it is broken down into parts and is stored on multiple nodes in the network.
 
-### Storage and retrieval on IPFS
+#### Storage and retrieval on IPFS
 
 1. IPFS generates a unique hash for the data that is stored on IPFS. This hash is also called as CID (Content Identifier) which can be used to retrieve data from IPFS.
 1. To retrieve data we can either directly use the IPFS protocol by typing `ipfs://<cid>`, or we can use a gateway like `https://ipfs.io/ipfs/<cid>`.
 
-## Project Folder Structure
+### What is encryption and decryption?
 
-`/` root folder
+Cryptography of data involves two important processes, i.e. encryption and decryption.
 
-`/backend` smart contract built using solidity. [Hardhat](https://hardhat.org/) is used as development environment, provides easy testing and deploying functionalities, javascript can be used for writing testing and deployment scripts.
+**Encryption** is the process of converting the plain human-readable text into non-readable cipher text. The process uses a cryptographic key which is private to the autorized users. To recover the original data cryptographic key is required.
 
-`/frontend` nextjs application
+**Decryption** is the process of converting the non-readble cipher text back into readable plain text. This can be done only by autorized users who own the cryptographic key used during encryption of data.
 
-`/frontend/utils` all pure functions, takes some parameters -> does some computation -> returns the result, depends on pre-built modules like `crypto`, `web3.storage`, `@metamask/eth-sig-util`.
+## How to install the project
+
+## How to use the project
+
+<!-- Prerequisites -->
+
+### Essential Prerequisite: Metamask
+
+MetaMask is a digital wallet that enables users to manage their Ethereum accounts and interact with Ethereum applications directly in their web browsers. With MetaMask, users can securely store and manage their private keys, send and receive Ether and other Ethereum-based tokens, and sign transactions.
+
+**To install MetaMask:**
+
+1. Go to metamask.io and click the "Download" button.
+2. Choose your browser and install the MetaMask extension.
+3. Follow the setup instructions, including creating a new wallet and recording your seed 4. phrase (which is important to keep safe and private).
+4. Once you've set up MetaMask, you should see a small fox icon in your browser toolbar.
+
+**To use MetaMask with our project:**
+
+1. Make sure you are done with metamask installation and wallet creation.
+2. Open the app (EHR data management system) and click on "Connect" button to the right of navigation bar.
+3. A MetaMask popup should appear asking for permission to connect to our application. Click "Connect" to grant permission.
+4. In case you have multiple wallets in MetaMask, select the one you intend to use with our application.
+5. Once connected, you should see your wallet address partially displayed in the place of "Connect" button.
+
+While MetaMask can seem intimidating at first, it's an essential tool for interacting with Ethereum-based applications like ours. With just a few simple steps, you can get up and running with MetaMask and take control of your medical records through our application.
+
+<!-- Register as patient or doctor -->
+
+### Register
+
+1. Navigate to the index page of our application.
+2. If you're not already registered as a patient or doctor, click the "Register" button.
+3. You should be redirected to the registration page.
+4. Choose whether you want to register as a patient or doctor by switching the tab above.
+5. Fill in the required fields in the registration form -
+   - **First step:** fill in your basic details.
+   - **Second step:** add your medical certificates (for patient) or doctor's certificates (for doctor).
+   - **Third step:** fill in your social account details.
+6. If you're registering as a doctor, you may need to provide additional information such as your medical license number or other certifications.
+7. Optionally, you can upload any relevant certificates or documents to support your registration.
+8. Review your information and make sure it's accurate.
+9. Click the "Submit" button to complete your registration.
+
+#### Extra steps for doctor's registration
+
+10. After the doctor completes their registration, admin will review the submitted details and approve the doctor. This is done to ensure the accuracy and legitimacy of the data provided by doctor.
+
+11. Once the admin verifies the doctor's data, the doctor will have to confirm their registration by providing their public key, this can be done by clicking "Confirm Registration" button from [doctor dashboard](https://ehr-data-management-system.vercel.app/doctor/dashboard).
+
+<!-- Patient  -->
+
+### Patient Dashboard
+
+If registered as a patient you can access all your functionalities on [patient dashboard](https://ehr-data-management-system.vercel.app/patient/dashboard), which can also be accessed from [main page](http://ehr-data-management-system.vercel.app/) of application.
+
+- **View general details:** Patients can view their personal information such as their name, age, gender, and contact information from the patient dashboard.
+- **View medical certificates:** Patients can view and manage their medical certificates from the dashboard. This includes certificates for vaccinations, medical procedures, and other health-related information.
+- **Edit general details:** Patients can edit their personal information from the dashboard, such as their phone number or email address.
+- **Edit medical certificates:** Patients can update or add new medical certificates as needed. This can include uploading scanned copies of physical documents or entering relevant details manually.
+- **Grant access to doctors:** Patients can grant access to their medical data to specific doctors. This is done through a secure access control system that uses blockchain technology to ensure the privacy and security of patient data.
+- **Revoke access to doctors:** Patients can revoke access to their data at any time, providing them with complete control over who can view their medical information.
+
+<!-- Doctor -->
+
+### Doctor Dashboard
+
+If registered as a patient you can access all your functionalities on [doctor dashboard](https://ehr-data-management-system.vercel.app/doctor/dashboard), which can also be accessed from [main page](http://ehr-data-management-system.vercel.app/) of application.
+
+- **View general details:** Doctors can view their personal information such as their name, age, gender, and contact information from the doctor dashboard.
+- **View doctor certificates:** Doctors can view and manage their certificates from the dashboard. This includes certificates for medical licenses, medical education, and other related certificates.
+- **Edit general details:** Doctors can edit their personal information from the dashboard, such as their phone number or email address.
+- **Edit doctor certificates:** Doctors can update or add new certificates as needed. This can include uploading scanned copies of physical documents or entering relevant details manually.
+- **View patients:** Doctors can view a list of their patients and access their medical records from the dashboard.
+- **View and edit patient medical certificates:** Doctors can view and edit patient medical certificates as needed. This includes reviewing test results, updating treatment plans, and recording other medical notes.
+
+## Technical Details
+
+### Project Folder Structure
+
+`/backend` contains smart contract built using solidity. [Hardhat](https://hardhat.org/) is used as development environment, provides easy testing and deploying functionalities, javascript can be used for writing, testing and deployment scripts.
+
+`/frontend` is a nextjs application
+
+`/frontend/utils` all pure functions, these take some parameters, does some computation, and returns the result, depends on pre-built modules like `crypto`, `web3.storage`, `@metamask/eth-sig-util`.
 
 `/frontend/hooks` all communication functions (custom react hooks), establishes communications between frontend, backend and IPFS, depends on functions in `/frontend/utils` to fulfill their functionalities.
 
-`/frontend/components` all UI components, handles UI and user interaction. Built using [Mantine.dev](https://mantine.dev/) UI library, and is highly dependent on custom react hooks in `/frontend/hooks`.
+`/frontend/components` all UI components, handles UI and user interaction. Built using [Mantine.dev](https://mantine.dev/) UI library, and is depends on custom react hooks in `/frontend/hooks`.
 
 `/frontend/pages` contains routes of application that users can visit. Depends on `/frontend/components`.
 
-## Modules
+### Mechanisms
 
-### Files related
+#### Encryption / Decryption mechanism
 
-These help getting file from user, converting file to textual form, making it encryption compatible, finally storing it to IPFS.
+##### Steps
 
-1. `Blob` - converts object to array buffer, not quite used, but mentioned.
+1. `File` received from `<input type="file" />` can be converted to data url using `FileReader().readAsDataURL(File)`, which directly gives a data url that can be put in `<iframe />` tag to view the data.
 
-2. `File` - object of this type is returned from `<input type="file" />`
+1. The output from `FileReader().readAsDataURL(File)` is encrypted using `utf-8` to `hex`, which cna then be decrypted using `hex` to `utf-8`.
 
-3. `FileReader` - it is used to read file as binary string, array buffer, etc.
-
-   Using `FileReader` we can convert the `File` object recieved from `input` tag to desired format, like `data url`, `array buffer`. This data can be then passed to encryption algorithm to encrypt and decrypt the data.
-
-4. `Buffer` - created from ArrayBuffer from `FileReader.readAsArrayBuffer()`. It can be converted to `base64` using `buf.toString('base64')` where `buf` is object of `Buffer`.
-
-### Cryptography
-
-1. `crypto` - use for symmetric encryption of data.
-
-2. `@metamask/eth-sig-util` - used for asymmetric encryption using public keys of users, decrypting using user's private key, signing data using user's private keys, verifying data integrity using user's public key.
-
-### File storage
-
-1. `web3.storage` - is used to programmatically upload and retrieve data from IPFS network.
-
-### Contract interaction
-
-1. `wagmi` - is used to interact with contract, read and write data to contract using contract functions.
-
-## Files and file formats in textual format
-
-Some formats in used in this project -
-
-- `utf-8` string format
-- `ArrayBuffer` array of uint8
-- `base64` binary format
-- `data url` base64 encoded with data url append at start
-- `hex` Hexadecimal
-
-## Encryption
-
-Encryption can be done using `crypto` module.
-
-1. File can be converted to data url using `FileReader().readAsDataURL()`, which directly gives a data url that can be put in `<iframe />` tag to view the data.
-
-1. The output from `FileReader().readAsDataURL()` can be either be directly encrypted using `utf-8` to `hex`/`base64` encryption, then it can be decrypted using `hex`/`base64` to `utf-8` encryption. (This method seems better as output can directly be give to iframe to display the data)
-
-1. Or the ouput can be split using a ',', this will give us an array with second element as `base64` format of data. This can then be encrypted using `base64` to `hex`/`base64` and decrypted vice versa.
-
-## Mechanisms
-
-### Cryptography mechanism
+##### Type of encryption used
 
 1. Let's say we have patient X, and doctors A, B, C, D and patient X wants to give access to doctors A, B, C only.
 
-2. Asymmetric cryptography uses recievers public key to encrypt data and recievers private key to decrypt data, but using this way only one person at a time can access the data, i.e. either patient can access his own data or a doctor can access patients data, which is not at all feasible.
+1. Asymmetric cryptography uses recievers public key to encrypt data and recievers private key to decrypt data, but using this way only one person at a time can access the data, i.e. either patient can access his own data or a doctor can access patient's data, which is not at all feasible.
 
-3. So, here we are using **hybrid encryption**, it works like this -
+1. So, here we are using **hybrid encryption**, it works like this -
 
    - We have a symmetric key S using which we encrypt the data.
    - Then, we encrypt key S using A's public key and send it to A
@@ -114,15 +222,9 @@ Encryption can be done using `crypto` module.
    decrypt(data, S)
    ```
 
-### Where is hash stored?
+#### Structure of data
 
-**Patient and Doctor general data hash** is stored inside [Roles library](/backend/contracts/Roles.sol), Roles.Role stores address to hash mapping.
-
-**Patient medical records** are stored in a mapping of patient address to MedicalRecord where MedicalRecord is a struct
-
-### How data is structured?
-
-#### Patient general details
+##### Patient general details
 
 This data is encrypted
 
@@ -137,7 +239,7 @@ This data is encrypted
 }
 ```
 
-#### Patient key data
+##### Patient key data
 
 This data has encrypted keys, only individual keys are encrypted
 
@@ -155,7 +257,7 @@ This data has encrypted keys, only individual keys are encrypted
 }
 ```
 
-#### Patient medical records
+##### Patient medical records
 
 This data is stored in encrypted format, only accessible (read / read-write permission decided by smart contract)
 by addresses present in keys of [Patient key data](#patient-key-data). Data is encrypted.
@@ -191,7 +293,7 @@ by addresses present in keys of [Patient key data](#patient-key-data). Data is e
 }
 ```
 
-#### Doctor general details
+##### Doctor general details
 
 ```
 {
@@ -219,9 +321,10 @@ by addresses present in keys of [Patient key data](#patient-key-data). Data is e
 }
 ```
 
-### Pages
+<!--
+#### Pages
 
-### Frontend NextJS component structure
+#### Frontend NextJS component structure
 
 ```
 > Admin
@@ -229,9 +332,9 @@ by addresses present in keys of [Patient key data](#patient-key-data). Data is e
 > Patient
 ```
 
-### Issues that occured during development
+#### Issues that occured during development
 
-#### Metamask default account for contract read
+##### Metamask default account for contract read
 
 1. Metamask sends transactions that needs to be signed through the account that is currently selected
 2. But, when calling a view function on contract it sends it may be sent through any account that is connected, not necessarily through the selected account
@@ -250,8 +353,71 @@ by addresses present in keys of [Patient key data](#patient-key-data). Data is e
        console.log(err);
      }
    }
-   ```
+   ``` -->
 
-## Further updates in 🧠 but not in 💻 yet
+### Frontend
+
+#### Modules
+
+##### Files related
+
+These help getting file from user, converting file to textual form, making it encryption compatible, finally storing it to IPFS.
+
+1. `Blob` - converts object to array buffer, not quite used, but mentioned.
+
+2. `File` - object of this type is returned from `<input type="file" />`
+
+3. `FileReader` - it is used to read file as binary string, array buffer, etc.
+
+   Using `FileReader` we can convert the `File` object recieved from `input` tag to desired format, like `data url`, `array buffer`, etc. This data can be then passed to encryption algorithm to encrypt and decrypt the data.
+
+4. `Buffer` - `crypto.randomBytes()` returns this type of object, which is used to generate `key` and `iv` for asymmetric encryption. It can be converted to `base64` using `buffer.toString('base64')` where `buffer` is object of `Buffer`.
+
+##### Cryptography
+
+1. `crypto` - used for symmetric encryption of data.
+
+2. `@metamask/eth-sig-util` - used for asymmetric encryption using public keys of users, decrypting using user's private key, signing data using user's private keys, verifying data integrity using user's public key.
+
+##### IPFS interaction
+
+1. `web3.storage` - is used to programmatically upload and retrieve data from IPFS network.
+
+##### Contract interaction
+
+1. `wagmi` - is used to interact with contract through metamask, read and write data to contract using contract functions.
+
+#### Textual file formats
+
+Some textual file formats in used in this project -
+
+- `utf-8` string format
+- `ArrayBuffer` array of uint8
+- `base64` binary format
+- `data url` base64 encoded with data url append at start
+- `hex` Hexadecimal
+
+### Backend
+
+## Acknowledgements
+
+[html]: https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white
+[html-url]: https://developer.mozilla.org/en-US/docs/Web/HTML
+[bootstrap]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
+[bootstrap-url]: https://getbootstrap.com/docs/5.0/getting-started/introduction/
+[javascript]: https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black
+[javascript-url]: https://www.javascript.com/
+[ethereum]: https://img.shields.io/badge/Ethereum-3C3C3D?style=for-the-badge&logo=Ethereum&logoColor=white
+[ethereum-url]: https://ethereum.org/en/
+[chainlink]: https://img.shields.io/badge/chainlink-375BD2?style=for-the-badge&logo=chainlink&logoColor=white
+[chainlink-url]: https://chain.link/
+[solidity]: https://img.shields.io/static/v1?label=&message=Solidity&color=dodgerblue&style=for-the-badge&logo=hardhat
+[solidity-url]: https://docs.soliditylang.org/
+[hardhat]: https://img.shields.io/static/v1?label=&message=Hardhat&color=yellow&style=for-the-badge&logo=hardhat
+[hardhat-url]: https://hardhat.org/
+[ethers.js]: https://img.shields.io/static/v1?label=&message=Ethers.js&color=royalblue&style=for-the-badge&logo=hardhat
+[ethers-url]: https://docs.ethers.io/v5/
+
+## Future Scope
 
 We can store [w3name](https://github.com/web3-storage/w3name) instead of hash. Updates doesn't change this name, so reduces gas consumption of chaning hash each time data gets changed.

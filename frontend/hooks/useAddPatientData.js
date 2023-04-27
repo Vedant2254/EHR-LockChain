@@ -6,13 +6,10 @@ import { generateKey, symmetricEncrypt } from "@/utils/cryptography";
 import { encryptData, decryptData } from "@/utils/metamask";
 import { makeFileObjects, storeIPFS } from "@/utils/ipfs";
 
-// this thing can be converted to a simple function rather than a hook
-// will be done later
-
 // it expects ptAddress (data owner), drAddress (one who can access data)
 // it returns a function setupCIDs that expects generalData and certificates, plane format
 // setupCIDs
-// 1. generate new key
+// 1. generate new key (if required)
 // 2. encrypt generalData and certificatesData
 // 3. encrypt symmetric key using ptAddress and drAddress public key
 // 3. store generaldata, certificatesdata and keys to IPFS
@@ -20,7 +17,7 @@ import { makeFileObjects, storeIPFS } from "@/utils/ipfs";
 // 5. Further actions are performed by functions that use this hook
 
 export default function useAddPatientData(ptAddress, drAddress) {
-  const { signCertificates, recoverSigner } = useSignCertificates();
+  const { signCertificates } = useSignCertificates();
   const { publicKey: drPublicKey } = useGetDoctorPubKey(drAddress || null);
   const { certificatesHash } = useGetPatientHash(ptAddress);
 
@@ -32,7 +29,7 @@ export default function useAddPatientData(ptAddress, drAddress) {
   }
 
   // complex logic, but all data addition and updation stuff gets done from single function
-  // decrypter is ptAddress if drAddress or keyData is abset
+  // decrypter is ptAddress if drAddress or keyData is absent
   // else decrypter is drAddress if decryption key for drAddress is present in keyData
   // else decrypter is again ptAddress
   // if generalData is provided create new data and save it to ipfs
