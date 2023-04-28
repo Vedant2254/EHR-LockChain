@@ -355,9 +355,19 @@ by addresses present in keys of [Patient key data](#patient-key-data). Data is e
    }
    ``` -->
 
+### Backend
+
+#### Smart contracts
+
+#### Hardhat development environment
+
+#### Tests
+
+#### Deployments
+
 ### Frontend
 
-#### Modules
+#### Modules used
 
 ##### Files related
 
@@ -389,7 +399,7 @@ These help getting file from user, converting file to textual form, making it en
 
 #### Textual file formats
 
-Some textual file formats in used in this project -
+Some textual file formats in used in the project -
 
 - `utf-8` string format
 - `ArrayBuffer` array of uint8
