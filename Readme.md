@@ -103,20 +103,20 @@ MetaMask is a digital wallet that enables users to manage their Ethereum account
 
 **To install MetaMask:**
 
-1. Go to metamask.io and click the "Download" button.
+1. Go to [MetaMask](https://metamask.io) and click the "Download" button.
 2. Choose your browser and install the MetaMask extension.
-3. Follow the setup instructions, including creating a new wallet and recording your seed 4. phrase (which is important to keep safe and private).
-4. Once you've set up MetaMask, you should see a small fox icon in your browser toolbar.
+3. Follow the setup instructions, including creating a new wallet and recording your seed phrase (which is important to keep safe and private).
+4. Once you've set up MetaMask, you should see a small orange fox icon in your browser toolbar.
 
 **To use MetaMask with our project:**
 
 1. Make sure you are done with metamask installation and wallet creation.
-2. Open the app (EHR data management system) and click on "Connect" button to the right of navigation bar.
+2. Open our [webapp (EHR data management system)](https://ehr-data-management-system.vercel.app/) and click on "Connect" button to the right of navigation bar.
 3. A MetaMask popup should appear asking for permission to connect to our application. Click "Connect" to grant permission.
 4. In case you have multiple wallets in MetaMask, select the one you intend to use with our application.
 5. Once connected, you should see your wallet address partially displayed in the place of "Connect" button.
 
-While MetaMask can seem intimidating at first, it's an essential tool for interacting with Ethereum-based applications like ours. With just a few simple steps, you can get up and running with MetaMask and take control of your medical records through our application.
+While MetaMask can seem intimidating at first, it's an essential tool for interacting with Ethereum-based applications like ours. With just a few simple steps, you can get up and running with MetaMask and start using our application.
 
 <!-- Register as patient or doctor -->
 
@@ -130,58 +130,43 @@ While MetaMask can seem intimidating at first, it's an essential tool for intera
    - **First step:** fill in your basic details.
    - **Second step:** add your medical certificates (for patient) or doctor's certificates (for doctor).
    - **Third step:** fill in your social account details.
-6. If you're registering as a doctor, you may need to provide additional information such as your medical license number or other certifications.
-7. Optionally, you can upload any relevant certificates or documents to support your registration.
-8. Review your information and make sure it's accurate.
-9. Click the "Submit" button to complete your registration.
+6. Optionally, you can upload any relevant certificates or documents to support your registration.
+7. Review your information and make sure it's accurate.
+8. Click the "Submit" button to complete your registration.
 
 #### Extra steps for doctor's registration
 
 10. After the doctor completes their registration, admin will review the submitted details and approve the doctor. This is done to ensure the accuracy and legitimacy of the data provided by doctor.
 
-11. Once the admin verifies the doctor's data, the doctor will have to confirm their registration by providing their public key, this can be done by clicking "Confirm Registration" button from [doctor dashboard](https://ehr-data-management-system.vercel.app/doctor/dashboard).
+11. Once the admin verifies the doctor's data, the doctor will have to confirm their registration by providing their public key, this can be done by clicking "Confirm Registration" button from [doctor dashboard](https://ehr-data-management-system.vercel.app/doctor/dashboard). Doctor's public key is required for encryption of their patient's data.
 
 <!-- Patient  -->
 
 ### Patient Dashboard
 
-If registered as a patient you can access all your functionalities on [patient dashboard](https://ehr-data-management-system.vercel.app/patient/dashboard), which can also be accessed from [main page](http://ehr-data-management-system.vercel.app/) of application.
+If registered as a patient you can access all your functionalities on [patient dashboard](https://ehr-data-management-system.vercel.app/patient/dashboard), which can also be accessed from [main page](http://ehr-data-management-system.vercel.app/) of application, by clicking on the "Patient Dashboard" button on navigation bar.
 
 - **View general details:** Patients can view their personal information such as their name, age, gender, and contact information from the patient dashboard.
-- **View medical certificates:** Patients can view and manage their medical certificates from the dashboard. This includes certificates for vaccinations, medical procedures, and other health-related information.
+- **View medical certificates:** Patients can view and manage their medical certificates from the dashboard. This may include certificates for vaccinations, medical procedures, and other health-related information.
 - **Edit general details:** Patients can edit their personal information from the dashboard, such as their phone number or email address.
-- **Edit medical certificates:** Patients can update or add new medical certificates as needed. This can include uploading scanned copies of physical documents or entering relevant details manually.
+- **Edit medical certificates:** Patients can update or add new medical certificates as needed. This includes uploading scanned copies of physical documents and entering relevant details.
 - **Grant access to doctors:** Patients can grant access to their medical data to specific doctors. This is done through a secure access control system that uses blockchain technology to ensure the privacy and security of patient data.
-- **Revoke access to doctors:** Patients can revoke access to their data at any time, providing them with complete control over who can view their medical information.
+- **Revoke access from doctors:** Patients can revoke access to their data from doctor at any time, providing them with complete control over who can view their medical information.
 
 <!-- Doctor -->
 
 ### Doctor Dashboard
 
-If registered as a patient you can access all your functionalities on [doctor dashboard](https://ehr-data-management-system.vercel.app/doctor/dashboard), which can also be accessed from [main page](http://ehr-data-management-system.vercel.app/) of application.
+If registered as a doctor you can access all your functionalities on [doctor dashboard](https://ehr-data-management-system.vercel.app/doctor/dashboard), which can also be accessed from [main page](http://ehr-data-management-system.vercel.app/) of application, by clicking on the "Doctor Dashboard" button on navigation bar.
 
 - **View general details:** Doctors can view their personal information such as their name, age, gender, and contact information from the doctor dashboard.
 - **View doctor certificates:** Doctors can view and manage their certificates from the dashboard. This includes certificates for medical licenses, medical education, and other related certificates.
 - **Edit general details:** Doctors can edit their personal information from the dashboard, such as their phone number or email address.
-- **Edit doctor certificates:** Doctors can update or add new certificates as needed. This can include uploading scanned copies of physical documents or entering relevant details manually.
+- **Edit doctor certificates:** Doctors can update or add new certificates as needed. This includes uploading scanned copies of physical documents and entering relevant details.
 - **View patients:** Doctors can view a list of their patients and access their medical records from the dashboard.
 - **View and edit patient medical certificates:** Doctors can view and edit patient medical certificates as needed. This includes reviewing test results, updating treatment plans, and recording other medical notes.
 
 ## Technical Details
-
-### Project Folder Structure
-
-`/backend` contains smart contract built using solidity. [Hardhat](https://hardhat.org/) is used as development environment, provides easy testing and deploying functionalities, javascript can be used for writing, testing and deployment scripts.
-
-`/frontend` is a nextjs application
-
-`/frontend/utils` all pure functions, these take some parameters, does some computation, and returns the result, depends on pre-built modules like `crypto`, `web3.storage`, `@metamask/eth-sig-util`.
-
-`/frontend/hooks` all communication functions (custom react hooks), establishes communications between frontend, backend and IPFS, depends on functions in `/frontend/utils` to fulfill their functionalities.
-
-`/frontend/components` all UI components, handles UI and user interaction. Built using [Mantine.dev](https://mantine.dev/) UI library, and is depends on custom react hooks in `/frontend/hooks`.
-
-`/frontend/pages` contains routes of application that users can visit. Depends on `/frontend/components`.
 
 ### Mechanisms
 
@@ -189,9 +174,9 @@ If registered as a patient you can access all your functionalities on [doctor da
 
 ##### Steps
 
-1. `File` received from `<input type="file" />` can be converted to data url using `FileReader().readAsDataURL(File)`, which directly gives a data url that can be put in `<iframe />` tag to view the data.
+1. `File` object received from `<input type="file" />` can be converted to data url using `FileReader().readAsDataURL(File)`, which directly gives a data url that can be put in `<iframe />` tag to dusplay the data.
 
-1. The output from `FileReader().readAsDataURL(File)` is encrypted using `utf-8` to `hex`, which cna then be decrypted using `hex` to `utf-8`.
+1. The output from `FileReader().readAsDataURL(File)` is encrypted using `utf-8` to `hex` encryption, which can then be decrypted using `hex` to `utf-8` decryption.
 
 ##### Type of encryption used
 
@@ -274,19 +259,20 @@ by addresses present in keys of [Patient key data](#patient-key-data). Data is e
                 title: ---
                 description: ---
                 media (image, pdf, docx, video, etc.): ---
-            }
+            },
             {
                 title: ---
                 description: ---
                 media (image, pdf, docx, video, etc.): ---
-            }
+            },
             .
             .
             .
         ],
         metadata: {
-            lastUpdatedBy: ""
-            lastUpdatedDate: ""
+            lastUpdatedBy: "",
+            lastUpdatedDate: "",
+            version: ""
         }
     },
     digitalSignatureOfLastUpdater: ""
@@ -294,6 +280,8 @@ by addresses present in keys of [Patient key data](#patient-key-data). Data is e
 ```
 
 ##### Doctor general details
+
+This data is not encrypted
 
 ```
 {
@@ -322,22 +310,12 @@ by addresses present in keys of [Patient key data](#patient-key-data). Data is e
 ```
 
 <!--
-#### Pages
-
-#### Frontend NextJS component structure
-
-```
-> Admin
-> Doctor
-> Patient
-```
-
 #### Issues that occured during development
 
 ##### Metamask default account for contract read
 
 1. Metamask sends transactions that needs to be signed through the account that is currently selected
-2. But, when calling a view function on contract it sends it may be sent through any account that is connected, not necessarily through the selected account
+2. But, when calling a view function on contract it may be sent through any account that is connected, not necessarily through the selected account
 3. It was realised when patients data was returned instead call reverted with message "Not Allowed" as contract used to compare allowed addresses with msg.sender, when I returned msg.sender from contract I realised that the account call was being sent was not the account currectly selected in metamask, it was being sent from the account that was first connected to website.
 4. In this application specifically for functions that are view functions and rely on msg.sender, I have used ethersjs direclty instead of wagmi hooks.
    ```js
@@ -355,17 +333,47 @@ by addresses present in keys of [Patient key data](#patient-key-data). Data is e
    }
    ``` -->
 
-### Backend
+### Backend `/backend`
+
+#### Folder structure
+
+- `contracts/` contains all smart contracts.
+- `deploy/` contains deployment scripts.
+- `deployments/` contains recent deployments on different networks, auto-managed by hardhat.
+- `scripts/` contains the scripts to manually test smart contract or perform operations.
+- `test/` contains tests to automate testing of smart contract.
+- `hardhat.config.js` used to customize options of hardhat development environment.
 
 #### Smart contracts
 
+- `Contract.sol` - Main contract that stores and manages access control and permissions.
+- `Roles.sol` - Provides data structure and functions for adding, and removing users.
+- `AddressArrayUtils.sol` - Utility functions for Array of Addresses.
+- `AddToBoolMapping.sol` - Provides an easily searchable custom mapping of Address to Boolean.
+- `AddToStrMapping.sol` - Proveds an easily searchable custom mapping of Address to String.
+
 #### Hardhat development environment
 
-#### Tests
+- **[Hardhat](https://hardhat.org/)** is an Ethereum development environment that provides a range of tools to help developers buld and deploy smart contracts more efficiently. It provides features like Test Automation, Gas Optimization, Network Management, and local hardhat network to make development easier.
 
-#### Deployments
+- It comes with a config file `hardhat.config.js`, that helps customize the development environment, some of the options include -
+
+  - `solidity` to specify the compiler version used to compile the contracts.
+  - `defaultNetwork` to specify the default network on which scripts and tests are run.
+  - `networks` option helps including multiple networks including local, testnets and mainnets.
+  - `namedAccounts` allows naming the accounts which can be imported in tests and scripts using `getNamedAccounts()`.
+  - `etherscan` and `gasReporter` are used for smart contract verification and gas reporting.
+
+- All hardhat functionalities can be viewed by typing `yarn hardhat` in command line from the project folder, similarly `yarn hardhat <command>` can be typed to perform a specific hardhat operation. For example, for deploying a smart contract on sepolia network following command is used `yarn hardhat deploy --network sepolia`.
 
 ### Frontend
+
+#### Folder structure
+
+- `utils/` contains all pure functions, these functions take some parameters, does some computation, and returns the result, depends on pre-built modules like `crypto`, `web3.storage`, `@metamask/eth-sig-util`.
+- `hooks/` contains all communication functions (custom react hooks) used for communicating between frontend, backend and IPFS. These hooks use functions in `utils/`.
+- `components/` contains all UI components and handles UI and user interaction. Built using [Mantine.dev](https://mantine.dev/) UI library, and depends on custom react hooks in `/frontend/hooks` to display dynamic data.
+- `pages/` contains routes of application that users can visit. A single page combines one or more componets from `components/`.
 
 #### Modules used
 
@@ -383,6 +391,14 @@ These help getting file from user, converting file to textual form, making it en
 
 4. `Buffer` - `crypto.randomBytes()` returns this type of object, which is used to generate `key` and `iv` for asymmetric encryption. It can be converted to `base64` using `buffer.toString('base64')` where `buffer` is object of `Buffer`.
 
+###### Some textual file formats in used in the project -
+
+- `utf-8` string format
+- `ArrayBuffer` array of uint8
+- `base64` binary format
+- `data url` base64 encoded with data url append at start
+- `hex` Hexadecimal format
+
 ##### Cryptography
 
 1. `crypto` - used for symmetric encryption of data.
@@ -397,19 +413,13 @@ These help getting file from user, converting file to textual form, making it en
 
 1. `wagmi` - is used to interact with contract through metamask, read and write data to contract using contract functions.
 
-#### Textual file formats
-
-Some textual file formats in used in the project -
-
-- `utf-8` string format
-- `ArrayBuffer` array of uint8
-- `base64` binary format
-- `data url` base64 encoded with data url append at start
-- `hex` Hexadecimal
-
-### Backend
-
 ## Acknowledgements
+
+## Future Scope
+
+- We can store [w3name](https://github.com/web3-storage/w3name) instead of hash. Updates doesn't change this name, so reduces gas consumption of chaning hash each time data gets changed.
+
+<!-- Links -->
 
 [html]: https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white
 [html-url]: https://developer.mozilla.org/en-US/docs/Web/HTML
@@ -427,7 +437,3 @@ Some textual file formats in used in the project -
 [hardhat-url]: https://hardhat.org/
 [ethers.js]: https://img.shields.io/static/v1?label=&message=Ethers.js&color=royalblue&style=for-the-badge&logo=hardhat
 [ethers-url]: https://docs.ethers.io/v5/
-
-## Future Scope
-
-We can store [w3name](https://github.com/web3-storage/w3name) instead of hash. Updates doesn't change this name, so reduces gas consumption of chaning hash each time data gets changed.
