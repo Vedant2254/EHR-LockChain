@@ -57,10 +57,9 @@ Our system takes a different approach. With our platform, both storage and acces
 
 ## Technologies Used
 
-[![HTML][html]][html-url] [![Javascript][javascript]][javascript-url] [![Ethereum][ethereum]][ethereum-url] [![Solidity][solidity]][solidity-url] [![Hardhat][hardhat]][hardhat-url] [![Ethers][ethers.js]][ethers-url]
+[![HTML][html]][html-url] [![Javascript][javascript]][javascript-url] [![Ethereum][ethereum]][ethereum-url] [![Solidity][solidity]][solidity-url] [![Hardhat][hardhat]][hardhat-url] [![Ethers][ethers.js]][ethers-url] [![Wagmi][wagmi]][wagmi-url]
 
 nextjs
-wagmi
 mantine
 metamask
 
@@ -437,3 +436,5 @@ These help getting file from user, converting file to textual form, making it en
 [hardhat-url]: https://hardhat.org/
 [ethers.js]: https://img.shields.io/static/v1?label=&message=Ethers.js&color=royalblue&style=for-the-badge&logo=hardhat
 [ethers-url]: https://docs.ethers.io/v5/
+[wagmi]: https://img.shields.io/static/v1?label=&message=Wagmi&color=blue&style=for-the-badge&logo=wagmi
+[wagmi-url]: https://wagmi.sh/
