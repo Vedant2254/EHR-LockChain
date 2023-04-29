@@ -29,9 +29,9 @@ describe("Contract", function () {
 
   describe("isDoctor", function () {
     it("Returns true if user is doctor, approved by admin and doctor has given his public key", async function () {
-      await (await ethers.getContract("Contract", doctor)).addDoctor("sample-hash");
-      await contract.approveDoctor(doctor.address);
-      await (await ethers.getContract("Contract", doctor)).confirmAddDr("sample-public-key");
+      await contract.connect(doctor).registerDr("sample-hash");
+      await contract.connect(admin).approveDr(doctor.address);
+      await contract.connect(doctor).registerDrConfirm("sample-public-key");
       assert(await contract.isDoctor(doctor.address));
     });
 
@@ -42,21 +42,21 @@ describe("Contract", function () {
 
   describe("setDrHash & getDrHash", function () {
     it("Hash for doctor is set and retrieved correctly", async function () {
-      await (await ethers.getContract("Contract", doctor)).addDoctor("old-hash");
-      await contract.approveDoctor(doctor.address);
-      await (await ethers.getContract("Contract", doctor)).confirmAddDr("sample-public-key");
-      await (await ethers.getContract("Contract", doctor)).setDrHash("new-hash");
+      await contract.connect(doctor).registerDr("old-hash");
+      await contract.approveDr(doctor.address);
+      await contract.connect(doctor).registerDrConfirm("sample-public-key");
+      await contract.connect(doctor).setDrHash("new-hash");
       assert.equal("new-hash", await contract.getDrHash(doctor.address));
     });
   });
 
-  describe("addDoctor", function () {
+  describe("registerDr", function () {
     const hash = "sample-hash";
 
     beforeEach(async function () {
-      (await (await ethers.getContract("Contract", doctor)).addDoctor(hash)).wait(1);
-      await contract.approveDoctor(doctor.address);
-      await (await ethers.getContract("Contract", doctor)).confirmAddDr("sample-public-key");
+      (await contract.connect(doctor).registerDr(hash)).wait(1);
+      await contract.approveDr(doctor.address);
+      await contract.connect(doctor).registerDrConfirm("sample-public-key");
     });
 
     it("Address is added to doctor role", async function () {
@@ -75,21 +75,21 @@ describe("Contract", function () {
     });
 
     it("Reverts if address is already registered", async function () {
-      await expect(
-        (await ethers.getContract("Contract", doctor)).addDoctor("sample-hash")
-      ).to.be.revertedWith("Roles: account already has role");
+      await expect(contract.connect(doctor).registerDr("sample-hash")).to.be.revertedWith(
+        "Roles: account already has role"
+      );
     });
   });
 
   describe("getAllDrs", function () {
     it("All doctors array is returned correctly", async function () {
-      await (await ethers.getContract("Contract", doctor)).addDoctor("sample-hash");
-      await contract.approveDoctor(doctor.address);
-      await (await ethers.getContract("Contract", doctor)).confirmAddDr("sample-public-key");
+      await contract.connect(doctor).registerDr("sample-hash");
+      await contract.approveDr(doctor.address);
+      await contract.connect(doctor).registerDrConfirm("sample-public-key");
 
-      await (await ethers.getContract("Contract", patient)).addDoctor("sample-hash");
-      await contract.approveDoctor(patient.address);
-      await (await ethers.getContract("Contract", patient)).confirmAddDr("sample-public-key");
+      await contract.connect(patient).registerDr("sample-hash");
+      await contract.approveDr(patient.address);
+      await contract.connect(patient).registerDrConfirm("sample-public-key");
 
       const drs = await contract.getAllDrs();
       assert(drs[0] == doctor.address && drs[1] == patient.address);
@@ -97,12 +97,8 @@ describe("Contract", function () {
   });
 
   describe("isPatient", function () {
-    beforeEach(async function () {
-      contract = await ethers.getContract("Contract", patient);
-    });
-
     it("Returns true if user is patient", async function () {
-      (await contract.addPatient("sample-hash")).wait(1);
+      await contract.connect(patient).registerPt("sample-hash", "sample-hash");
       assert(await contract.isPatient(patient.address));
     });
 
@@ -111,123 +107,110 @@ describe("Contract", function () {
     });
   });
 
-  describe("addPatient", function () {
+  describe("registerPt", function () {
     const hash = "sample-hash";
 
     beforeEach(async function () {
-      contract = await ethers.getContract("Contract", patient);
-      await contract.addPatient(hash);
+      await contract.connect(patient).registerPt(hash, hash);
     });
 
     it("Address is added to patient role", async function () {
-      const isPatient = await contract.isPatient(patient.address);
-      assert(isPatient);
+      assert(await contract.isPatient(patient.address));
     });
 
     it("Address is added to pat_ids array", async function () {
-      const pats = await contract.getAllPats();
+      const pats = await contract.getAllPts();
       assert(pats.includes(patient.address));
     });
 
     it("Hash of patient is added", async function () {
-      const patHash = await contract.getPatGeneralHash();
+      const patHash = await contract.connect(patient).getPtGeneralHash(patient.address);
       assert.equal(patHash, hash);
     });
 
     it("Reverts if address is already registered", async function () {
-      await expect(contract.addPatient("sample-hash")).to.be.revertedWith(
+      await expect(contract.connect(patient).registerPt(hash, hash)).to.be.revertedWith(
         "Roles: account already has role"
       );
     });
   });
 
-  describe("getAllPats", function () {
+  describe("getAllPts", function () {
     it("All patients array is returned correctly", async function () {
-      await contract.addPatient("sample-hash");
-      (await ethers.getContract("Contract", doctor)).addPatient("sample-hash");
-      (await ethers.getContract("Contract", patient)).addPatient("sample-hash");
-      const pats = await contract.getAllPats();
+      await contract.registerPt("sample-hash", "sample-hash");
+      contract.connect(doctor).registerPt("sample-hash", "sample-hash");
+      contract.connect(patient).registerPt("sample-hash", "sample-hash");
+      const pats = await contract.getAllPts();
       assert(pats[0] == admin.address, pats[1] == doctor.address, (pats[2] = patient.address));
     });
   });
 
-  describe("setPatGeneralHash & getPatGeneralHash", function () {
+  describe("setPtGeneralHash & getPtGeneralHash", function () {
     const hash = "new-pat-hash";
 
     beforeEach(async function () {
-      contract = await ethers.getContract("Contract", patient);
-      await contract.addPatient("sample-hash");
+      await contract.connect(patient).registerPt("sample-hash", "sample-hash");
     });
 
     it("General data hash for patient is set and retrieved correctly", async function () {
-      await contract.setPatGeneralHash(hash);
-      assert.equal(await contract.getPatGeneralHash(), hash);
+      await contract.connect(patient).setPtGeneralHash(hash);
+      assert.equal(await contract.connect(patient).getPtGeneralHash(patient.address), hash);
     });
   });
 
-  describe("setPatRecordHash & getPatRecordHash", function () {
+  describe("setPtRecordHash & getPtRecordHash", function () {
     const hash = "new-pat-hash";
 
-    beforeEach(async function () {
-      await (await ethers.getContract("Contract", doctor)).addDoctor("sample-hash");
-      await contract.approveDoctor(doctor.address);
-      await (await ethers.getContract("Contract", doctor)).confirmAddDr("sample-public-key");
-
-      contract = await ethers.getContract("Contract", patient);
-      await contract.addPatient("sample-hash");
-      await contract.changeEditorAccess(doctor.address);
-    });
-
     it("Medical record hash for patient is set and retrieved correctly", async function () {
-      contract = await ethers.getContract("Contract", doctor);
-      await contract.setPatRecordHash(patient.address, hash);
-      assert.equal(await contract.getPatRecordHash(patient.address), hash);
+      await contract.connect(patient).registerPt("sample-hash", "sample-hash");
+      await contract.connect(patient).setPtRecordHash(patient.address, hash);
+      assert.equal(await contract.connect(patient).getPtRecordHash(patient.address), hash);
     });
   });
 
   describe("changeEditorAccess", function () {
     beforeEach(async function () {
-      await (await ethers.getContract("Contract", doctor)).addDoctor("sample-hash");
-      await contract.approveDoctor(doctor.address);
-      await (await ethers.getContract("Contract", doctor)).confirmAddDr("sample-public-key");
+      await contract.connect(doctor).registerDr("sample-hash");
+      await contract.approveDr(doctor.address);
+      await contract.connect(doctor).registerDrConfirm("sample-public-key");
 
-      contract = await ethers.getContract("Contract", patient);
-      await contract.addPatient("sample-hash");
-
-      await contract.changeEditorAccess(doctor.address);
+      await contract.connect(patient).registerPt("sample-hash", "sample-hash");
+      await contract
+        .connect(patient)
+        .changeEditorAccess(doctor.address, "sample-hash", "sample-hash");
     });
 
-    it("Doctor address is chnaged", async function () {
-      const contract_doctor = await contract.getPatDr();
+    it("Doctor address is changed", async function () {
+      const contract_doctor = await contract.connect(patient).getDrOfPt();
       assert.equal(doctor.address, contract_doctor);
     });
 
     it("Patient address is added to docToPatAccess", async function () {
-      const patients = await (await ethers.getContract("Contract", doctor)).getDocPats();
+      const patients = await contract.connect(doctor).getPtsOfDr();
       assert(patients.indexOf(patient.address) != -1);
     });
   });
 
   describe("removeEditorAccess", function () {
     beforeEach(async function () {
-      await (await ethers.getContract("Contract", doctor)).addDoctor("sample-hash");
-      await contract.approveDoctor(doctor.address);
-      await (await ethers.getContract("Contract", doctor)).confirmAddDr("sample-public-key");
+      await contract.connect(doctor).registerDr("sample-hash");
+      await contract.approveDr(doctor.address);
+      await contract.connect(doctor).registerDrConfirm("sample-public-key");
 
-      contract = await ethers.getContract("Contract", patient);
-      await contract.addPatient("sample-hash");
-
-      await contract.changeEditorAccess(doctor.address);
-      await contract.removeEditorAccess();
+      await contract.connect(patient).registerPt("sample-hash", "sample-hash");
+      await contract
+        .connect(patient)
+        .changeEditorAccess(doctor.address, "sample-hash", "sample-hash");
+      await contract.connect(patient).removeEditorAccess("sample-hash", "sample-hash");
     });
 
     it("Doctor address is removed", async function () {
-      const contract_doctor = await contract.getPatDr();
-      assert.equal(contract_doctor, ethers.constants.AddressZero);
+      const contract_doctor = await contract.connect(patient).getDrOfPt();
+      assert.equal(contract_doctor, patient.address);
     });
 
     it("Patient address is removed from docToPatAccess", async function () {
-      const patients = await (await ethers.getContract("Contract", doctor)).getDocPats();
+      const patients = await contract.connect(doctor).getPtsOfDr();
       assert(patients.indexOf(patient.address) == -1);
     });
   });
