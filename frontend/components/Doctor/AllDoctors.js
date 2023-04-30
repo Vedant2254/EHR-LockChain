@@ -18,41 +18,37 @@ export default function AllDoctors({ user, setDoctor }) {
     activeTab == "all" && setDoctor && setDoctor(null);
   }, [activeTab]);
 
-  return (
-    <>
-      <Tabs orientation="vertical" onTabChange={setActiveTab} value={activeTab} keepMounted={false}>
-        <Tabs.Panel value="all">
-          <Tabs.List>
-            {allDoctors && allDoctors.length > 0 ? (
-              <DoctorsList
-                allDoctors={allDoctors}
-                pendingDoctors={pendingDoctors}
-                setActiveTab={setActiveTab}
-              />
-            ) : (
-              <Title order={4}>No doctor registered yet</Title>
-            )}
-          </Tabs.List>
-        </Tabs.Panel>
+  return allDoctors && allDoctors.length > 0 ? (
+    <Tabs orientation="vertical" onTabChange={setActiveTab} value={activeTab} keepMounted={false}>
+      <Tabs.Panel value="all">
+        <Tabs.List>
+          <DoctorsList
+            allDoctors={allDoctors}
+            pendingDoctors={pendingDoctors}
+            setActiveTab={setActiveTab}
+          />
+        </Tabs.List>
+      </Tabs.Panel>
 
-        {allDoctors &&
-          allDoctors.map((doctor, index) => {
-            return (
-              <Tabs.Panel key={index} value={doctor}>
-                <Button
-                  variant="light"
-                  onClick={() => setActiveTab("all")}
-                  w="100%"
-                  leftIcon={<IconArrowLeft />}
-                >
-                  Back to all doctors
-                </Button>
-                <Divider my="sm" />
-                <Doctor address={doctor} user={user} setDoctor={setDoctor} />
-              </Tabs.Panel>
-            );
-          })}
-      </Tabs>
-    </>
+      {allDoctors &&
+        allDoctors.map((doctor, index) => {
+          return (
+            <Tabs.Panel key={index} value={doctor}>
+              <Button
+                variant="light"
+                onClick={() => setActiveTab("all")}
+                w="100%"
+                leftIcon={<IconArrowLeft />}
+              >
+                Back to all doctors
+              </Button>
+              <Divider my="sm" />
+              <Doctor address={doctor} user={user} setDoctor={setDoctor} />
+            </Tabs.Panel>
+          );
+        })}
+    </Tabs>
+  ) : (
+    <Title order={4}>No doctor registered yet</Title>
   );
 }

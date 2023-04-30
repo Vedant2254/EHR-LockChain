@@ -1,5 +1,5 @@
 import useGetPatientsOfDoctor from "@/hooks/useGetPatientsOfDoctor";
-import { Button, Divider, Tabs } from "@mantine/core";
+import { Button, Divider, Tabs, Title } from "@mantine/core";
 import { IconArrowLeft } from "@tabler/icons-react";
 import { useState } from "react";
 import Patient from "./Patient";
@@ -11,7 +11,7 @@ export default function PatientsOfDoctor({ user }) {
   const [activeTab, setActiveTab] = useState("all");
 
   // return <PatientList patients={patients} setActiveTab={() => {}} />;
-  return (
+  return patients && patients.length > 0 ? (
     <Tabs orientation="vertical" onTabChange={setActiveTab} value={activeTab} keepMounted={false}>
       <Tabs.Panel value="all">
         <Tabs.List>
@@ -37,5 +37,7 @@ export default function PatientsOfDoctor({ user }) {
           );
         })}
     </Tabs>
+  ) : (
+    <Title order={4}>No patient yet</Title>
   );
 }

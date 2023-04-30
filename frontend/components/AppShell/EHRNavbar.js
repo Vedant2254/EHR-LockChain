@@ -12,8 +12,10 @@ import {
 import { useRouter } from "next/router";
 import Link from "next/link";
 import ConnectButton from "@/components/AppShell/ConnectButton";
-import { IconBrandGithub, IconLogout, IconSwitchHorizontal } from "@tabler/icons-react";
+import { IconBrandGithub, IconLogout, IconSwitch, IconSwitchHorizontal } from "@tabler/icons-react";
 import LogosMetamaskIcon from "../Utils/Icons/MetamaskIcon";
+import SwitchNetworkButton from "./SwitchNetworkButton";
+import { useNetwork } from "wagmi";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -74,6 +76,7 @@ export default function EHRNavbar({ navlinks, opened }) {
   const { classes, cx } = useStyles();
   const router = useRouter();
   const { location } = router.query;
+  const { chain } = useNetwork();
 
   const [active, setActive] = useState("");
 

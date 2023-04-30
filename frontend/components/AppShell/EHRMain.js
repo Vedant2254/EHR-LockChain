@@ -13,6 +13,7 @@ import {
   Grid,
   Center,
   Divider,
+  useMantineColorScheme,
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import { useAccount } from "wagmi";
@@ -20,7 +21,6 @@ import ConnectButton from "./ConnectButton";
 import useValidTxnData from "@/hooks/useValidTxnData";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
   back: {
@@ -65,9 +65,9 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function EHRMain() {
+  const { colorScheme } = useMantineColorScheme();
   const { classes } = useStyles();
   const { isConnected } = useAccount();
-  const { contractAddress } = useValidTxnData();
   const router = useRouter();
 
   const [isDefinitelyConnected, setIsDefninitelyConnected] = useState(false);
@@ -126,31 +126,32 @@ export default function EHRMain() {
             </List>
 
             <Group mt={30}>
+              <Button
+                onClick={() => {
+                  const elem = isDefinitelyConnected
+                    ? document.getElementById("permissions")
+                    : document.getElementById("instructions");
+                  const header = document.getElementById("header");
+                  window &&
+                    elem &&
+                    window.scrollTo({
+                      top: elem.getBoundingClientRect().top - header.getBoundingClientRect().height,
+                      behavior: "smooth",
+                    });
+                }}
+                radius="xl"
+                size="md"
+                variant="gradient"
+                className={classes.control}
+              >
+                {isDefinitelyConnected ? "Know Permissions" : "Getting Started"}
+              </Button>
               {!isDefinitelyConnected ? (
-                <>
-                  <Button
-                    onClick={() => {
-                      const elem = document.getElementById("instructions");
-                      window &&
-                        elem &&
-                        window.scrollTo({
-                          top: elem.getBoundingClientRect().top,
-                          behavior: "smooth",
-                        });
-                    }}
-                    radius="xl"
-                    size="md"
-                    variant="gradient"
-                    className={classes.control}
-                  >
-                    Getting Started
-                  </Button>
-                  <Button radius="xl" size="md" className={classes.control}>
-                    <Center>
-                      <ConnectButton />
-                    </Center>
-                  </Button>
-                </>
+                <Button radius="xl" size="md" className={classes.control}>
+                  <Center>
+                    <ConnectButton />
+                  </Center>
+                </Button>
               ) : (
                 <Button
                   radius="xl"
@@ -172,23 +173,16 @@ export default function EHRMain() {
               >
                 Source code
               </Button>
-              {isDefinitelyConnected && (
-                <Button
-                  component="a"
-                  href={`https://sepolia.etherscan.io/address/${contractAddress}`}
-                  target="_blank"
-                  variant="default"
-                  radius="xl"
-                  size="md"
-                  className={classes.control}
-                >
-                  View Contract
-                </Button>
-              )}
             </Group>
           </Grid.Col>
           <Grid.Col span={5} className={classes.image}>
-            <Image src="/ehr-logo-main-animated.gif" />
+            <Image
+              src={
+                colorScheme === "light"
+                  ? "/ehr-logo-main-animated.gif"
+                  : "/ehr-logo-main-dark-animated.gif"
+              }
+            />
           </Grid.Col>
         </Grid>
       </Container>

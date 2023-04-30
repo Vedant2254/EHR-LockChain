@@ -21,10 +21,9 @@ import Link from "next/link";
 import useIsPatient from "@/hooks/useIsPatient";
 import useIsDoctorRegistered from "@/hooks/useIsDoctorRegistered";
 import useIsAdmin from "@/hooks/useIsAdmin";
-import { useAccount, useNetwork } from "wagmi";
+import { useAccount } from "wagmi";
 import { useRouter } from "next/router";
-import { IconMoonStars, IconPlug, IconSun, IconSwitch, IconSwitch3 } from "@tabler/icons-react";
-import SwitchNetworkButton from "./SwitchNetworkButton";
+import { IconMoonStars, IconPlug, IconSun } from "@tabler/icons-react";
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -34,6 +33,25 @@ const useStyles = createStyles((theme) => ({
     // backgroundColor: "rgba(255, 255, 255, 0.15)",
     // backdropFilter: `blur(250px)`,
     zIndex: 101,
+  },
+
+  outerContainer: {
+    height: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+
+    [theme.fn.smallerThan("md")]: {
+      flexDirection: "column",
+    },
+  },
+
+  innerContainer: {
+    alignItems: "center",
+
+    [theme.fn.smallerThan("md")]: {
+      flexDirection: "column",
+      justifyContent: "center",
+    },
   },
 
   connectBtn: {
@@ -52,16 +70,15 @@ export default function EHRHeader({ opened, setOpened }) {
   const { isDoctorRegistered } = useIsDoctorRegistered(address);
   const { isAdmin } = useIsAdmin(address);
   const { classes } = useStyles();
-  const { chain } = useNetwork();
   const router = useRouter();
   const theme = useMantineTheme();
 
   const dark = colorScheme === "dark";
 
   return (
-    <Header height={{ base: 50, md: 70 }} className={classes.header} id="header">
-      <Flex justify="space-between" align="center" h="100%">
-        <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+    <Header height={{ base: "100%", md: 70 }} className={classes.header} id="header">
+      <Flex className={classes.outerContainer}>
+        <MediaQuery largerThan="md" styles={{ display: "none" }}>
           <Burger
             opened={opened}
             onClick={() => setOpened((o) => !o)}
@@ -71,14 +88,18 @@ export default function EHRHeader({ opened, setOpened }) {
           />
         </MediaQuery>
 
-        <Group onClick={() => router.push("/")} sx={{ cursor: "pointer" }}>
+        <Flex
+          className={classes.innerContainer}
+          onClick={() => router.push("/")}
+          sx={{ cursor: "pointer" }}
+        >
           <Avatar src="/ehr-logo-main.png" />
-          <Text size="lg" fw="bold" variant="gradient">
+          <Text size="lg" fw="bold" ml="md" variant="gradient">
             EHR data management system
           </Text>
-        </Group>
+        </Flex>
 
-        <Group spacing="xs">
+        <Flex className={classes.innerContainer} spacing="xs">
           <Button component={Link} href="/" variant="subtle">
             Home
           </Button>
@@ -110,16 +131,17 @@ export default function EHRHeader({ opened, setOpened }) {
           >
             {dark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
           </ActionIcon>
-        </Group>
+        </Flex>
 
-        {router.asPath == "/" && (
-          <Group className={classes.connectBtn}>
-            <SwitchNetworkButton />
+        {router.asPath == "/" ? (
+          <Flex className={classes.connectBtn}>
             <Flex align="center">
               <IconPlug />
               <ConnectButton />
             </Flex>
-          </Group>
+          </Flex>
+        ) : (
+          <div></div>
         )}
       </Flex>
     </Header>

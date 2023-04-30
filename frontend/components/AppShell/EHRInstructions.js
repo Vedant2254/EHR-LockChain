@@ -11,11 +11,6 @@ import {
   getStylesRef,
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
-import { useAccount, useNetwork } from "wagmi";
-import useValidTxnData from "@/hooks/useValidTxnData";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import LogosMetamaskIcon from "../Utils/Icons/MetamaskIcon";
 
 const useStyles = createStyles((theme) => ({
   back: {
@@ -35,6 +30,10 @@ const useStyles = createStyles((theme) => ({
     [theme.fn.smallerThan("xs")]: {
       fontSize: rem(28),
     },
+  },
+
+  subtitle: {
+    color: theme.colorScheme === "dark" ? theme.white : theme.black,
   },
 
   control: {
@@ -79,7 +78,9 @@ export default function EHRInstructions() {
         </Text>
 
         <Group mt="xl">
-          <Title order={2}>To install MetaMask</Title>
+          <Title order={2} className={classes.subtitle}>
+            To install MetaMask
+          </Title>
 
           <List
             spacing="sm"
@@ -110,7 +111,9 @@ export default function EHRInstructions() {
         </Group>
 
         <Group mt="xl">
-          <Title order={2}>To use MetaMask with our project</Title>
+          <Title order={2} className={classes.subtitle}>
+            To use MetaMask with our project
+          </Title>
 
           <List
             spacing="sm"

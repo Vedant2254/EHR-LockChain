@@ -7,7 +7,7 @@ import useRemoveEditorAccess from "@/hooks/useRemoveEditorAccess";
 import AllDoctors from "@/components/Doctor/AllDoctors";
 import Doctor from "@/components/Doctor/Doctor";
 import Patient from "@/components/Patient/Patient";
-import { Button, Tabs, Text } from "@mantine/core";
+import { Button, Tabs, Text, Title } from "@mantine/core";
 import BlurLoader from "@/components/Utils/BlurLoader";
 
 export default function PatientController() {
@@ -55,7 +55,7 @@ export default function PatientController() {
               </Button>
             </>
           ) : (
-            <Text>{"You don't have any doctor"}</Text>
+            <Title order={4}>No doctor is allowed to view / edit your data</Title>
           )}
         </Tabs.Panel>
 

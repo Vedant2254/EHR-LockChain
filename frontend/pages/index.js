@@ -3,6 +3,8 @@ import EHRHeader from "@/components/AppShell/EHRHeader";
 import EHRMain from "@/components/AppShell/EHRMain";
 import EHRInstructions from "@/components/AppShell/EHRInstructions";
 import EHRFooter from "@/components/AppShell/EHRFooter";
+import EHRPermissions from "@/components/AppShell/EHRPermissions";
+import { useState } from "react";
 
 const useStyles = createStyles((theme) => ({
   notFooter: {
@@ -20,16 +22,20 @@ const useStyles = createStyles((theme) => ({
 
 export default function Home() {
   const { classes } = useStyles();
+  const [opened, setOpened] = useState(false);
 
   return (
     <main>
       <Box className={classes.notFooter}>
-        <EHRHeader />
-        <Flex h="100vh" direction="column">
+        <EHRHeader opened={opened} setOpened={setOpened} />
+        <Flex mih="100vh" direction="column">
           <EHRMain />
         </Flex>
-        <Flex h="100vh" direction="column">
+        <Flex mih="100vh" direction="column">
           <EHRInstructions />
+        </Flex>
+        <Flex mih="100vh" direction="column">
+          <EHRPermissions />
         </Flex>
       </Box>
       <Box className={classes.footer}>

@@ -30,7 +30,7 @@
     <!-- Technologies from minor to major technologies -->
     <li><a href="#basic-terminologies">Basic terminologies</a></li>
     <!-- Basic terminologies like blockchain, ipfs, cryptography, hybrid encryption, etc. -->
-    <li><a href="#how-to-install-the-project">How to install the project</a></li>
+    <!-- <li><a href="#how-to-install-the-project">How to install the project</a></li> -->
     <!-- How others can install the run the project locally -->
     <li><a href="#how-to-use-the-project">How to use the project</a></li>
     <!-- How to use the project, locally installed or deployed -->
@@ -57,11 +57,7 @@ Our system takes a different approach. With our platform, both storage and acces
 
 ## Technologies Used
 
-[![HTML][html]][html-url] [![Javascript][javascript]][javascript-url] [![Ethereum][ethereum]][ethereum-url] [![Solidity][solidity]][solidity-url] [![Hardhat][hardhat]][hardhat-url] [![Ethers][ethers.js]][ethers-url] [![Wagmi][wagmi]][wagmi-url]
-
-nextjs
-mantine
-metamask
+[![HTML][html]][html-url] [![Javascript][javascript]][javascript-url] [![NextJS][nextjs]][nextjs-url] [![Mantine][mantine]][mantine-url] [![Wagmi][wagmi]][wagmi-url] [![Metamask][metamask]][metamask-url] [![Ethereum][ethereum]][ethereum-url] [![Solidity][solidity]][solidity-url] [![Hardhat][hardhat]][hardhat-url] [![Ethers][ethers.js]][ethers-url]
 
 ## Basic Terminologies
 
@@ -90,7 +86,7 @@ Cryptography of data involves two important processes, i.e. encryption and decry
 
 **Decryption** is the process of converting the non-readble cipher text back into readable plain text. This can be done only by autorized users who own the cryptographic key used during encryption of data.
 
-## How to install the project
+<!-- ## How to install the project -->
 
 ## How to use the project
 
@@ -416,7 +412,7 @@ These help getting file from user, converting file to textual form, making it en
 
 ## Future Scope
 
-- We can store [w3name](https://github.com/web3-storage/w3name) instead of hash. Updates doesn't change this name, so reduces gas consumption of chaning hash each time data gets changed.
+- We can store [w3name](https://github.com/web3-storage/w3name) instead of hash. Updates doesn't change this name, so reduces gas consumption of changing hash each time data gets changed.
 
 <!-- Links -->
 
@@ -436,5 +432,11 @@ These help getting file from user, converting file to textual form, making it en
 [hardhat-url]: https://hardhat.org/
 [ethers.js]: https://img.shields.io/static/v1?label=&message=Ethers.js&color=royalblue&style=for-the-badge&logo=hardhat
 [ethers-url]: https://docs.ethers.io/v5/
-[wagmi]: https://img.shields.io/static/v1?label=&message=Wagmi&color=blue&style=for-the-badge&logo=wagmi
+[wagmi]: https://img.shields.io/static/v1?label=&message=Wagmi&color=black&style=for-the-badge&logo=wagmi
 [wagmi-url]: https://wagmi.sh/
+[nextjs]: https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white
+[nextjs-url]: https://nextjs.org/
+[mantine]: https://img.shields.io/static/v1?label=&message=Mantine&color=blue&style=for-the-badge&logo=mantine
+[mantine-url]: https://mantine.dev/
+[metamask]: https://img.shields.io/static/v1?label=&message=Metamask&color=orange&style=for-the-badge&logo=metamask
+[metamask-url]: https://metamask.io/
