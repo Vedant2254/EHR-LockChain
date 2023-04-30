@@ -3,7 +3,7 @@ import { Button, Center, Loader, LoadingOverlay, Tabs, Text } from "@mantine/cor
 import AllDoctors from "@/components/Doctor/AllDoctors";
 import AllPatients from "@/components/Patient/AllPatients";
 import useApproveDoctor from "@/hooks/useApproveDoctor";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useDisapproveDoctor from "@/hooks/useDisapproveDoctor";
 import BlurLoader from "@/components/Utils/BlurLoader";
 
@@ -18,6 +18,11 @@ export default function AdminController() {
     isDoctorRegistered,
     runDisapproveDoctor,
   } = useDisapproveDoctor(doctor);
+
+  useEffect(() => {
+    (statusOfApprove === "success" || statusOfDisapprove === "success") &&
+      router.reload(window.location.pathname);
+  }, [statusOfApprove, statusOfDisapprove]);
 
   return (
     <>
@@ -37,7 +42,7 @@ export default function AdminController() {
                 ml="xl"
                 px="xl"
                 compact
-                disabled={statusOfApprove}
+                disabled={statusOfApprove || statusOfDisapprove}
               >
                 Approve Doctor
               </Button>
@@ -49,7 +54,7 @@ export default function AdminController() {
                 ml="xl"
                 px="xl"
                 compact
-                disabled={statusOfDisapprove}
+                disabled={statusOfDisapprove || statusOfDisapprove}
               >
                 Disapprove Doctor
               </Button>

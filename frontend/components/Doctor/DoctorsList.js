@@ -4,16 +4,19 @@ const useStyles = createStyles((theme) => ({
   doctorBtn: {
     cursor: "pointer",
     padding: theme.spacing.lg,
-    backgroundColor: theme.white,
-    border: `1px solid ${theme.colors.gray[1]}`,
+    backgroundColor: theme.colorScheme == "light" ? theme.white : theme.colors.dark[6],
+    border: `1px solid ${theme.colorScheme == "light" ? theme.colors.gray[1] : theme.black}`,
     borderRadius: theme.radius.md,
     boxShadow: theme.shadows.xs,
     transition: "200ms",
     "&:hover": {
       transform: "scale(1.005)",
-      backgroundColor: "#fafafa",
+      backgroundColor: theme.colorScheme == "light" ? theme.colors.gray[0] : theme.colors.dark[5],
+
       boxShadow: theme.shadows.sm,
-      border: `1px solid ${theme.colors.gray[2]}`,
+      border: `1px solid ${
+        theme.colorScheme == "light" ? theme.colors.gray[2] : theme.colors.gray[9]
+      }`,
     },
     "&:active": { transform: "scale(0.99)" },
   },

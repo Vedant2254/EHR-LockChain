@@ -23,11 +23,11 @@ import useIsDoctorRegistered from "@/hooks/useIsDoctorRegistered";
 import useIsAdmin from "@/hooks/useIsAdmin";
 import { useAccount } from "wagmi";
 import { useRouter } from "next/router";
-import LogosMetamaskIcon from "../Utils/Icons/MetamaskIcon";
-import { IconMoonStars, IconPlug, IconSun, IconSunFilled } from "@tabler/icons-react";
+import { IconMoonStars, IconPlug, IconSun } from "@tabler/icons-react";
 
 const useStyles = createStyles((theme) => ({
   header: {
+    position: "fixed",
     padding: theme.spacing.lg,
     boxShadow: `1px -7px 10px 0px ${theme.black}`,
     zIndex: 101,
@@ -74,7 +74,7 @@ export default function EHRHeader({ opened, setOpened }) {
           </Text>
         </Group>
 
-        <Box>
+        <Group spacing="xs">
           <Button component={Link} href="/" variant="subtle">
             Home
           </Button>
@@ -98,26 +98,24 @@ export default function EHRHeader({ opened, setOpened }) {
               Doctor Dashboard
             </Button>
           )}
-        </Box>
-
-        <Group>
-          {router.asPath == "/" && (
-            <Box className={classes.connectBtn}>
-              <Flex align="center">
-                <IconPlug />
-                <ConnectButton />
-              </Flex>
-            </Box>
-          )}
           <ActionIcon
-            variant="outline"
+            variant="subtle"
             color={dark ? "yellow" : "blue"}
             onClick={toggleColorScheme}
-            title="Toggle color scheme"
+            title={`Change to ${dark ? "light" : "dark"} mode`}
           >
             {dark ? <IconSun size="1.1rem" /> : <IconMoonStars size="1.1rem" />}
           </ActionIcon>
         </Group>
+
+        {router.asPath == "/" && (
+          <Group className={classes.connectBtn}>
+            <Flex align="center">
+              <IconPlug />
+              <ConnectButton />
+            </Flex>
+          </Group>
+        )}
       </Flex>
     </Header>
   );

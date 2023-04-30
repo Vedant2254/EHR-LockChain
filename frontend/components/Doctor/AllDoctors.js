@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Button, Divider, Tabs } from "@mantine/core";
+import { Button, Divider, Tabs, Title } from "@mantine/core";
 import Doctor from "./Doctor";
 import DoctorsList from "./DoctorsList";
 import useGetAllDoctors from "@/hooks/useGetAllDoctors";
@@ -23,11 +23,15 @@ export default function AllDoctors({ user, setDoctor }) {
       <Tabs orientation="vertical" onTabChange={setActiveTab} value={activeTab} keepMounted={false}>
         <Tabs.Panel value="all">
           <Tabs.List>
-            <DoctorsList
-              allDoctors={allDoctors}
-              pendingDoctors={pendingDoctors}
-              setActiveTab={setActiveTab}
-            />
+            {allDoctors && allDoctors.length > 0 ? (
+              <DoctorsList
+                allDoctors={allDoctors}
+                pendingDoctors={pendingDoctors}
+                setActiveTab={setActiveTab}
+              />
+            ) : (
+              <Title order={4}>No doctor registered yet</Title>
+            )}
           </Tabs.List>
         </Tabs.Panel>
 

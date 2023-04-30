@@ -12,16 +12,21 @@ import {
   Container,
   Grid,
   Center,
+  Divider,
 } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
-import { useAccount, useNetwork } from "wagmi";
+import { useAccount } from "wagmi";
 import ConnectButton from "./ConnectButton";
 import useValidTxnData from "@/hooks/useValidTxnData";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const useStyles = createStyles((theme) => ({
   back: {
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: theme.colorScheme === "dark" ? theme.black : theme.white,
   },
 
@@ -72,7 +77,7 @@ export default function EHRMain() {
   }, [isConnected]);
 
   return (
-    <Flex sx={{ flexGrow: 1 }} justify="center" align="center" className={classes.back}>
+    <Flex className={classes.back}>
       <Container>
         <Grid>
           <Grid.Col span="auto">
@@ -122,11 +127,30 @@ export default function EHRMain() {
 
             <Group mt={30}>
               {!isDefinitelyConnected ? (
-                <Button radius="xl" size="md" className={classes.control}>
-                  <Center>
-                    <ConnectButton />
-                  </Center>
-                </Button>
+                <>
+                  <Button
+                    onClick={() => {
+                      const elem = document.getElementById("instructions");
+                      window &&
+                        elem &&
+                        window.scrollTo({
+                          top: elem.getBoundingClientRect().top,
+                          behavior: "smooth",
+                        });
+                    }}
+                    radius="xl"
+                    size="md"
+                    variant="gradient"
+                    className={classes.control}
+                  >
+                    Getting Started
+                  </Button>
+                  <Button radius="xl" size="md" className={classes.control}>
+                    <Center>
+                      <ConnectButton />
+                    </Center>
+                  </Button>
+                </>
               ) : (
                 <Button
                   radius="xl"
@@ -168,6 +192,7 @@ export default function EHRMain() {
           </Grid.Col>
         </Grid>
       </Container>
+      <Divider className="hello" size="xl" />
     </Flex>
   );
 }

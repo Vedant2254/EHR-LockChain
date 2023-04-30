@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Paper, AppShell, useMantineTheme, LoadingOverlay } from "@mantine/core";
 import EHRHeader from "./EHRHeader";
-import EHRNavbarOld from "./EHRNavbarOld";
 import EHRNavbar from "./EHRNavbar";
 
 export default function EHRAppShell({ loading, navlinks, Controller }) {
@@ -18,7 +17,6 @@ export default function EHRAppShell({ loading, navlinks, Controller }) {
           },
         }}
         header={<EHRHeader opened={opened} setOpened={setOpened} />}
-        // navbar={<EHRNavbarOld opened={opened} navlinks={navlinks} />}
         navbar={<EHRNavbar navlinks={navlinks} opened={opened} />}
       >
         <Controller />
