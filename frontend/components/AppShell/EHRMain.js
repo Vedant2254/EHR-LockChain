@@ -68,6 +68,7 @@ export default function EHRMain() {
   const { colorScheme } = useMantineColorScheme();
   const { classes } = useStyles();
   const { isConnected } = useAccount();
+  const { contractAddress } = useValidTxnData();
   const router = useRouter();
 
   const [isDefinitelyConnected, setIsDefninitelyConnected] = useState(false);
@@ -162,7 +163,7 @@ export default function EHRMain() {
                   Dashboard
                 </Button>
               )}
-              <Button
+              {/* <Button
                 component="a"
                 href="https://github.com/Vedant2254/EHR-data-management-system"
                 target="_blank"
@@ -172,6 +173,17 @@ export default function EHRMain() {
                 className={classes.control}
               >
                 Source code
+              </Button> */}
+              <Button
+                component="a"
+                href={`https://sepolia.etherscan.io/address/${contractAddress || ""}`}
+                target="_blank"
+                variant="default"
+                radius="xl"
+                size="md"
+                className={classes.control}
+              >
+                Smart Contract
               </Button>
             </Group>
           </Grid.Col>
