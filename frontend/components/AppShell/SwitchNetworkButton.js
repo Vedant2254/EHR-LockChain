@@ -16,6 +16,7 @@ export default function SwitchNetworkButton() {
 
   return (
     isDefinitelyConnected &&
+    chain &&
     chain.id !== 11155111 && (
       <Group spacing="2px" onClick={() => switchNetworkAsync(11155111)} sx={{ cursor: "pointer" }}>
         <IconSwitch />
