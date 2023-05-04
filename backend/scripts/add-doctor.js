@@ -2,7 +2,10 @@ const { ethers } = require("hardhat");
 
 async function main() {
   const [deployer, doctor, patient] = await ethers.getSigners();
-  const contract = await ethers.getContract("Contract");
+  const contract = await ethers.getContractAt(
+    "Contract",
+    "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9"
+  );
 
   await (
     await contract

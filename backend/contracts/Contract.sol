@@ -46,8 +46,16 @@ contract Contract {
     Patients private patients;
 
     // Initializing admin
-    constructor() {
+    // constructor() {
+    //     admin.user = msg.sender;
+    // }
+
+    bool initialized;
+
+    function initialize() public {
+        require(!initialized, "Contract already initialized!");
         admin.user = msg.sender;
+        initialized = true;
     }
 
     // Admin methods

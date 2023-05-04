@@ -1,6 +1,7 @@
 const { network } = require("hardhat");
 const { verify } = require("../utils/verify");
 const { developmentChains } = require("../helper-hardhat-config");
+const obj = require("hardhat-deploy");
 
 // this function is imported when we run `yarn hardhat deploy` from command line
 module.exports = async ({ getNamedAccounts, deployments }) => {
@@ -9,6 +10,15 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
   const contract = await deploy("Contract", {
     from: deployer,
+    proxy: {
+      proxyContract: "OpenZeppelinTransparentProxy",
+      execute: {
+        init: {
+          methodName: "initialize",
+          args: [],
+        },
+      },
+    },
     args: [],
     log: true,
     waitConfirmations: network.config.blockConfirmations || 1,
