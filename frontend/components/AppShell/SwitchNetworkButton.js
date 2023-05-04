@@ -6,7 +6,7 @@ import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
 export default function SwitchNetworkButton() {
   const { isConnected, isDisconnected } = useAccount();
   const { chain } = useNetwork();
-  const { chains, switchNetworkAsync } = useSwitchNetwork();
+  const { chains, switchNetwork } = useSwitchNetwork();
 
   const [isDefinitelyConnected, setIsDefinitelyConnected] = useState(false);
 
@@ -18,7 +18,13 @@ export default function SwitchNetworkButton() {
     isDefinitelyConnected &&
     chain &&
     chain.id !== 11155111 && (
-      <Group spacing="2px" onClick={() => switchNetworkAsync(11155111)} sx={{ cursor: "pointer" }}>
+      <Group
+        spacing="2px"
+        onClick={() => {
+          switchNetwork(11155111);
+        }}
+        sx={{ cursor: "pointer" }}
+      >
         <IconSwitch />
         <Box>
           Switch Network

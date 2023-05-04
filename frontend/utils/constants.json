@@ -1,1 +1,368 @@
-{"contractAddresses":{"5":"0xc1C25182792C6456D1B6511b773e34BDE8ECd248","31337":"0x5FbDB2315678afecb367f032d93F642f64180aa3","80001":"0xb9451F44F984Ea8fFf679246442D1f9Ac09270aD","11155111":"0xFeE241b23Ca77DE911209d05C2C038e4Fbc1B837"},"abi":[{"type":"constructor","payable":false,"inputs":[]},{"type":"error","name":"Contract__DoctorPublicKeyMissing","inputs":[]},{"type":"error","name":"Contract__NotAdmin","inputs":[]},{"type":"error","name":"Contract__NotDoctor","inputs":[]},{"type":"error","name":"Contract__NotPatient","inputs":[]},{"type":"error","name":"Contract__PendingDoctorApproval","inputs":[]},{"type":"function","name":"approveDr","constant":false,"payable":false,"inputs":[{"type":"address","name":"_address"}],"outputs":[]},{"type":"function","name":"changeEditorAccess","constant":false,"payable":false,"inputs":[{"type":"address","name":"_address"},{"type":"string","name":"_general_hash"},{"type":"string","name":"_key_hash"}],"outputs":[]},{"type":"function","name":"disapproveDr","constant":false,"payable":false,"inputs":[{"type":"address","name":"_address"}],"outputs":[]},{"type":"function","name":"getAdmin","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"address"}]},{"type":"function","name":"getAdminPubKey","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"string"}]},{"type":"function","name":"getAllDrs","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"address[]"}]},{"type":"function","name":"getAllPts","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"address[]"}]},{"type":"function","name":"getDrHash","constant":true,"stateMutability":"view","payable":false,"inputs":[{"type":"address","name":"_address"}],"outputs":[{"type":"string"}]},{"type":"function","name":"getDrOfPt","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"address"}]},{"type":"function","name":"getDrPubKey","constant":true,"stateMutability":"view","payable":false,"inputs":[{"type":"address","name":"_address"}],"outputs":[{"type":"string"}]},{"type":"function","name":"getPatViewers","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"address[]"}]},{"type":"function","name":"getPendingDrs","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"address[]"}]},{"type":"function","name":"getPtGeneralHash","constant":true,"stateMutability":"view","payable":false,"inputs":[{"type":"address","name":"_address"}],"outputs":[{"type":"string"}]},{"type":"function","name":"getPtRecordHash","constant":true,"stateMutability":"view","payable":false,"inputs":[{"type":"address","name":"_address"}],"outputs":[{"type":"string"}]},{"type":"function","name":"getPtsOfDr","constant":true,"stateMutability":"view","payable":false,"inputs":[],"outputs":[{"type":"address[]"}]},{"type":"function","name":"grantViewerAccess","constant":false,"payable":false,"inputs":[{"type":"address","name":"_address"}],"outputs":[]},{"type":"function","name":"isAdmin","constant":true,"stateMutability":"view","payable":false,"inputs":[{"type":"address","name":"_address"}],"outputs":[{"type":"bool"}]},{"type":"function","name":"isDoctor","constant":true,"stateMutability":"view","payable":false,"inputs":[{"type":"address","name":"_address"}],"outputs":[{"type":"bool"}]},{"type":"function","name":"isDrPending","constant":true,"stateMutability":"view","payable":false,"inputs":[{"type":"address","name":"_address"}],"outputs":[{"type":"bool"}]},{"type":"function","name":"isDrRegistered","constant":true,"stateMutability":"view","payable":false,"inputs":[{"type":"address","name":"_address"}],"outputs":[{"type":"bool"}]},{"type":"function","name":"isPatient","constant":true,"stateMutability":"view","payable":false,"inputs":[{"type":"address","name":"_address"}],"outputs":[{"type":"bool"}]},{"type":"function","name":"registerDr","constant":false,"payable":false,"inputs":[{"type":"string","name":"_hash"}],"outputs":[]},{"type":"function","name":"registerDrConfirm","constant":false,"payable":false,"inputs":[{"type":"string","name":"_public_key"}],"outputs":[]},{"type":"function","name":"registerPt","constant":false,"payable":false,"inputs":[{"type":"string","name":"_hash"},{"type":"string","name":"_key_data_hash"}],"outputs":[]},{"type":"function","name":"removeEditorAccess","constant":false,"payable":false,"inputs":[{"type":"string","name":"_general_hash"},{"type":"string","name":"_key_hash"}],"outputs":[]},{"type":"function","name":"revokeViewerAccess","constant":false,"payable":false,"inputs":[{"type":"address","name":"_address"}],"outputs":[]},{"type":"function","name":"setAdminPubKey","constant":false,"payable":false,"inputs":[{"type":"string","name":"_public_key"}],"outputs":[]},{"type":"function","name":"setDrHash","constant":false,"payable":false,"inputs":[{"type":"string","name":"_hash"}],"outputs":[]},{"type":"function","name":"setPtGeneralHash","constant":false,"payable":false,"inputs":[{"type":"string","name":"_hash"}],"outputs":[]},{"type":"function","name":"setPtRecordHash","constant":false,"payable":false,"inputs":[{"type":"address","name":"_address"},{"type":"string","name":"_hash"}],"outputs":[]}]}
+{
+  "contractAddresses": {
+    "5": "0xc1C25182792C6456D1B6511b773e34BDE8ECd248",
+    "31337": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+    "80001": "0x55cE5AC1Cb79Fbbc006de783B602baEB6Da92C52",
+    "11155111": "0xAe89FD41a29aEBcB4442928723e31b26E7EEbd86"
+  },
+  "abi": [
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "AdminChanged",
+      "inputs": [
+        { "type": "address", "name": "previousAdmin", "indexed": false },
+        { "type": "address", "name": "newAdmin", "indexed": false }
+      ]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "BeaconUpgraded",
+      "inputs": [{ "type": "address", "name": "beacon", "indexed": true }]
+    },
+    {
+      "type": "event",
+      "anonymous": false,
+      "name": "Upgraded",
+      "inputs": [{ "type": "address", "name": "implementation", "indexed": true }]
+    },
+    {
+      "type": "function",
+      "name": "admin",
+      "constant": false,
+      "payable": false,
+      "inputs": [],
+      "outputs": [{ "type": "address", "name": "admin_" }]
+    },
+    {
+      "type": "function",
+      "name": "changeAdmin",
+      "constant": false,
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "newAdmin" }],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "implementation",
+      "constant": false,
+      "payable": false,
+      "inputs": [],
+      "outputs": [{ "type": "address", "name": "implementation_" }]
+    },
+    {
+      "type": "function",
+      "name": "upgradeTo",
+      "constant": false,
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "newImplementation" }],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "upgradeToAndCall",
+      "constant": false,
+      "stateMutability": "payable",
+      "payable": true,
+      "inputs": [
+        { "type": "address", "name": "newImplementation" },
+        { "type": "bytes", "name": "data" }
+      ],
+      "outputs": []
+    },
+    { "type": "error", "name": "Contract__DoctorPublicKeyMissing", "inputs": [] },
+    { "type": "error", "name": "Contract__NotAdmin", "inputs": [] },
+    { "type": "error", "name": "Contract__NotDoctor", "inputs": [] },
+    { "type": "error", "name": "Contract__NotPatient", "inputs": [] },
+    { "type": "error", "name": "Contract__PendingDoctorApproval", "inputs": [] },
+    {
+      "type": "function",
+      "name": "approveDr",
+      "constant": false,
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "_address" }],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "changeEditorAccess",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        { "type": "address", "name": "_address" },
+        { "type": "string", "name": "_general_hash" },
+        { "type": "string", "name": "_key_hash" }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "disapproveDr",
+      "constant": false,
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "_address" }],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "getAdmin",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [{ "type": "address" }]
+    },
+    {
+      "type": "function",
+      "name": "getAdminPubKey",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [{ "type": "string" }]
+    },
+    {
+      "type": "function",
+      "name": "getAllDrs",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [{ "type": "address[]" }]
+    },
+    {
+      "type": "function",
+      "name": "getAllPts",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [{ "type": "address[]" }]
+    },
+    {
+      "type": "function",
+      "name": "getDrHash",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "_address" }],
+      "outputs": [{ "type": "string" }]
+    },
+    {
+      "type": "function",
+      "name": "getDrOfPt",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [{ "type": "address" }]
+    },
+    {
+      "type": "function",
+      "name": "getDrPubKey",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "_address" }],
+      "outputs": [{ "type": "string" }]
+    },
+    {
+      "type": "function",
+      "name": "getPatViewers",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [{ "type": "address[]" }]
+    },
+    {
+      "type": "function",
+      "name": "getPendingDrs",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [{ "type": "address[]" }]
+    },
+    {
+      "type": "function",
+      "name": "getPtGeneralHash",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "_address" }],
+      "outputs": [{ "type": "string" }]
+    },
+    {
+      "type": "function",
+      "name": "getPtRecordHash",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "_address" }],
+      "outputs": [{ "type": "string" }]
+    },
+    {
+      "type": "function",
+      "name": "getPtsOfDr",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [],
+      "outputs": [{ "type": "address[]" }]
+    },
+    {
+      "type": "function",
+      "name": "grantViewerAccess",
+      "constant": false,
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "_address" }],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "initialize",
+      "constant": false,
+      "payable": false,
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "isAdmin",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "_address" }],
+      "outputs": [{ "type": "bool" }]
+    },
+    {
+      "type": "function",
+      "name": "isDoctor",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "_address" }],
+      "outputs": [{ "type": "bool" }]
+    },
+    {
+      "type": "function",
+      "name": "isDrPending",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "_address" }],
+      "outputs": [{ "type": "bool" }]
+    },
+    {
+      "type": "function",
+      "name": "isDrRegistered",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "_address" }],
+      "outputs": [{ "type": "bool" }]
+    },
+    {
+      "type": "function",
+      "name": "isPatient",
+      "constant": true,
+      "stateMutability": "view",
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "_address" }],
+      "outputs": [{ "type": "bool" }]
+    },
+    {
+      "type": "function",
+      "name": "registerDr",
+      "constant": false,
+      "payable": false,
+      "inputs": [{ "type": "string", "name": "_hash" }],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "registerDrConfirm",
+      "constant": false,
+      "payable": false,
+      "inputs": [{ "type": "string", "name": "_public_key" }],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "registerPt",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        { "type": "string", "name": "_hash" },
+        { "type": "string", "name": "_key_data_hash" }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "removeEditorAccess",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        { "type": "string", "name": "_general_hash" },
+        { "type": "string", "name": "_key_hash" }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "revokeViewerAccess",
+      "constant": false,
+      "payable": false,
+      "inputs": [{ "type": "address", "name": "_address" }],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "setAdminPubKey",
+      "constant": false,
+      "payable": false,
+      "inputs": [{ "type": "string", "name": "_public_key" }],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "setDrHash",
+      "constant": false,
+      "payable": false,
+      "inputs": [{ "type": "string", "name": "_hash" }],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "setPtGeneralHash",
+      "constant": false,
+      "payable": false,
+      "inputs": [{ "type": "string", "name": "_hash" }],
+      "outputs": []
+    },
+    {
+      "type": "function",
+      "name": "setPtRecordHash",
+      "constant": false,
+      "payable": false,
+      "inputs": [
+        { "type": "address", "name": "_address" },
+        { "type": "string", "name": "_hash" }
+      ],
+      "outputs": []
+    },
+    {
+      "type": "constructor",
+      "stateMutability": "payable",
+      "payable": true,
+      "inputs": [
+        { "type": "address", "name": "_logic" },
+        { "type": "address", "name": "admin_" },
+        { "type": "bytes", "name": "_data" }
+      ]
+    }
+  ]
+}
