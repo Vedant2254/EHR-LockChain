@@ -413,6 +413,8 @@ These help getting file from user, converting file to textual form, making it en
 ## Future Scope
 
 - We can store [w3name](https://github.com/web3-storage/w3name) instead of hash. Updates doesn't change this name, so reduces gas consumption of changing hash each time data gets changed.
+- Contract administration and security can be made more robust by including [OpenZeppelin](https://www.openzeppelin.com/) services to administer smart contracts. Using OpenZeppelin and OpenZeppelin Defender, smart contract can be made upgradable and smart contract functions can also be automated as required.
+- Unlike current system that charges users for making transactions, using OpenZeppelin Defender Meta-transactions, user will only have to sign the transaction while the gas fees required for the transaction can be fulfilled by a relayer. If we are running a profitable business out of this application, users can be freed of the transaction fees else a balance-like system can be introduced where user will be charged for all his transactions once in a specific duration, to fulfill the expenses of relayer.
 
 <!-- Links -->
 
