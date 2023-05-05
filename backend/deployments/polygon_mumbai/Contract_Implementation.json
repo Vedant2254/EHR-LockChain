@@ -1,0 +1,854 @@
+{
+  "address": "0xeA9BD32ee8f35e4bDBD6508036Fc35B6821fb19B",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "Contract__DoctorPublicKeyMissing",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Contract__NotAdmin",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Contract__NotDoctor",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Contract__NotPatient",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "Contract__PendingDoctorApproval",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "approveDr",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_general_hash",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_key_hash",
+          "type": "string"
+        }
+      ],
+      "name": "changeEditorAccess",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "disapproveDr",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAdmin",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAdminPubKey",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAllDrs",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAllPts",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "getDrHash",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getDrOfPt",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "getDrPubKey",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getPatViewers",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getPendingDrs",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "getPtGeneralHash",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "getPtRecordHash",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getPtsOfDr",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "grantViewerAccess",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "initialize",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "isAdmin",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "isDoctor",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "isDrPending",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "isDrRegistered",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "isPatient",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_hash",
+          "type": "string"
+        }
+      ],
+      "name": "registerDr",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_public_key",
+          "type": "string"
+        }
+      ],
+      "name": "registerDrConfirm",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_hash",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_key_data_hash",
+          "type": "string"
+        }
+      ],
+      "name": "registerPt",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_general_hash",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "_key_hash",
+          "type": "string"
+        }
+      ],
+      "name": "removeEditorAccess",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        }
+      ],
+      "name": "revokeViewerAccess",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_public_key",
+          "type": "string"
+        }
+      ],
+      "name": "setAdminPubKey",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_hash",
+          "type": "string"
+        }
+      ],
+      "name": "setDrHash",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_hash",
+          "type": "string"
+        }
+      ],
+      "name": "setPtGeneralHash",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_address",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "_hash",
+          "type": "string"
+        }
+      ],
+      "name": "setPtRecordHash",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "transactionHash": "0xd8efc014661491dc68d03725208e97520b58355565aabc094a63841d7e5c4e81",
+  "receipt": {
+    "to": null,
+    "from": "0x1EbbD6c85cfF4335Ae0C182b2781A777676Ee97A",
+    "contractAddress": "0xeA9BD32ee8f35e4bDBD6508036Fc35B6821fb19B",
+    "transactionIndex": 6,
+    "gasUsed": "2126184",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000010000000000000000000000020000000000000000000008000000000000000000000000000000000000000000000000000000000800000004000000000000100000000000000000000000000000000000400000000000000000000000080000000000000000000000000000000000000000000000000000000000000000000000000000000200000000000008000000000000000000000000000000000000000000000004000000000000000000001000000000000000000000000000000100000001000000000000000000000000000000000000000000000000000000000000000100000",
+    "blockHash": "0xe5b72f807eb3bac063e4a2c57fb799a3df4f3df6f1a25f711c88b468af7f3823",
+    "transactionHash": "0xd8efc014661491dc68d03725208e97520b58355565aabc094a63841d7e5c4e81",
+    "logs": [
+      {
+        "transactionIndex": 6,
+        "blockNumber": 35203169,
+        "transactionHash": "0xd8efc014661491dc68d03725208e97520b58355565aabc094a63841d7e5c4e81",
+        "address": "0x0000000000000000000000000000000000001010",
+        "topics": [
+          "0x4dfe1bbbcf077ddc3e01291eea2d5c70c2b422b415d95645b9adcfd678cb1d63",
+          "0x0000000000000000000000000000000000000000000000000000000000001010",
+          "0x0000000000000000000000001ebbd6c85cff4335ae0c182b2781a777676ee97a",
+          "0x000000000000000000000000f903ba9e006193c1527bfbe65fe2123704ea3f99"
+        ],
+        "data": "0x000000000000000000000000000000000000000000000000000b54a12f121800000000000000000000000000000000000000000000000000069d651d29b1cd22000000000000000000000000000000000000000000000de19adc00fefffb5cf80000000000000000000000000000000000000000000000000692107bfa9fb522000000000000000000000000000000000000000000000de19ae755a02f0d74f8",
+        "logIndex": 25,
+        "blockHash": "0xe5b72f807eb3bac063e4a2c57fb799a3df4f3df6f1a25f711c88b468af7f3823"
+      }
+    ],
+    "blockNumber": 35203169,
+    "cumulativeGasUsed": "3061835",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "ab417a2eacb32b55618b7f95d279a1ac",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"Contract__DoctorPublicKeyMissing\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Contract__NotAdmin\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Contract__NotDoctor\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Contract__NotPatient\",\"type\":\"error\"},{\"inputs\":[],\"name\":\"Contract__PendingDoctorApproval\",\"type\":\"error\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"approveDr\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_general_hash\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_key_hash\",\"type\":\"string\"}],\"name\":\"changeEditorAccess\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"disapproveDr\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAdmin\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAdminPubKey\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAllDrs\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAllPts\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"getDrHash\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getDrOfPt\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"getDrPubKey\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getPatViewers\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getPendingDrs\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"getPtGeneralHash\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"getPtRecordHash\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getPtsOfDr\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"grantViewerAccess\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"isAdmin\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"isDoctor\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"isDrPending\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"isDrRegistered\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"isPatient\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_hash\",\"type\":\"string\"}],\"name\":\"registerDr\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_public_key\",\"type\":\"string\"}],\"name\":\"registerDrConfirm\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_hash\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_key_data_hash\",\"type\":\"string\"}],\"name\":\"registerPt\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_general_hash\",\"type\":\"string\"},{\"internalType\":\"string\",\"name\":\"_key_hash\",\"type\":\"string\"}],\"name\":\"removeEditorAccess\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"}],\"name\":\"revokeViewerAccess\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_public_key\",\"type\":\"string\"}],\"name\":\"setAdminPubKey\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_hash\",\"type\":\"string\"}],\"name\":\"setDrHash\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"string\",\"name\":\"_hash\",\"type\":\"string\"}],\"name\":\"setPtGeneralHash\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_address\",\"type\":\"address\"},{\"internalType\":\"string\",\"name\":\"_hash\",\"type\":\"string\"}],\"name\":\"setPtRecordHash\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/Contract.sol\":\"Contract\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":true,\"runs\":10000},\"remappings\":[]},\"sources\":{\"contracts/AddToBoolMapping.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.17;\\n\\nlibrary AddToBoolMapping {\\n    // mapping address => bool\\n    struct Map {\\n        address[] keys;\\n        mapping(address => bool) values;\\n        mapping(address => uint256) indexOf;\\n    }\\n\\n    function get(Map storage map, address key) internal view returns (bool) {\\n        return map.values[key];\\n    }\\n\\n    function getKeys(Map storage map) internal view returns (address[] memory) {\\n        return map.keys;\\n    }\\n\\n    function getKeyAtIndex(Map storage map, uint256 index) internal view returns (address) {\\n        return map.keys[index];\\n    }\\n\\n    function size(Map storage map) internal view returns (uint256) {\\n        return map.keys.length;\\n    }\\n\\n    function set(Map storage map, address key) internal {\\n        if (map.values[key]) return;\\n\\n        // add address => true mapping to values\\n        map.values[key] = true;\\n\\n        // add index of address to indexOf mapping\\n        map.indexOf[key] = map.keys.length;\\n\\n        // add address to keys\\n        map.keys.push(key);\\n    }\\n\\n    function unset(Map storage map, address key) internal {\\n        if (!map.values[key]) return;\\n\\n        // remove from values\\n        delete map.values[key];\\n\\n        // important backups\\n        uint256 index = map.indexOf[key];\\n        uint256 lastIndex = map.keys.length - 1;\\n        address lastKey = map.keys[lastIndex];\\n\\n        // update indexOf last element\\n        map.indexOf[lastKey] = index;\\n        delete map.indexOf[key];\\n\\n        // remove from keys\\n        map.keys[index] = lastKey;\\n        map.keys.pop();\\n    }\\n}\\n\",\"keccak256\":\"0xf4944f25058b889d9bebf1d53283eab488e3200f3e2a48e47f52849b113644cc\",\"license\":\"MIT\"},\"contracts/AddToStrMapping.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.17;\\n\\nlibrary AddToStrMapping {\\n    // mapping address => string\\n    struct Map {\\n        address[] keys;\\n        mapping(address => string) values;\\n        mapping(address => uint256) indexOf;\\n        mapping(address => bool) inserted;\\n    }\\n\\n    function get(Map storage map, address key) internal view returns (string memory) {\\n        return map.values[key];\\n    }\\n\\n    function getKeys(Map storage map) internal view returns (address[] memory) {\\n        return map.keys;\\n    }\\n\\n    function getKeyAtIndex(Map storage map, uint256 index) internal view returns (address) {\\n        return map.keys[index];\\n    }\\n\\n    function size(Map storage map) internal view returns (uint256) {\\n        return map.keys.length;\\n    }\\n\\n    function set(Map storage map, address key, string memory val) internal {\\n        if (!map.inserted[key]) {\\n            // add index of address to indexOf mapping\\n            map.indexOf[key] = map.keys.length;\\n\\n            // make value of address in inserted to true\\n            map.inserted[key] = true;\\n\\n            // add address to keys\\n            map.keys.push(key);\\n        }\\n\\n        // add address => true mapping to values\\n        map.values[key] = val;\\n    }\\n\\n    function remove(Map storage map, address key) internal {\\n        if (!map.inserted[key]) return;\\n\\n        // remove from values\\n        delete map.values[key];\\n        delete map.inserted[key];\\n\\n        // important backups\\n        uint256 index = map.indexOf[key];\\n        uint256 lastIndex = map.keys.length - 1;\\n        address lastKey = map.keys[lastIndex];\\n\\n        // update indexOf last element\\n        map.indexOf[lastKey] = index;\\n        delete map.indexOf[key];\\n\\n        // remove from keys\\n        map.keys[index] = lastKey;\\n        map.keys.pop();\\n    }\\n}\\n\",\"keccak256\":\"0x44a19745fb3130275849bcaaf82f085c8a50d1d105b431e5c6df0625e9289f14\",\"license\":\"MIT\"},\"contracts/AddressArrayUtils.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.17;\\n\\nlibrary AddressArrayUtils {\\n    function indexOf(address[] memory arr, address key) internal pure returns (int256) {\\n        for (uint256 i = 0; i < arr.length; i++) {\\n            if (arr[i] == key) return int256(i);\\n        }\\n        return -1;\\n    }\\n\\n    function contains(address[] memory arr, address key) internal pure returns (bool) {\\n        return indexOf(arr, key) != -1;\\n    }\\n\\n    function remove(address[] storage arr, address key) internal returns (bool) {\\n        int256 i = indexOf(arr, key);\\n\\n        if (i == -1) return false;\\n\\n        address[] memory temp = arr;\\n        arr[uint256(i)] = temp[temp.length - 1];\\n        arr.pop();\\n\\n        return true;\\n    }\\n}\\n\",\"keccak256\":\"0x29555ad812fd5509ead59914b9bc59285a5f7b96bedcfed493bca55994271d67\",\"license\":\"MIT\"},\"contracts/Contract.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.17;\\n\\nimport \\\"./Roles.sol\\\";\\nimport \\\"./AddressArrayUtils.sol\\\";\\nimport \\\"./AddToBoolMapping.sol\\\";\\n\\nerror Contract__NotAdmin();\\nerror Contract__NotDoctor();\\nerror Contract__NotPatient();\\nerror Contract__PendingDoctorApproval();\\nerror Contract__DoctorPublicKeyMissing();\\n\\ncontract Contract {\\n    // using methods of Roles for Role struct in Roles\\n    using Roles for Roles.Role;\\n    using AddToBoolMapping for AddToBoolMapping.Map;\\n    using AddressArrayUtils for address[];\\n\\n    struct MedicalRecord {\\n        address editor;\\n        address[] viewers;\\n        string key_data_hash;\\n    }\\n\\n    struct Admin {\\n        address user;\\n        string public_key;\\n        AddToBoolMapping.Map pending_doctors;\\n    }\\n\\n    struct Patients {\\n        Roles.Role users;\\n        mapping(address => MedicalRecord) records;\\n    }\\n\\n    struct Doctors {\\n        Roles.Role users;\\n        mapping(address => string) public_keys;\\n        mapping(address => AddToBoolMapping.Map) docToPatAccess;\\n    }\\n\\n    // defining roles - contains hashes\\n    Admin private admin;\\n    Doctors private doctors;\\n    Patients private patients;\\n\\n    // Initializing admin\\n    // constructor() {\\n    //     admin.user = msg.sender;\\n    // }\\n\\n    bool initialized;\\n\\n    function initialize() public {\\n        require(!initialized, \\\"Contract already initialized!\\\");\\n        admin.user = msg.sender;\\n        initialized = true;\\n    }\\n\\n    // Admin methods\\n    function isAdmin(address _address) public view returns (bool) {\\n        if (admin.user == _address) return true;\\n        return false;\\n    }\\n\\n    function getAdmin() public view returns (address) {\\n        return admin.user;\\n    }\\n\\n    function setAdminPubKey(string memory _public_key) public onlyAdmin {\\n        admin.public_key = _public_key;\\n    }\\n\\n    function getAdminPubKey() public view returns (string memory) {\\n        return admin.public_key;\\n    }\\n\\n    // Doctor methods\\n    function isDrRegistered(address _address) public view returns (bool) {\\n        return doctors.users.has(_address);\\n    }\\n\\n    function isDrPending(address _address) public view returns (bool) {\\n        return admin.pending_doctors.get(_address);\\n    }\\n\\n    function isDoctor(address _address) public view returns (bool) {\\n        if (!doctors.users.has(_address)) return false;\\n        if (admin.pending_doctors.get(_address)) return false;\\n        if (bytes(doctors.public_keys[_address]).length == 0) return false;\\n        return true;\\n    }\\n\\n    function registerDr(string memory _hash) public {\\n        if (isPatient(msg.sender)) revert(\\\"Contract: Address already registered as patient\\\");\\n        if (bytes(_hash).length == 0) revert(\\\"Contract: Empty hash is not allowed\\\");\\n        doctors.users.add(msg.sender, _hash);\\n        admin.pending_doctors.set(msg.sender);\\n    }\\n\\n    function approveDr(address _address) public onlyAdmin {\\n        if (isDoctor(_address)) return;\\n        if (!doctors.users.has(_address)) return;\\n        admin.pending_doctors.unset(_address);\\n    }\\n\\n    function disapproveDr(address _address) public onlyAdmin {\\n        if (!isDrPending(_address)) revert(\\\"Contract: Doctor not registered\\\");\\n        doctors.users.remove(_address);\\n        admin.pending_doctors.unset(_address);\\n    }\\n\\n    function registerDrConfirm(string memory _public_key) public {\\n        if (bytes(_public_key).length == 0) revert(\\\"Contract: Empty public key is not allowed!\\\");\\n        if (!doctors.users.has(msg.sender)) revert Contract__NotDoctor();\\n        if (admin.pending_doctors.get(msg.sender)) revert Contract__PendingDoctorApproval();\\n        doctors.public_keys[msg.sender] = _public_key;\\n    }\\n\\n    function setDrHash(string memory _hash) public onlyDoctor {\\n        if (bytes(_hash).length == 0) revert(\\\"Contract: Empty hash is not allowed!\\\");\\n        doctors.users.setHash(msg.sender, _hash);\\n    }\\n\\n    function getDrHash(address _address) public view returns (string memory) {\\n        if (!isDrRegistered(_address)) revert Contract__NotDoctor();\\n        return doctors.users.getHash(_address);\\n    }\\n\\n    function getDrPubKey(address _address) public view returns (string memory) {\\n        return doctors.public_keys[_address];\\n    }\\n\\n    function getAllDrs() public view returns (address[] memory) {\\n        return doctors.users.getMembers();\\n    }\\n\\n    function getPendingDrs() public view returns (address[] memory) {\\n        return admin.pending_doctors.keys;\\n    }\\n\\n    function getPtsOfDr() public view onlyDoctor returns (address[] memory) {\\n        return doctors.docToPatAccess[msg.sender].keys;\\n    }\\n\\n    // Patient methods\\n    function isPatient(address _address) public view returns (bool) {\\n        return patients.users.has(_address);\\n    }\\n\\n    function registerPt(string memory _hash, string memory _key_data_hash) public {\\n        if (isDrRegistered(msg.sender) || isDoctor(msg.sender))\\n            revert(\\\"Contract: Address already registered as doctor\\\");\\n        if (bytes(_hash).length == 0) revert(\\\"Contract: Empty hash is not allowed\\\");\\n        patients.users.add(msg.sender, _hash);\\n        patients.records[msg.sender].editor = msg.sender;\\n        patients.records[msg.sender].key_data_hash = _key_data_hash;\\n    }\\n\\n    function setPtGeneralHash(string memory _hash) public onlyPatient {\\n        patients.users.setHash(msg.sender, _hash);\\n    }\\n\\n    function getPtGeneralHash(address _address) public view returns (string memory) {\\n        if (!isPatient(_address)) revert Contract__NotPatient();\\n\\n        if (\\n            msg.sender == _address ||\\n            patients.records[_address].editor == msg.sender ||\\n            patients.records[_address].viewers.indexOf(msg.sender) != -1\\n        ) return patients.users.getHash(_address);\\n\\n        revert(\\\"Not Allowed\\\");\\n    }\\n\\n    function setPtRecordHash(address _address, string memory _hash) public {\\n        if (!isPatient(_address)) revert Contract__NotPatient();\\n        if (!(patients.records[_address].editor == msg.sender)) revert(\\\"Not Allowed\\\");\\n        patients.records[_address].key_data_hash = _hash;\\n    }\\n\\n    function getPtRecordHash(address _address) public view returns (string memory) {\\n        if (!isPatient(_address)) revert Contract__NotPatient();\\n\\n        if (\\n            msg.sender == _address ||\\n            patients.records[_address].editor == msg.sender ||\\n            patients.records[_address].viewers.indexOf(msg.sender) != -1\\n        ) return patients.records[_address].key_data_hash;\\n\\n        revert(\\\"Not Allowed\\\");\\n    }\\n\\n    function getAllPts() public view returns (address[] memory) {\\n        return patients.users.getMembers();\\n    }\\n\\n    function changeEditorAccess(\\n        address _address,\\n        string memory _general_hash,\\n        string memory _key_hash\\n    ) public onlyPatient {\\n        // pending update - when user changes access, symmetric key S must be changed\\n        if (!isDoctor(_address)) revert Contract__NotDoctor();\\n\\n        // remove old editor access\\n        removeEditorAccess(_general_hash, _key_hash);\\n\\n        // add new editor access\\n        patients.records[msg.sender].editor = _address;\\n        doctors.docToPatAccess[_address].set(msg.sender);\\n    }\\n\\n    function removeEditorAccess(\\n        string memory _general_hash,\\n        string memory _key_hash\\n    ) public onlyPatient {\\n        address old_editor = patients.records[msg.sender].editor;\\n        patients.records[msg.sender].editor = msg.sender;\\n        doctors.docToPatAccess[old_editor].unset(msg.sender);\\n\\n        patients.users.setHash(msg.sender, _general_hash);\\n        patients.records[msg.sender].key_data_hash = _key_hash;\\n    }\\n\\n    function getDrOfPt() public view onlyPatient returns (address) {\\n        return patients.records[msg.sender].editor;\\n    }\\n\\n    function grantViewerAccess(address _address) public onlyPatient {\\n        if (!isDoctor(_address)) revert Contract__NotDoctor();\\n\\n        if (!patients.records[msg.sender].viewers.contains(_address)) {\\n            patients.records[msg.sender].viewers.push(_address);\\n        }\\n    }\\n\\n    function revokeViewerAccess(address _address) public onlyPatient {\\n        // pending update - when user revokes access, symmetric key S must be changed\\n        if (!isDoctor(_address)) revert Contract__NotDoctor();\\n\\n        patients.records[msg.sender].viewers.remove(_address);\\n    }\\n\\n    function getPatViewers() public view onlyPatient returns (address[] memory) {\\n        return patients.records[msg.sender].viewers;\\n    }\\n\\n    // modifiers\\n    modifier onlyAdmin() {\\n        if (!isAdmin(msg.sender)) revert Contract__NotAdmin();\\n        _;\\n    }\\n\\n    modifier onlyDoctor() {\\n        if (!doctors.users.has(msg.sender)) revert Contract__NotDoctor();\\n        if (admin.pending_doctors.get(msg.sender)) revert Contract__PendingDoctorApproval();\\n        if (bytes(doctors.public_keys[msg.sender]).length == 0)\\n            revert Contract__DoctorPublicKeyMissing();\\n        _;\\n    }\\n\\n    modifier onlyPatient() {\\n        if (!isPatient(msg.sender)) revert Contract__NotPatient();\\n        _;\\n    }\\n}\\n\",\"keccak256\":\"0xb3f5ed36e5277b6c200ee7149c679898427576c8b93aa0c6726987c306734218\",\"license\":\"MIT\"},\"contracts/Roles.sol\":{\"content\":\"// SPDX-License-Identifier: MIT\\npragma solidity ^0.8.17;\\n\\nimport \\\"./AddToStrMapping.sol\\\";\\n\\nlibrary Roles {\\n    using AddToStrMapping for AddToStrMapping.Map;\\n\\n    // This is to keep track of roles\\n    // Reduces searching cost\\n    struct Role {\\n        AddToStrMapping.Map bearer;\\n    }\\n\\n    function add(Role storage role, address account, string memory hash) internal {\\n        require(!has(role, account), \\\"Roles: account already has role\\\");\\n        role.bearer.set(account, hash);\\n    }\\n\\n    function remove(Role storage role, address account) internal {\\n        require(has(role, account), \\\"Roles: account does not have role\\\");\\n        role.bearer.remove(account);\\n    }\\n\\n    function has(Role storage role, address account) internal view returns (bool) {\\n        require(account != address(0), \\\"Roles: account is the zero address\\\");\\n        return bytes(role.bearer.get(account)).length != 0;\\n    }\\n\\n    function setHash(Role storage role, address account, string memory _hash) internal {\\n        role.bearer.set(account, _hash);\\n    }\\n\\n    function getHash(Role storage role, address account) internal view returns (string memory) {\\n        return role.bearer.get(account);\\n    }\\n\\n    function getMembers(Role storage role) internal view returns (address[] memory) {\\n        return role.bearer.keys;\\n    }\\n}\\n\",\"keccak256\":\"0x35319b78de3f838d4fdae2c499ccf5b4ed9407222e38d041a303fb7b42bf47aa\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b506125c4806100206000396000f3fe608060405234801561001057600080fd5b50600436106101e55760003560e01c80638f7f43a91161010f578063c70597ad116100a2578063d3cd4df411610071578063d3cd4df4146103e9578063dc823aaf146103fc578063e2877b4e1461040f578063f7a03a1e1461041757600080fd5b8063c70597ad146103a8578063cce9d43e146103bb578063ccfaed16146103ce578063d0d9a5e3146103e157600080fd5b8063a03de49e116100de578063a03de49e14610367578063a53f514d1461037a578063afb97e3d14610382578063b1e758a41461039557600080fd5b80638f7f43a9146103265780638f9c79ed1461032e578063996440c61461034157806399eedd2a1461035457600080fd5b80633d8198b4116101875780636e9960c3116101565780636e9960c3146102e7578063745ada64146102f85780638129fc1c1461030b57806388c432e11461031357600080fd5b80633d8198b41461029b5780634df0a2d4146102ae5780635b0a7aad146102c15780636d4bce20146102d457600080fd5b806321639f04116101c357806321639f041461023257806324d7806c14610252578063290c61b014610275578063329918381461028857600080fd5b80630de99991146101ea578063116461e9146101ff5780631da3e2dc1461021d575b600080fd5b6101fd6101f836600461204e565b61042a565b005b610207610495565b6040516102149190612069565b60405180910390f35b61022561052a565b60405161021491906120d5565b61023a61053b565b6040516001600160a01b039091168152602001610214565b61026561026036600461204e565b610599565b6040519015158152602001610214565b61026561028336600461204e565b6105bf565b6101fd6102963660046121fc565b6105d2565b6102076102a936600461204e565b6106e1565b6102076102bc36600461204e565b6108dc565b6101fd6102cf366004612239565b6109ed565b6102656102e236600461204e565b610ab6565b6000546001600160a01b031661023a565b6101fd61030636600461204e565b610ad7565b6101fd610b76565b6101fd6103213660046121fc565b610c20565b610225610c6b565b61026561033c36600461204e565b610d17565b61026561034f36600461204e565b610d24565b6101fd6103623660046121fc565b610da2565b6101fd610375366004612239565b610f04565b61022561105c565b6101fd6103903660046121fc565b611068565b6101fd6103a336600461204e565b6110b7565b6101fd6103b636600461229d565b61120e565b6102076103c936600461204e565b6112db565b6101fd6103dc3660046121fc565b611327565b610225611442565b6101fd6103f73660046122e1565b61158b565b61020761040a36600461204e565b61166b565b610225611692565b6101fd61042536600461204e565b6116f1565b61043333610599565b610469576040517f4d371dc700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61047281610d24565b6104925761048160058261178b565b15610492575b61049260028261181d565b50565b6060600060010180546104a790612355565b80601f01602080910402602001604051908101604052809291908181526020018280546104d390612355565b80156105205780601f106104f557610100808354040283529160200191610520565b820191906000526020600020905b81548152906001019060200180831161050357829003601f168201915b5050505050905090565b6060610536600561199a565b905090565b600061054633610d17565b61057c576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b50336000908152600f60205260409020546001600160a01b031690565b600080546001600160a01b038084169116036105b757506001919050565b506000919050565b60006105cc60058361178b565b92915050565b6105db33610d17565b156106535760405162461bcd60e51b815260206004820152602f60248201527f436f6e74726163743a204164647265737320616c72656164792072656769737460448201527f657265642061732070617469656e74000000000000000000000000000000000060648201526084015b60405180910390fd5b80516000036106ca5760405162461bcd60e51b815260206004820152602360248201527f436f6e74726163743a20456d7074792068617368206973206e6f7420616c6c6f60448201527f7765640000000000000000000000000000000000000000000000000000000000606482015260840161064a565b6106d6600533836119fb565b610492600233611a5d565b60606106ec82610d17565b610722576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336001600160a01b038316148061075257506001600160a01b038281166000908152600f60205260409020541633145b806107e457506001600160a01b0382166000908152600f602090815260409182902060010180548351818402810184019094528084526107de933393909291908301828280156107cb57602002820191906000526020600020905b81546001600160a01b031681526001909101906020018083116107ad575b5050505050611b1090919063ffffffff16565b60001914155b15610894576001600160a01b0382166000908152600f60205260409020600201805461080f90612355565b80601f016020809104026020016040519081016040528092919081815260200182805461083b90612355565b80156108885780601f1061085d57610100808354040283529160200191610888565b820191906000526020600020905b81548152906001019060200180831161086b57829003601f168201915b50505050509050919050565b60405162461bcd60e51b815260206004820152600b60248201527f4e6f7420416c6c6f776564000000000000000000000000000000000000000000604482015260640161064a565b60606108e782610d17565b61091d576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336001600160a01b038316148061094d57506001600160a01b038281166000908152600f60205260409020541633145b806109dd57506001600160a01b0382166000908152600f602090815260409182902060010180548351818402810184019094528084526109d7933393909291908301828280156107cb576020028201919060005260206000209081546001600160a01b031681526001909101906020018083116107ad575050505050611b1090919063ffffffff16565b60001914155b15610894576105cc600b83611b73565b6109f633610d17565b610a2c576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336000818152600f6020908152604080832080547fffffffffffffffffffffffff0000000000000000000000000000000000000000811686179091556001600160a01b0316808452600a9092529091209091610a88919061181d565b610a94600b3385611a52565b336000908152600f60205260409020600201610ab083826123f6565b50505050565b6001600160a01b03811660009081526003602052604081205460ff166105cc565b610ae033610599565b610b16576040517f4d371dc700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b610b1f81610ab6565b610b6b5760405162461bcd60e51b815260206004820152601f60248201527f436f6e74726163743a20446f63746f72206e6f74207265676973746572656400604482015260640161064a565b610487600582611b86565b60105460ff1615610bc95760405162461bcd60e51b815260206004820152601d60248201527f436f6e747261637420616c726561647920696e697469616c697a656421000000604482015260640161064a565b600080547fffffffffffffffffffffffff00000000000000000000000000000000000000001633179055601080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00166001179055565b610c2933610d17565b610c5f576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b610492600b3383611a52565b6060610c7633610d17565b610cac576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336000908152600f60209081526040918290206001018054835181840281018401909452808452909183018282801561052057602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311610cf0575050505050905090565b60006105cc600b8361178b565b6000610d3160058361178b565b610d3d57506000919050565b6001600160a01b03821660009081526003602052604090205460ff1615610d6657506000919050565b6001600160a01b03821660009081526009602052604090208054610d8990612355565b9050600003610d9a57506000919050565b506001919050565b610dad60053361178b565b610de3576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3360009081526003602052604090205460ff1615610e2d576040517ff873d3b700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3360009081526009602052604090208054610e4790612355565b9050600003610e82576040517fa30132d500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8051600003610ef85760405162461bcd60e51b8152602060048201526024808201527f436f6e74726163743a20456d7074792068617368206973206e6f7420616c6c6f60448201527f7765642100000000000000000000000000000000000000000000000000000000606482015260840161064a565b61049260053383611a52565b610f0d336105bf565b80610f1c5750610f1c33610d24565b15610f8f5760405162461bcd60e51b815260206004820152602e60248201527f436f6e74726163743a204164647265737320616c72656164792072656769737460448201527f6572656420617320646f63746f72000000000000000000000000000000000000606482015260840161064a565b81516000036110065760405162461bcd60e51b815260206004820152602360248201527f436f6e74726163743a20456d7074792068617368206973206e6f7420616c6c6f60448201527f7765640000000000000000000000000000000000000000000000000000000000606482015260840161064a565b611012600b33846119fb565b336000818152600f6020526040902080547fffffffffffffffffffffffff000000000000000000000000000000000000000016909117815560020161105782826123f6565b505050565b6060610536600b61199a565b61107133610599565b6110a7576040517f4d371dc700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60016110b382826123f6565b5050565b6110c033610d17565b6110f6576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6110ff81610d24565b611135576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336000908152600f602090815260409182902060010180548351818402810184019094528084526111b29385939092919083018282801561119f57602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311611181575b5050505050611c0c90919063ffffffff16565b61049257336000908152600f602090815260408220600190810180549182018155835291200180546001600160a01b0383167fffffffffffffffffffffffff000000000000000000000000000000000000000090911617905550565b61121782610d17565b61124d576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6001600160a01b038281166000908152600f60205260409020541633146112b65760405162461bcd60e51b815260206004820152600b60248201527f4e6f7420416c6c6f776564000000000000000000000000000000000000000000604482015260640161064a565b6001600160a01b0382166000908152600f6020526040902060020161105782826123f6565b60606112e6826105bf565b61131c576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6105cc600583611b73565b805160000361139e5760405162461bcd60e51b815260206004820152602a60248201527f436f6e74726163743a20456d707479207075626c6963206b6579206973206e6f60448201527f7420616c6c6f7765642100000000000000000000000000000000000000000000606482015260840161064a565b6113a960053361178b565b6113df576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3360009081526003602052604090205460ff1615611429576040517ff873d3b700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3360009081526009602052604090206110b382826123f6565b606061144f60053361178b565b611485576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3360009081526003602052604090205460ff16156114cf576040517ff873d3b700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b33600090815260096020526040902080546114e990612355565b9050600003611524576040517fa30132d500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336000908152600a602090815260409182902080548351818402810184019094528084529091830182828015610520576020028201919060005260206000209081546001600160a01b03168152600190910190602001808311610cf0575050505050905090565b61159433610d17565b6115ca576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6115d383610d24565b611609576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61161382826109ed565b336000818152600f6020908152604080832080547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b0389169081179091558352600a909152902061105791611a5d565b6001600160a01b038116600090815260096020526040902080546060919061080f90612355565b600280546040805160208084028201810190925282815260609390929091830182828015610520576020028201919060005260206000209081546001600160a01b03168152600190910190602001808311610cf0575050505050905090565b6116fa33610d17565b611730576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61173981610d24565b61176f576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336000908152600f602052604090206110b39060010182611c24565b60006001600160a01b0382166118095760405162461bcd60e51b815260206004820152602260248201527f526f6c65733a206163636f756e7420697320746865207a65726f20616464726560448201527f7373000000000000000000000000000000000000000000000000000000000000606482015260840161064a565b6118138383611db6565b5115159392505050565b6001600160a01b038116600090815260018301602052604090205460ff16611843575050565b6001600160a01b038116600090815260018084016020908152604080842080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0016905560028601909152822054845490929161189f91612503565b905060008460000182815481106118b8576118b8612516565b60009182526020808320909101546001600160a01b0390811680845260028901909252604080842087905590871683528220919091558554909150819086908590811061190757611907612516565b600091825260209091200180547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b0392909216919091179055845485908061195957611959612545565b600082815260209020810160001990810180547fffffffffffffffffffffffff00000000000000000000000000000000000000001690550190555050505050565b805460408051602080840282018101909252828152606092909184919083018282801561088857602002820191906000526020600020905b81546001600160a01b031681526001909101906020018083116119d25750505050509050919050565b611a05838361178b565b15611a525760405162461bcd60e51b815260206004820152601f60248201527f526f6c65733a206163636f756e7420616c72656164792068617320726f6c6500604482015260640161064a565b611057838383611e65565b6001600160a01b038116600090815260018301602052604090205460ff1615611a84575050565b6001600160a01b0316600081815260018381016020908152604080842080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0016841790558554600287018352908420819055918201855593825292902090910180547fffffffffffffffffffffffff0000000000000000000000000000000000000000169091179055565b6000805b8351811015611b6857826001600160a01b0316848281518110611b3957611b39612516565b60200260200101516001600160a01b031603611b565790506105cc565b80611b6081612574565b915050611b14565b506000199392505050565b6060611b7f8383611db6565b9392505050565b611b90828261178b565b611c025760405162461bcd60e51b815260206004820152602160248201527f526f6c65733a206163636f756e7420646f6573206e6f74206861766520726f6c60448201527f6500000000000000000000000000000000000000000000000000000000000000606482015260840161064a565b6110b38282611f3d565b6000611c188383611b10565b60001914159392505050565b600080611c8a84805480602002602001604051908101604052809291908181526020018280548015611c7f57602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311611c61575b505050505084611b10565b90508019611c9c5760009150506105cc565b600084805480602002602001604051908101604052809291908181526020018280548015611cf357602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311611cd5575b505050505090508060018251611d099190612503565b81518110611d1957611d19612516565b6020026020010151858381548110611d3357611d33612516565b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b0316021790555084805480611d7157611d71612545565b600082815260209020600019908201810180547fffffffffffffffffffffffff0000000000000000000000000000000000000000169055019055506001949350505050565b6001600160a01b03811660009081526001830160205260409020805460609190611ddf90612355565b80601f0160208091040260200160405190810160405280929190818152602001828054611e0b90612355565b8015611e585780601f10611e2d57610100808354040283529160200191611e58565b820191906000526020600020905b815481529060010190602001808311611e3b57829003601f168201915b5050505050905092915050565b6001600160a01b038216600090815260038401602052604090205460ff16611f195782546001600160a01b038316600081815260028601602090815260408083209490945560038701815292812080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff001660019081179091558654908101875586825292902090910180547fffffffffffffffffffffffff00000000000000000000000000000000000000001690911790555b6001600160a01b03821660009081526001840160205260409020610ab082826123f6565b6001600160a01b038116600090815260038301602052604090205460ff16611f63575050565b6001600160a01b03811660009081526001830160205260408120611f8691611fe4565b6001600160a01b0381166000908152600383016020908152604080832080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0016905560028501909152812054835490919061189f90600190612503565b508054611ff090612355565b6000825580601f10612000575050565b601f01602090049060005260206000209081019061049291905b8082111561202e576000815560010161201a565b5090565b80356001600160a01b038116811461204957600080fd5b919050565b60006020828403121561206057600080fd5b611b7f82612032565b600060208083528351808285015260005b818110156120965785810183015185820160400152820161207a565b5060006040828601015260407fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8301168501019250505092915050565b6020808252825182820181905260009190848201906040850190845b818110156121165783516001600160a01b0316835292840192918401916001016120f1565b50909695505050505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b600082601f83011261216257600080fd5b813567ffffffffffffffff8082111561217d5761217d612122565b604051601f83017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0908116603f011681019082821181831017156121c3576121c3612122565b816040528381528660208588010111156121dc57600080fd5b836020870160208301376000602085830101528094505050505092915050565b60006020828403121561220e57600080fd5b813567ffffffffffffffff81111561222557600080fd5b61223184828501612151565b949350505050565b6000806040838503121561224c57600080fd5b823567ffffffffffffffff8082111561226457600080fd5b61227086838701612151565b9350602085013591508082111561228657600080fd5b5061229385828601612151565b9150509250929050565b600080604083850312156122b057600080fd5b6122b983612032565b9150602083013567ffffffffffffffff8111156122d557600080fd5b61229385828601612151565b6000806000606084860312156122f657600080fd5b6122ff84612032565b9250602084013567ffffffffffffffff8082111561231c57600080fd5b61232887838801612151565b9350604086013591508082111561233e57600080fd5b5061234b86828701612151565b9150509250925092565b600181811c9082168061236957607f821691505b6020821081036123a2577f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b50919050565b601f82111561105757600081815260208120601f850160051c810160208610156123cf5750805b601f850160051c820191505b818110156123ee578281556001016123db565b505050505050565b815167ffffffffffffffff81111561241057612410612122565b6124248161241e8454612355565b846123a8565b602080601f83116001811461245957600084156124415750858301515b600019600386901b1c1916600185901b1785556123ee565b6000858152602081207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe08616915b828110156124a657888601518255948401946001909101908401612487565b50858210156124c45787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b818103818111156105cc576105cc6124d4565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603160045260246000fd5b60006000198203612587576125876124d4565b506001019056fea264697066735822122068c4a7d816f1e97648f912058147a251b25481cb187d265a2c5d5a567eabf73064736f6c63430008110033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106101e55760003560e01c80638f7f43a91161010f578063c70597ad116100a2578063d3cd4df411610071578063d3cd4df4146103e9578063dc823aaf146103fc578063e2877b4e1461040f578063f7a03a1e1461041757600080fd5b8063c70597ad146103a8578063cce9d43e146103bb578063ccfaed16146103ce578063d0d9a5e3146103e157600080fd5b8063a03de49e116100de578063a03de49e14610367578063a53f514d1461037a578063afb97e3d14610382578063b1e758a41461039557600080fd5b80638f7f43a9146103265780638f9c79ed1461032e578063996440c61461034157806399eedd2a1461035457600080fd5b80633d8198b4116101875780636e9960c3116101565780636e9960c3146102e7578063745ada64146102f85780638129fc1c1461030b57806388c432e11461031357600080fd5b80633d8198b41461029b5780634df0a2d4146102ae5780635b0a7aad146102c15780636d4bce20146102d457600080fd5b806321639f04116101c357806321639f041461023257806324d7806c14610252578063290c61b014610275578063329918381461028857600080fd5b80630de99991146101ea578063116461e9146101ff5780631da3e2dc1461021d575b600080fd5b6101fd6101f836600461204e565b61042a565b005b610207610495565b6040516102149190612069565b60405180910390f35b61022561052a565b60405161021491906120d5565b61023a61053b565b6040516001600160a01b039091168152602001610214565b61026561026036600461204e565b610599565b6040519015158152602001610214565b61026561028336600461204e565b6105bf565b6101fd6102963660046121fc565b6105d2565b6102076102a936600461204e565b6106e1565b6102076102bc36600461204e565b6108dc565b6101fd6102cf366004612239565b6109ed565b6102656102e236600461204e565b610ab6565b6000546001600160a01b031661023a565b6101fd61030636600461204e565b610ad7565b6101fd610b76565b6101fd6103213660046121fc565b610c20565b610225610c6b565b61026561033c36600461204e565b610d17565b61026561034f36600461204e565b610d24565b6101fd6103623660046121fc565b610da2565b6101fd610375366004612239565b610f04565b61022561105c565b6101fd6103903660046121fc565b611068565b6101fd6103a336600461204e565b6110b7565b6101fd6103b636600461229d565b61120e565b6102076103c936600461204e565b6112db565b6101fd6103dc3660046121fc565b611327565b610225611442565b6101fd6103f73660046122e1565b61158b565b61020761040a36600461204e565b61166b565b610225611692565b6101fd61042536600461204e565b6116f1565b61043333610599565b610469576040517f4d371dc700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61047281610d24565b6104925761048160058261178b565b15610492575b61049260028261181d565b50565b6060600060010180546104a790612355565b80601f01602080910402602001604051908101604052809291908181526020018280546104d390612355565b80156105205780601f106104f557610100808354040283529160200191610520565b820191906000526020600020905b81548152906001019060200180831161050357829003601f168201915b5050505050905090565b6060610536600561199a565b905090565b600061054633610d17565b61057c576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b50336000908152600f60205260409020546001600160a01b031690565b600080546001600160a01b038084169116036105b757506001919050565b506000919050565b60006105cc60058361178b565b92915050565b6105db33610d17565b156106535760405162461bcd60e51b815260206004820152602f60248201527f436f6e74726163743a204164647265737320616c72656164792072656769737460448201527f657265642061732070617469656e74000000000000000000000000000000000060648201526084015b60405180910390fd5b80516000036106ca5760405162461bcd60e51b815260206004820152602360248201527f436f6e74726163743a20456d7074792068617368206973206e6f7420616c6c6f60448201527f7765640000000000000000000000000000000000000000000000000000000000606482015260840161064a565b6106d6600533836119fb565b610492600233611a5d565b60606106ec82610d17565b610722576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336001600160a01b038316148061075257506001600160a01b038281166000908152600f60205260409020541633145b806107e457506001600160a01b0382166000908152600f602090815260409182902060010180548351818402810184019094528084526107de933393909291908301828280156107cb57602002820191906000526020600020905b81546001600160a01b031681526001909101906020018083116107ad575b5050505050611b1090919063ffffffff16565b60001914155b15610894576001600160a01b0382166000908152600f60205260409020600201805461080f90612355565b80601f016020809104026020016040519081016040528092919081815260200182805461083b90612355565b80156108885780601f1061085d57610100808354040283529160200191610888565b820191906000526020600020905b81548152906001019060200180831161086b57829003601f168201915b50505050509050919050565b60405162461bcd60e51b815260206004820152600b60248201527f4e6f7420416c6c6f776564000000000000000000000000000000000000000000604482015260640161064a565b60606108e782610d17565b61091d576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336001600160a01b038316148061094d57506001600160a01b038281166000908152600f60205260409020541633145b806109dd57506001600160a01b0382166000908152600f602090815260409182902060010180548351818402810184019094528084526109d7933393909291908301828280156107cb576020028201919060005260206000209081546001600160a01b031681526001909101906020018083116107ad575050505050611b1090919063ffffffff16565b60001914155b15610894576105cc600b83611b73565b6109f633610d17565b610a2c576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336000818152600f6020908152604080832080547fffffffffffffffffffffffff0000000000000000000000000000000000000000811686179091556001600160a01b0316808452600a9092529091209091610a88919061181d565b610a94600b3385611a52565b336000908152600f60205260409020600201610ab083826123f6565b50505050565b6001600160a01b03811660009081526003602052604081205460ff166105cc565b610ae033610599565b610b16576040517f4d371dc700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b610b1f81610ab6565b610b6b5760405162461bcd60e51b815260206004820152601f60248201527f436f6e74726163743a20446f63746f72206e6f74207265676973746572656400604482015260640161064a565b610487600582611b86565b60105460ff1615610bc95760405162461bcd60e51b815260206004820152601d60248201527f436f6e747261637420616c726561647920696e697469616c697a656421000000604482015260640161064a565b600080547fffffffffffffffffffffffff00000000000000000000000000000000000000001633179055601080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff00166001179055565b610c2933610d17565b610c5f576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b610492600b3383611a52565b6060610c7633610d17565b610cac576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336000908152600f60209081526040918290206001018054835181840281018401909452808452909183018282801561052057602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311610cf0575050505050905090565b60006105cc600b8361178b565b6000610d3160058361178b565b610d3d57506000919050565b6001600160a01b03821660009081526003602052604090205460ff1615610d6657506000919050565b6001600160a01b03821660009081526009602052604090208054610d8990612355565b9050600003610d9a57506000919050565b506001919050565b610dad60053361178b565b610de3576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3360009081526003602052604090205460ff1615610e2d576040517ff873d3b700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3360009081526009602052604090208054610e4790612355565b9050600003610e82576040517fa30132d500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b8051600003610ef85760405162461bcd60e51b8152602060048201526024808201527f436f6e74726163743a20456d7074792068617368206973206e6f7420616c6c6f60448201527f7765642100000000000000000000000000000000000000000000000000000000606482015260840161064a565b61049260053383611a52565b610f0d336105bf565b80610f1c5750610f1c33610d24565b15610f8f5760405162461bcd60e51b815260206004820152602e60248201527f436f6e74726163743a204164647265737320616c72656164792072656769737460448201527f6572656420617320646f63746f72000000000000000000000000000000000000606482015260840161064a565b81516000036110065760405162461bcd60e51b815260206004820152602360248201527f436f6e74726163743a20456d7074792068617368206973206e6f7420616c6c6f60448201527f7765640000000000000000000000000000000000000000000000000000000000606482015260840161064a565b611012600b33846119fb565b336000818152600f6020526040902080547fffffffffffffffffffffffff000000000000000000000000000000000000000016909117815560020161105782826123f6565b505050565b6060610536600b61199a565b61107133610599565b6110a7576040517f4d371dc700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b60016110b382826123f6565b5050565b6110c033610d17565b6110f6576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6110ff81610d24565b611135576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336000908152600f602090815260409182902060010180548351818402810184019094528084526111b29385939092919083018282801561119f57602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311611181575b5050505050611c0c90919063ffffffff16565b61049257336000908152600f602090815260408220600190810180549182018155835291200180546001600160a01b0383167fffffffffffffffffffffffff000000000000000000000000000000000000000090911617905550565b61121782610d17565b61124d576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6001600160a01b038281166000908152600f60205260409020541633146112b65760405162461bcd60e51b815260206004820152600b60248201527f4e6f7420416c6c6f776564000000000000000000000000000000000000000000604482015260640161064a565b6001600160a01b0382166000908152600f6020526040902060020161105782826123f6565b60606112e6826105bf565b61131c576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6105cc600583611b73565b805160000361139e5760405162461bcd60e51b815260206004820152602a60248201527f436f6e74726163743a20456d707479207075626c6963206b6579206973206e6f60448201527f7420616c6c6f7765642100000000000000000000000000000000000000000000606482015260840161064a565b6113a960053361178b565b6113df576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3360009081526003602052604090205460ff1615611429576040517ff873d3b700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3360009081526009602052604090206110b382826123f6565b606061144f60053361178b565b611485576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b3360009081526003602052604090205460ff16156114cf576040517ff873d3b700000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b33600090815260096020526040902080546114e990612355565b9050600003611524576040517fa30132d500000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336000908152600a602090815260409182902080548351818402810184019094528084529091830182828015610520576020028201919060005260206000209081546001600160a01b03168152600190910190602001808311610cf0575050505050905090565b61159433610d17565b6115ca576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b6115d383610d24565b611609576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61161382826109ed565b336000818152600f6020908152604080832080547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b0389169081179091558352600a909152902061105791611a5d565b6001600160a01b038116600090815260096020526040902080546060919061080f90612355565b600280546040805160208084028201810190925282815260609390929091830182828015610520576020028201919060005260206000209081546001600160a01b03168152600190910190602001808311610cf0575050505050905090565b6116fa33610d17565b611730576040517fc11330e600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b61173981610d24565b61176f576040517ffe2fc9c600000000000000000000000000000000000000000000000000000000815260040160405180910390fd5b336000908152600f602052604090206110b39060010182611c24565b60006001600160a01b0382166118095760405162461bcd60e51b815260206004820152602260248201527f526f6c65733a206163636f756e7420697320746865207a65726f20616464726560448201527f7373000000000000000000000000000000000000000000000000000000000000606482015260840161064a565b6118138383611db6565b5115159392505050565b6001600160a01b038116600090815260018301602052604090205460ff16611843575050565b6001600160a01b038116600090815260018084016020908152604080842080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0016905560028601909152822054845490929161189f91612503565b905060008460000182815481106118b8576118b8612516565b60009182526020808320909101546001600160a01b0390811680845260028901909252604080842087905590871683528220919091558554909150819086908590811061190757611907612516565b600091825260209091200180547fffffffffffffffffffffffff0000000000000000000000000000000000000000166001600160a01b0392909216919091179055845485908061195957611959612545565b600082815260209020810160001990810180547fffffffffffffffffffffffff00000000000000000000000000000000000000001690550190555050505050565b805460408051602080840282018101909252828152606092909184919083018282801561088857602002820191906000526020600020905b81546001600160a01b031681526001909101906020018083116119d25750505050509050919050565b611a05838361178b565b15611a525760405162461bcd60e51b815260206004820152601f60248201527f526f6c65733a206163636f756e7420616c72656164792068617320726f6c6500604482015260640161064a565b611057838383611e65565b6001600160a01b038116600090815260018301602052604090205460ff1615611a84575050565b6001600160a01b0316600081815260018381016020908152604080842080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0016841790558554600287018352908420819055918201855593825292902090910180547fffffffffffffffffffffffff0000000000000000000000000000000000000000169091179055565b6000805b8351811015611b6857826001600160a01b0316848281518110611b3957611b39612516565b60200260200101516001600160a01b031603611b565790506105cc565b80611b6081612574565b915050611b14565b506000199392505050565b6060611b7f8383611db6565b9392505050565b611b90828261178b565b611c025760405162461bcd60e51b815260206004820152602160248201527f526f6c65733a206163636f756e7420646f6573206e6f74206861766520726f6c60448201527f6500000000000000000000000000000000000000000000000000000000000000606482015260840161064a565b6110b38282611f3d565b6000611c188383611b10565b60001914159392505050565b600080611c8a84805480602002602001604051908101604052809291908181526020018280548015611c7f57602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311611c61575b505050505084611b10565b90508019611c9c5760009150506105cc565b600084805480602002602001604051908101604052809291908181526020018280548015611cf357602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311611cd5575b505050505090508060018251611d099190612503565b81518110611d1957611d19612516565b6020026020010151858381548110611d3357611d33612516565b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b0316021790555084805480611d7157611d71612545565b600082815260209020600019908201810180547fffffffffffffffffffffffff0000000000000000000000000000000000000000169055019055506001949350505050565b6001600160a01b03811660009081526001830160205260409020805460609190611ddf90612355565b80601f0160208091040260200160405190810160405280929190818152602001828054611e0b90612355565b8015611e585780601f10611e2d57610100808354040283529160200191611e58565b820191906000526020600020905b815481529060010190602001808311611e3b57829003601f168201915b5050505050905092915050565b6001600160a01b038216600090815260038401602052604090205460ff16611f195782546001600160a01b038316600081815260028601602090815260408083209490945560038701815292812080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff001660019081179091558654908101875586825292902090910180547fffffffffffffffffffffffff00000000000000000000000000000000000000001690911790555b6001600160a01b03821660009081526001840160205260409020610ab082826123f6565b6001600160a01b038116600090815260038301602052604090205460ff16611f63575050565b6001600160a01b03811660009081526001830160205260408120611f8691611fe4565b6001600160a01b0381166000908152600383016020908152604080832080547fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff0016905560028501909152812054835490919061189f90600190612503565b508054611ff090612355565b6000825580601f10612000575050565b601f01602090049060005260206000209081019061049291905b8082111561202e576000815560010161201a565b5090565b80356001600160a01b038116811461204957600080fd5b919050565b60006020828403121561206057600080fd5b611b7f82612032565b600060208083528351808285015260005b818110156120965785810183015185820160400152820161207a565b5060006040828601015260407fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0601f8301168501019250505092915050565b6020808252825182820181905260009190848201906040850190845b818110156121165783516001600160a01b0316835292840192918401916001016120f1565b50909695505050505050565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052604160045260246000fd5b600082601f83011261216257600080fd5b813567ffffffffffffffff8082111561217d5761217d612122565b604051601f83017fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe0908116603f011681019082821181831017156121c3576121c3612122565b816040528381528660208588010111156121dc57600080fd5b836020870160208301376000602085830101528094505050505092915050565b60006020828403121561220e57600080fd5b813567ffffffffffffffff81111561222557600080fd5b61223184828501612151565b949350505050565b6000806040838503121561224c57600080fd5b823567ffffffffffffffff8082111561226457600080fd5b61227086838701612151565b9350602085013591508082111561228657600080fd5b5061229385828601612151565b9150509250929050565b600080604083850312156122b057600080fd5b6122b983612032565b9150602083013567ffffffffffffffff8111156122d557600080fd5b61229385828601612151565b6000806000606084860312156122f657600080fd5b6122ff84612032565b9250602084013567ffffffffffffffff8082111561231c57600080fd5b61232887838801612151565b9350604086013591508082111561233e57600080fd5b5061234b86828701612151565b9150509250925092565b600181811c9082168061236957607f821691505b6020821081036123a2577f4e487b7100000000000000000000000000000000000000000000000000000000600052602260045260246000fd5b50919050565b601f82111561105757600081815260208120601f850160051c810160208610156123cf5750805b601f850160051c820191505b818110156123ee578281556001016123db565b505050505050565b815167ffffffffffffffff81111561241057612410612122565b6124248161241e8454612355565b846123a8565b602080601f83116001811461245957600084156124415750858301515b600019600386901b1c1916600185901b1785556123ee565b6000858152602081207fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffe08616915b828110156124a657888601518255948401946001909101908401612487565b50858210156124c45787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052601160045260246000fd5b818103818111156105cc576105cc6124d4565b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603260045260246000fd5b7f4e487b7100000000000000000000000000000000000000000000000000000000600052603160045260246000fd5b60006000198203612587576125876124d4565b506001019056fea264697066735822122068c4a7d816f1e97648f912058147a251b25481cb187d265a2c5d5a567eabf73064736f6c63430008110033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [
+      {
+        "astId": 575,
+        "contract": "contracts/Contract.sol:Contract",
+        "label": "admin",
+        "offset": 0,
+        "slot": "0",
+        "type": "t_struct(Admin)550_storage"
+      },
+      {
+        "astId": 578,
+        "contract": "contracts/Contract.sol:Contract",
+        "label": "doctors",
+        "offset": 0,
+        "slot": "5",
+        "type": "t_struct(Doctors)572_storage"
+      },
+      {
+        "astId": 581,
+        "contract": "contracts/Contract.sol:Contract",
+        "label": "patients",
+        "offset": 0,
+        "slot": "11",
+        "type": "t_struct(Patients)559_storage"
+      },
+      {
+        "astId": 583,
+        "contract": "contracts/Contract.sol:Contract",
+        "label": "initialized",
+        "offset": 0,
+        "slot": "16",
+        "type": "t_bool"
+      }
+    ],
+    "types": {
+      "t_address": {
+        "encoding": "inplace",
+        "label": "address",
+        "numberOfBytes": "20"
+      },
+      "t_array(t_address)dyn_storage": {
+        "base": "t_address",
+        "encoding": "dynamic_array",
+        "label": "address[]",
+        "numberOfBytes": "32"
+      },
+      "t_bool": {
+        "encoding": "inplace",
+        "label": "bool",
+        "numberOfBytes": "1"
+      },
+      "t_mapping(t_address,t_bool)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => bool)",
+        "numberOfBytes": "32",
+        "value": "t_bool"
+      },
+      "t_mapping(t_address,t_string_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => string)",
+        "numberOfBytes": "32",
+        "value": "t_string_storage"
+      },
+      "t_mapping(t_address,t_struct(Map)13_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => struct AddToBoolMapping.Map)",
+        "numberOfBytes": "32",
+        "value": "t_struct(Map)13_storage"
+      },
+      "t_mapping(t_address,t_struct(MedicalRecord)542_storage)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => struct Contract.MedicalRecord)",
+        "numberOfBytes": "32",
+        "value": "t_struct(MedicalRecord)542_storage"
+      },
+      "t_mapping(t_address,t_uint256)": {
+        "encoding": "mapping",
+        "key": "t_address",
+        "label": "mapping(address => uint256)",
+        "numberOfBytes": "32",
+        "value": "t_uint256"
+      },
+      "t_string_storage": {
+        "encoding": "bytes",
+        "label": "string",
+        "numberOfBytes": "32"
+      },
+      "t_struct(Admin)550_storage": {
+        "encoding": "inplace",
+        "label": "struct Contract.Admin",
+        "members": [
+          {
+            "astId": 544,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "user",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 546,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "public_key",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_string_storage"
+          },
+          {
+            "astId": 549,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "pending_doctors",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_struct(Map)13_storage"
+          }
+        ],
+        "numberOfBytes": "160"
+      },
+      "t_struct(Doctors)572_storage": {
+        "encoding": "inplace",
+        "label": "struct Contract.Doctors",
+        "members": [
+          {
+            "astId": 562,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "users",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_struct(Role)1516_storage"
+          },
+          {
+            "astId": 566,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "public_keys",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_address,t_string_storage)"
+          },
+          {
+            "astId": 571,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "docToPatAccess",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_address,t_struct(Map)13_storage)"
+          }
+        ],
+        "numberOfBytes": "192"
+      },
+      "t_struct(Map)13_storage": {
+        "encoding": "inplace",
+        "label": "struct AddToBoolMapping.Map",
+        "members": [
+          {
+            "astId": 4,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "keys",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_array(t_address)dyn_storage"
+          },
+          {
+            "astId": 8,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "values",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_address,t_bool)"
+          },
+          {
+            "astId": 12,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "indexOf",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_address,t_uint256)"
+          }
+        ],
+        "numberOfBytes": "96"
+      },
+      "t_struct(Map)204_storage": {
+        "encoding": "inplace",
+        "label": "struct AddToStrMapping.Map",
+        "members": [
+          {
+            "astId": 191,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "keys",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_array(t_address)dyn_storage"
+          },
+          {
+            "astId": 195,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "values",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_address,t_string_storage)"
+          },
+          {
+            "astId": 199,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "indexOf",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_address,t_uint256)"
+          },
+          {
+            "astId": 203,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "inserted",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_address,t_bool)"
+          }
+        ],
+        "numberOfBytes": "128"
+      },
+      "t_struct(MedicalRecord)542_storage": {
+        "encoding": "inplace",
+        "label": "struct Contract.MedicalRecord",
+        "members": [
+          {
+            "astId": 536,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "editor",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address"
+          },
+          {
+            "astId": 539,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "viewers",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_array(t_address)dyn_storage"
+          },
+          {
+            "astId": 541,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "key_data_hash",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_string_storage"
+          }
+        ],
+        "numberOfBytes": "96"
+      },
+      "t_struct(Patients)559_storage": {
+        "encoding": "inplace",
+        "label": "struct Contract.Patients",
+        "members": [
+          {
+            "astId": 553,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "users",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_struct(Role)1516_storage"
+          },
+          {
+            "astId": 558,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "records",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_address,t_struct(MedicalRecord)542_storage)"
+          }
+        ],
+        "numberOfBytes": "160"
+      },
+      "t_struct(Role)1516_storage": {
+        "encoding": "inplace",
+        "label": "struct Roles.Role",
+        "members": [
+          {
+            "astId": 1515,
+            "contract": "contracts/Contract.sol:Contract",
+            "label": "bearer",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_struct(Map)204_storage"
+          }
+        ],
+        "numberOfBytes": "128"
+      },
+      "t_uint256": {
+        "encoding": "inplace",
+        "label": "uint256",
+        "numberOfBytes": "32"
+      }
+    }
+  }
+}
