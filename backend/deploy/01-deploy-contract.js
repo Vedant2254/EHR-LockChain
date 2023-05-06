@@ -1,13 +1,21 @@
 const { network } = require("hardhat");
 const { verify } = require("../utils/verify");
 const { developmentChains } = require("../helper-hardhat-config");
-const obj = require("hardhat-deploy");
 
 // this function is imported when we run `yarn hardhat deploy` from command line
 module.exports = async ({ getNamedAccounts, deployments }) => {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
 
+  // deploying forwarder for meta-transactions
+  const forwarder = await deploy("MinimalForwarderUpgradeable", {
+    from: deployer,
+    args: [],
+    log: true,
+    waitConfirmations: network.config.blockConfirmations || 1,
+  });
+
+  // deploy DefaultProxyAdmin, ContractProxy, Contract, inshort upgradable contract
   const contract = await deploy("Contract", {
     from: deployer,
     proxy: {
@@ -19,7 +27,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
         },
       },
     },
-    args: [],
+    args: [forwarder.address],
     log: true,
     waitConfirmations: network.config.blockConfirmations || 1,
   });

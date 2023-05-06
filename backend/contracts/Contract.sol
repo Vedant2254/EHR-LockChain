@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.17;
 
+import "@openzeppelin/contracts-upgradeable/metatx/ERC2771ContextUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/metatx/MinimalForwarderUpgradeable.sol";
+
 import "./Roles.sol";
 import "./AddressArrayUtils.sol";
 import "./AddToBoolMapping.sol";
@@ -11,7 +14,7 @@ error Contract__NotPatient();
 error Contract__PendingDoctorApproval();
 error Contract__DoctorPublicKeyMissing();
 
-contract Contract {
+contract Contract is ERC2771ContextUpgradeable {
     // using methods of Roles for Role struct in Roles
     using Roles for Roles.Role;
     using AddToBoolMapping for AddToBoolMapping.Map;
@@ -45,12 +48,12 @@ contract Contract {
     Doctors private doctors;
     Patients private patients;
 
-    // Initializing admin
-    // constructor() {
-    //     admin.user = msg.sender;
-    // }
-
     bool initialized;
+
+    /// @custom:oz-upgrades-unsafe-allow constructor
+    constructor(
+        MinimalForwarderUpgradeable forwarder // Initialize trusted forwarder
+    ) ERC2771ContextUpgradeable(address(forwarder)) {}
 
     function initialize() public {
         require(!initialized, "Contract already initialized!");

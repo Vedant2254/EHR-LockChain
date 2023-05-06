@@ -1,0 +1,13 @@
+{
+  "relayer": {
+    "relayerId": "324f3433-8825-44e3-b240-fa3eb7e2431e",
+    "name": "EHR-Payer",
+    "address": "0xb8706cf1b66893725d1dbd8df90cacd69e211df3",
+    "network": "mumbai",
+    "createdAt": "2023-05-06T11:22:08.521Z",
+    "paused": false,
+    "policies": {},
+    "minBalance": "100000000000000000",
+    "pendingTxCost": "0"
+  }
+}
