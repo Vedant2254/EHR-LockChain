@@ -12,6 +12,9 @@ async function relay(forwarder, request, signature, whitelist) {
   const accepts = !whitelist || whitelist.includes(request.to);
   if (!accepts) throw new Error(`Rejected request to ${request.to}`);
 
+  console.log(request);
+  console.log(signature);
+
   // Validate request on the forwarder contract
   const valid = await forwarder.verify(request, signature);
   if (!valid) throw new Error(`Invalid request`);
@@ -33,7 +36,7 @@ async function handler(event) {
   const credentials = { ...event };
   const provider = new DefenderRelayProvider(credentials);
   const signer = new DefenderRelaySigner(credentials, provider, {
-    // speed: "fast",
+    speed: "fast",
   });
   const forwarder = new ethers.Contract(ForwarderAddress, ForwarderAbi, signer);
 

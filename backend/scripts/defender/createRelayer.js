@@ -1,3 +1,5 @@
+// creates a relayer in the defender
+
 const { RelayClient } = require("defender-relay-client");
 const { writeFile } = require("fs/promises");
 const path = require("path");

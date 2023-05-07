@@ -57,7 +57,7 @@ contract Contract is ERC2771ContextUpgradeable {
 
     function initialize() public {
         require(!initialized, "Contract already initialized!");
-        admin.user = msg.sender;
+        admin.user = _msgSender();
         initialized = true;
     }
 
@@ -96,10 +96,10 @@ contract Contract is ERC2771ContextUpgradeable {
     }
 
     function registerDr(string memory _hash) public {
-        if (isPatient(msg.sender)) revert("Contract: Address already registered as patient");
+        if (isPatient(_msgSender())) revert("Contract: Address already registered as patient");
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed");
-        doctors.users.add(msg.sender, _hash);
-        admin.pending_doctors.set(msg.sender);
+        doctors.users.add(_msgSender(), _hash);
+        admin.pending_doctors.set(_msgSender());
     }
 
     function approveDr(address _address) public onlyAdmin {
@@ -116,14 +116,14 @@ contract Contract is ERC2771ContextUpgradeable {
 
     function registerDrConfirm(string memory _public_key) public {
         if (bytes(_public_key).length == 0) revert("Contract: Empty public key is not allowed!");
-        if (!doctors.users.has(msg.sender)) revert Contract__NotDoctor();
-        if (admin.pending_doctors.get(msg.sender)) revert Contract__PendingDoctorApproval();
-        doctors.public_keys[msg.sender] = _public_key;
+        if (!doctors.users.has(_msgSender())) revert Contract__NotDoctor();
+        if (admin.pending_doctors.get(_msgSender())) revert Contract__PendingDoctorApproval();
+        doctors.public_keys[_msgSender()] = _public_key;
     }
 
     function setDrHash(string memory _hash) public onlyDoctor {
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed!");
-        doctors.users.setHash(msg.sender, _hash);
+        doctors.users.setHash(_msgSender(), _hash);
     }
 
     function getDrHash(address _address) public view returns (string memory) {
@@ -144,7 +144,7 @@ contract Contract is ERC2771ContextUpgradeable {
     }
 
     function getPtsOfDr() public view onlyDoctor returns (address[] memory) {
-        return doctors.docToPatAccess[msg.sender].keys;
+        return doctors.docToPatAccess[_msgSender()].keys;
     }
 
     // Patient methods
@@ -153,25 +153,25 @@ contract Contract is ERC2771ContextUpgradeable {
     }
 
     function registerPt(string memory _hash, string memory _key_data_hash) public {
-        if (isDrRegistered(msg.sender) || isDoctor(msg.sender))
+        if (isDrRegistered(_msgSender()) || isDoctor(_msgSender()))
             revert("Contract: Address already registered as doctor");
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed");
-        patients.users.add(msg.sender, _hash);
-        patients.records[msg.sender].editor = msg.sender;
-        patients.records[msg.sender].key_data_hash = _key_data_hash;
+        patients.users.add(_msgSender(), _hash);
+        patients.records[_msgSender()].editor = _msgSender();
+        patients.records[_msgSender()].key_data_hash = _key_data_hash;
     }
 
     function setPtGeneralHash(string memory _hash) public onlyPatient {
-        patients.users.setHash(msg.sender, _hash);
+        patients.users.setHash(_msgSender(), _hash);
     }
 
     function getPtGeneralHash(address _address) public view returns (string memory) {
         if (!isPatient(_address)) revert Contract__NotPatient();
 
         if (
-            msg.sender == _address ||
-            patients.records[_address].editor == msg.sender ||
-            patients.records[_address].viewers.indexOf(msg.sender) != -1
+            _msgSender() == _address ||
+            patients.records[_address].editor == _msgSender() ||
+            patients.records[_address].viewers.indexOf(_msgSender()) != -1
         ) return patients.users.getHash(_address);
 
         revert("Not Allowed");
@@ -179,7 +179,7 @@ contract Contract is ERC2771ContextUpgradeable {
 
     function setPtRecordHash(address _address, string memory _hash) public {
         if (!isPatient(_address)) revert Contract__NotPatient();
-        if (!(patients.records[_address].editor == msg.sender)) revert("Not Allowed");
+        if (!(patients.records[_address].editor == _msgSender())) revert("Not Allowed");
         patients.records[_address].key_data_hash = _hash;
     }
 
@@ -187,9 +187,9 @@ contract Contract is ERC2771ContextUpgradeable {
         if (!isPatient(_address)) revert Contract__NotPatient();
 
         if (
-            msg.sender == _address ||
-            patients.records[_address].editor == msg.sender ||
-            patients.records[_address].viewers.indexOf(msg.sender) != -1
+            _msgSender() == _address ||
+            patients.records[_address].editor == _msgSender() ||
+            patients.records[_address].viewers.indexOf(_msgSender()) != -1
         ) return patients.records[_address].key_data_hash;
 
         revert("Not Allowed");
@@ -211,31 +211,31 @@ contract Contract is ERC2771ContextUpgradeable {
         removeEditorAccess(_general_hash, _key_hash);
 
         // add new editor access
-        patients.records[msg.sender].editor = _address;
-        doctors.docToPatAccess[_address].set(msg.sender);
+        patients.records[_msgSender()].editor = _address;
+        doctors.docToPatAccess[_address].set(_msgSender());
     }
 
     function removeEditorAccess(
         string memory _general_hash,
         string memory _key_hash
     ) public onlyPatient {
-        address old_editor = patients.records[msg.sender].editor;
-        patients.records[msg.sender].editor = msg.sender;
-        doctors.docToPatAccess[old_editor].unset(msg.sender);
+        address old_editor = patients.records[_msgSender()].editor;
+        patients.records[_msgSender()].editor = _msgSender();
+        doctors.docToPatAccess[old_editor].unset(_msgSender());
 
-        patients.users.setHash(msg.sender, _general_hash);
-        patients.records[msg.sender].key_data_hash = _key_hash;
+        patients.users.setHash(_msgSender(), _general_hash);
+        patients.records[_msgSender()].key_data_hash = _key_hash;
     }
 
     function getDrOfPt() public view onlyPatient returns (address) {
-        return patients.records[msg.sender].editor;
+        return patients.records[_msgSender()].editor;
     }
 
     function grantViewerAccess(address _address) public onlyPatient {
         if (!isDoctor(_address)) revert Contract__NotDoctor();
 
-        if (!patients.records[msg.sender].viewers.contains(_address)) {
-            patients.records[msg.sender].viewers.push(_address);
+        if (!patients.records[_msgSender()].viewers.contains(_address)) {
+            patients.records[_msgSender()].viewers.push(_address);
         }
     }
 
@@ -243,29 +243,29 @@ contract Contract is ERC2771ContextUpgradeable {
         // pending update - when user revokes access, symmetric key S must be changed
         if (!isDoctor(_address)) revert Contract__NotDoctor();
 
-        patients.records[msg.sender].viewers.remove(_address);
+        patients.records[_msgSender()].viewers.remove(_address);
     }
 
     function getPatViewers() public view onlyPatient returns (address[] memory) {
-        return patients.records[msg.sender].viewers;
+        return patients.records[_msgSender()].viewers;
     }
 
     // modifiers
     modifier onlyAdmin() {
-        if (!isAdmin(msg.sender)) revert Contract__NotAdmin();
+        if (!isAdmin(_msgSender())) revert Contract__NotAdmin();
         _;
     }
 
     modifier onlyDoctor() {
-        if (!doctors.users.has(msg.sender)) revert Contract__NotDoctor();
-        if (admin.pending_doctors.get(msg.sender)) revert Contract__PendingDoctorApproval();
-        if (bytes(doctors.public_keys[msg.sender]).length == 0)
+        if (!doctors.users.has(_msgSender())) revert Contract__NotDoctor();
+        if (admin.pending_doctors.get(_msgSender())) revert Contract__PendingDoctorApproval();
+        if (bytes(doctors.public_keys[_msgSender()]).length == 0)
             revert Contract__DoctorPublicKeyMissing();
         _;
     }
 
     modifier onlyPatient() {
-        if (!isPatient(msg.sender)) revert Contract__NotPatient();
+        if (!isPatient(_msgSender())) revert Contract__NotPatient();
         _;
     }
 }

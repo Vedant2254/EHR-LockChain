@@ -3,12 +3,20 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "rollup -c"
+  },
   "dependencies": {
     "@openzeppelin/contracts-upgradeable": "^4.8.3",
     "@openzeppelin/hardhat-upgrades": "^1.24.0",
+    "@rollup/plugin-commonjs": "^24.1.0",
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
     "defender-relay-client": "^1.43.0",
     "dotenv": "^16.0.3",
-    "hardhat": "^2.12.6"
+    "eth-sig-util": "^3.0.1",
+    "hardhat": "^2.12.6",
+    "rollup": "^3.21.5"
   },
   "devDependencies": {
     "@ethersproject/abi": "^5.4.7",
