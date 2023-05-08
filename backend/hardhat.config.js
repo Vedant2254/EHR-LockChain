@@ -16,7 +16,14 @@ const COINMARKET_CAP_KEY = process.env.COINMARKET_CAP_KEY || "";
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
   solidity: {
-    version: "0.8.17",
+    compilers: [
+      {
+        version: "0.8.17",
+      },
+      {
+        version: "0.8.10",
+      },
+    ],
     settings: {
       optimizer: {
         enabled: true,
@@ -63,7 +70,7 @@ module.exports = {
     },
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
+    apiKey: POLYGONSCAN_API_KEY,
   },
   gasReporter: {
     enabled: true,

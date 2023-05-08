@@ -8,7 +8,8 @@
     "sign": "hh run scripts/defender/sign.js --network polygon_mumbai",
     "relay": "hh run scripts/defender/relay.js --network polygon_mumbai",
     "create-autotask": "yarn build && node scripts/defender/createAutotask.js",
-    "upload": "yarn build && node scripts/defender/upload.js"
+    "upload": "yarn build && node scripts/defender/upload.js",
+    "sign-relay": "yarn sign && yarn relay"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.3",
