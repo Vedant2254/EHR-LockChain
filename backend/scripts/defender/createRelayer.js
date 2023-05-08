@@ -15,13 +15,13 @@ async function main() {
   });
 
   await writeFile(
-    path.join(__dirname, "relayer.json"),
+    path.join(__dirname, "relay.json"),
     JSON.stringify({
       relayer,
     })
   );
 
-  console.log(relayer);
+  console.log(`Relayer ID: ${relayer.relayerId}`);
 }
 
 main()

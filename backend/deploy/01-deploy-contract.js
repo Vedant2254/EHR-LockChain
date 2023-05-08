@@ -8,7 +8,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
   const { deployer } = await getNamedAccounts();
 
   // deploying forwarder for meta-transactions
-  const forwarder = await deploy("MinimalForwarderUpgradeable", {
+  const forwarder = await deploy("MinimalForwarder", {
     from: deployer,
     args: [],
     log: true,
@@ -34,7 +34,7 @@ module.exports = async ({ getNamedAccounts, deployments }) => {
 
   if (!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY) {
     console.log("Verifying...");
-    await verify(contract.address, []);
+    await verify(contract.address, [forwarder.address]);
   }
 };
 

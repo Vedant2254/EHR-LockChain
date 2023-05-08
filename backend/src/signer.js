@@ -23,7 +23,7 @@ function getMetaTxTypeData(chainId, verifyingContract) {
       ForwardRequest,
     },
     domain: {
-      name: "MinimalForwarderUpgradeable",
+      name: "MinimalForwarder",
       version: "0.0.1",
       chainId,
       verifyingContract,
@@ -35,7 +35,7 @@ function getMetaTxTypeData(chainId, verifyingContract) {
 async function signTypedData(signer, from, data) {
   // If signer is a private key, use it to sign
   if (typeof signer === "string") {
-    const privateKey = Buffer.from(signer, "hex");
+    const privateKey = Buffer.from(signer.replace(/^0x/, ""), "hex");
     return ethSigUtil.signTypedMessage(privateKey, { data });
   }
 
@@ -49,7 +49,9 @@ async function signTypedData(signer, from, data) {
 }
 
 async function buildRequest(forwarder, input) {
-  const nonce = await forwarder.getNonce(input.from).then((nonce) => nonce.toString());
+  const nonce = await forwarder
+    .getNonce(input.from)
+    .then((nonce) => nonce.toString());
   return { value: 0, gas: 1e6, nonce, ...input };
 }
 
@@ -63,7 +65,6 @@ async function signMetaTxRequest(signer, forwarder, input) {
   const request = await buildRequest(forwarder, input);
   const toSign = await buildTypedData(forwarder, request);
   const signature = await signTypedData(signer, input.from, toSign);
-
   return { signature, request };
 }
 

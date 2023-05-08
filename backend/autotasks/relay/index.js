@@ -4,16 +4,13 @@ const { DefenderRelayProvider, DefenderRelaySigner } = require("defender-relay-c
 const {
   address: ForwarderAddress,
   abi: ForwarderAbi,
-} = require("../../deployments/polygon_mumbai/MinimalForwarderUpgradeable.json");
+} = require("../../deployments/polygon_mumbai/MinimalForwarder.json");
 
 // this function actually relays the transaction request to relayer
 async function relay(forwarder, request, signature, whitelist) {
   // Decide if we want to relay this request based on a whitelist
   const accepts = !whitelist || whitelist.includes(request.to);
   if (!accepts) throw new Error(`Rejected request to ${request.to}`);
-
-  console.log(request);
-  console.log(signature);
 
   // Validate request on the forwarder contract
   const valid = await forwarder.verify(request, signature);

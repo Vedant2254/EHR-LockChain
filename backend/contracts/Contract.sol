@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts-upgradeable/metatx/ERC2771ContextUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/metatx/MinimalForwarderUpgradeable.sol";
+import "@openzeppelin/contracts/metatx/MinimalForwarder.sol";
 
 import "./Roles.sol";
 import "./AddressArrayUtils.sol";
@@ -52,7 +52,7 @@ contract Contract is ERC2771ContextUpgradeable {
 
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor(
-        MinimalForwarderUpgradeable forwarder // Initialize trusted forwarder
+        MinimalForwarder forwarder // Initialize trusted forwarder
     ) ERC2771ContextUpgradeable(address(forwarder)) {}
 
     function initialize() public {

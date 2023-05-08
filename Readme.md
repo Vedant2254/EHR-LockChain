@@ -361,6 +361,29 @@ This data is not encrypted
 
 - All hardhat functionalities can be viewed by typing `yarn hardhat` in command line from the project folder, similarly `yarn hardhat <command>` can be typed to perform a specific hardhat operation. For example, for deploying a smart contract on sepolia network following command is used `yarn hardhat deploy --network sepolia`.
 
+#### Upgradeable Contracts
+
+The main contract is made upgradable using [OpenZeppelinTransaprentProxy]() pattern. This makes upgrading the contract possible without changning the address of contract and without losing the data of previous contract.
+
+For making an upgradable contract using OpenZeppelinTransparentProxy pattern following contracts needs to be deployed -
+
+- DefaultProxyAdmin contract
+- ContractImplementation contract
+- ContractProxy
+
+#### Meta-transactions (Gas less transactions)
+
+Using OpenZeppelin Defender Relayer, autotasks, EIP2771ContextUpgradeable.sol, MinimalForwarder.sol meta transactions are implemented.
+
+`backend/autotasks/relay/index.js` is the autotask
+`backend/build/relay/index.js` is the autotask built with all it's dependencies
+`backend/scripts/defender/createAutotask.js` is used to create Autotask in defender
+`backend/scripts/defender/createRelayer.js` is used to create Relayer in defender
+`backend/scripts/defender/sign.js` is used to prepare a transaction
+`backend/src/signer.js` is used to sign the transaction
+`backend/scripts/defender/relay.js` is used to relay the transaction to relayer
+`rollup` is the npm module that is used for building the autotask
+
 ### Frontend
 
 #### Folder structure

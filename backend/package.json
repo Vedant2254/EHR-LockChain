@@ -4,14 +4,20 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "sign": "hh run scripts/defender/sign.js --network polygon_mumbai",
+    "relay": "hh run scripts/defender/relay.js --network polygon_mumbai",
+    "create-autotask": "yarn build && node scripts/defender/createAutotask.js",
+    "upload": "yarn build && node scripts/defender/upload.js"
   },
   "dependencies": {
+    "@openzeppelin/contracts": "^4.8.3",
     "@openzeppelin/contracts-upgradeable": "^4.8.3",
     "@openzeppelin/hardhat-upgrades": "^1.24.0",
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
+    "defender-autotask-client": "^1.43.0",
     "defender-relay-client": "^1.43.0",
     "dotenv": "^16.0.3",
     "eth-sig-util": "^3.0.1",
