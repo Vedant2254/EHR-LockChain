@@ -31,6 +31,7 @@
     "@tiptap/react": "^2.0.0-beta.220",
     "@tiptap/starter-kit": "^2.0.0-beta.220",
     "dayjs": "^1.11.7",
+    "defender-relay-client": "^1.43.0",
     "embla-carousel-react": "^7.1.0",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
