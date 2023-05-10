@@ -5,7 +5,7 @@ import useValidTxnData from "./useValidTxnData";
 import useStatus from "./useStatus";
 
 export default function useUpdatePatient(ptAddress, updater) {
-  const { contractAddress, abi } = useValidTxnData();
+  const { contractAddress, contractAbi } = useValidTxnData();
   const {
     isLoading: uploading,
     CIDs,
@@ -18,14 +18,14 @@ export default function useUpdatePatient(ptAddress, updater) {
 
   const { writeAsync: setPtGeneralHash, isLoading: txnGeneralLoading } = useContractWrite({
     address: contractAddress,
-    abi,
+    abi: contractAbi,
     functionName: "setPtGeneralHash",
     args: [CIDs.generalDataCID],
   });
 
   const { writeAsync: setPtRecordHash, isLoading: txnRecordLoading } = useContractWrite({
     address: contractAddress,
-    abi,
+    abi: contractAbi,
     functionName: "setPtRecordHash",
     args: [ptAddress, CIDs.keyDataCID],
   });

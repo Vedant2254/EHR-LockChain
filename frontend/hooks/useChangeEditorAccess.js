@@ -6,7 +6,7 @@ import useGetPatientData from "./useGetPatientData";
 import useStatus from "./useStatus";
 
 export default function useChangeEditorAccess(drAddress) {
-  const { address: curraddress, contractAddress, abi, enabled } = useValidTxnData();
+  const { address: curraddress, contractAddress, contractAbi, enabled } = useValidTxnData();
 
   const [txnWaiting, setTxnWaiting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -20,7 +20,7 @@ export default function useChangeEditorAccess(drAddress) {
 
   const { writeAsync: changeEditorAccess, isLoading: txnLoading } = useContractWrite({
     address: contractAddress,
-    abi,
+    abi: contractAbi,
     functionName: "changeEditorAccess",
     args: [drAddress, CIDs.generalDataCID, CIDs.keyDataCID],
     enabled: enabled && drAddress && CIDs.generalDataCID && CIDs.keyDataCID,

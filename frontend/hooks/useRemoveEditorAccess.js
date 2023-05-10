@@ -5,7 +5,7 @@ import useAddPatientData from "./useAddPatientData";
 import useStatus from "./useStatus";
 
 export default function useRemoveEditorAccess() {
-  const { address: curraddress, contractAddress, abi, enabled } = useValidTxnData();
+  const { address: curraddress, contractAddress, contractAbi, enabled } = useValidTxnData();
 
   const [txnWaiting, setTxnWaiting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -14,7 +14,7 @@ export default function useRemoveEditorAccess() {
 
   const { writeAsync: removeEditorAccess, isLoading: txnLoading } = useContractWrite({
     address: contractAddress,
-    abi,
+    abi: contractAbi,
     functionName: "removeEditorAccess",
     args: [CIDs.generalDataCID, CIDs.keyDataCID],
     enabled: enabled && CIDs.generalDataCID && CIDs.keyDataCID,

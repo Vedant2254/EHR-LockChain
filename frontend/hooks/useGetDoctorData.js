@@ -8,7 +8,7 @@ import useStatus from "./useStatus";
 // This hook gets patient or doctor hash from contract, gets corresponding data from IPFS
 // and returns hash, data and certificates of data
 export default function useGetDoctorData(address) {
-  const { contractAddress, abi, enabled } = useValidTxnData();
+  const { contractAddress, contractAbi, enabled } = useValidTxnData();
   const [data, setData] = useState({ generalData: {}, certificates: [] });
 
   const [isRetrieving, setIsRetrieving] = useState(false);
@@ -19,7 +19,7 @@ export default function useGetDoctorData(address) {
   // get hash
   const { data: hashData } = useContractRead({
     address: contractAddress,
-    abi,
+    abi: contractAbi,
     functionName: "getDrHash",
     args: [address],
     enabled: enabled && address,

@@ -6,16 +6,19 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 // This hook returns all the variables required for executing a
 // smart contract function
 export default function useValidTxnData() {
-  const { data: contract } = useSWR("/api/constants", fetcher);
+  const { data } = useSWR("/api/constants", fetcher);
   const { chain } = useNetwork();
   const { address } = useAccount();
-  // const [enabled, setEnabled] = useState(false);
 
-  const contractAddress = contract && chain && JSON.parse(contract).contractAddresses[chain.id];
-  const abi = contract && JSON.parse(contract).abi;
-  const enabled = Boolean(contract && chain && address);
+  const jsonData = data ? JSON.parse(data) : null;
 
-  // console.log(contractAddress);
+  const forwarderAddress = jsonData && chain && jsonData.forwarder.addresses[chain.id];
+  const forwarderAbi = jsonData && chain && jsonData.forwarder.abi;
 
-  return { address, chain, contractAddress, abi, enabled };
+  const contractAddress = jsonData && chain && jsonData.contract.addresses[chain.id];
+  const contractAbi = jsonData && chain && jsonData.contract.abi;
+
+  const enabled = Boolean(data && chain && address);
+
+  return { address, chain, enabled, forwarderAddress, forwarderAbi, contractAddress, contractAbi };
 }

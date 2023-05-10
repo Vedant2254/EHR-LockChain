@@ -11,15 +11,22 @@ module.exports = async function () {
 };
 
 async function updateFrontendConstants() {
+  const forwarder = await ethers.getContract("MinimalForwarder");
   const contract = await ethers.getContract("Contract");
   const chainId = network.config.chainId.toString();
   const FILE_PATH = "../frontend/utils/constants.json";
 
   const constants = JSON.parse(fs.readFileSync(FILE_PATH, "utf8"));
 
-  constants.contractAddresses = constants.contractAddresses || {};
-  constants.contractAddresses[chainId] = contract.address;
-  constants.abi = JSON.parse(contract.interface.format(ethers.utils.FormatTypes.json));
+  constants.forwarder = constants.forwarder || {};
+  constants.contract = constants.contract || {};
+  constants.forwarder.addresses = constants.forwarder.addresses || {};
+  constants.contract.addresses = constants.contract.addresses || {};
+
+  constants.forwarder.addresses[chainId] = forwarder.address;
+  constants.contract.addresses[chainId] = contract.address;
+  constants.forwarder.abi = JSON.parse(forwarder.interface.format(ethers.utils.FormatTypes.json));
+  constants.contract.abi = JSON.parse(contract.interface.format(ethers.utils.FormatTypes.json));
 
   fs.writeFileSync(FILE_PATH, JSON.stringify(constants));
 }

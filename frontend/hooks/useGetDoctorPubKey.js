@@ -2,11 +2,11 @@ import { useContractRead } from "wagmi";
 import useValidTxnData from "./useValidTxnData";
 
 export default function useGetDoctorPubKey(address) {
-  const { contractAddress, abi, enabled } = useValidTxnData();
+  const { contractAddress, contractAbi, enabled } = useValidTxnData();
 
   const { data: publicKey, isFetched } = useContractRead({
     address: contractAddress,
-    abi,
+    abi: contractAbi,
     functionName: "getDrPubKey",
     args: [address],
     enabled: enabled && address,

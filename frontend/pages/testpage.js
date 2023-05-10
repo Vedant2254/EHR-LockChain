@@ -16,7 +16,5 @@ import { useRouter } from "next/router";
 import { Button } from "@mantine/core";
 
 export default function TestPage() {
-  const router = useRouter();
-
-  return <Button onClick={() => router.reload(window.location.pathname)}>reload</Button>;
+  return "";
 }

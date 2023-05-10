@@ -5,7 +5,7 @@ import useValidTxnData from "./useValidTxnData";
 import { getPublicKey } from "@/utils/metamask";
 
 export default function useRegisterDoctorConfirm() {
-  const { address, contractAddress, abi, enabled } = useValidTxnData();
+  const { address, contractAddress, contractAbi, enabled } = useValidTxnData();
   const { isDoctor, runIsDoctor } = useIsDoctor(address);
 
   const [publicKey, setPublicKey] = useState(null);
@@ -13,7 +13,7 @@ export default function useRegisterDoctorConfirm() {
 
   const { writeAsync: runRegisterDrConfirm } = useContractWrite({
     address: contractAddress,
-    abi,
+    abi: contractAbi,
     functionName: "registerDrConfirm",
     args: [publicKey],
     enabled: enabled && publicKey,

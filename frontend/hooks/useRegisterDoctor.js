@@ -6,7 +6,7 @@ import { readAsDataURLAsync } from "@/utils/readFileAsync";
 import useStatus from "./useStatus";
 
 export default function useRegisterDoctor() {
-  const { address, contractAddress, abi, enabled } = useValidTxnData();
+  const { address, contractAddress, contractAbi, enabled } = useValidTxnData();
   const { isLoading: uploading, dataCID, setupCID, resetCID } = useAddDoctorData(address);
 
   const [txnWaiting, setTxnWaiting] = useState(false);
@@ -14,7 +14,7 @@ export default function useRegisterDoctor() {
   /* Contract functions */
   const { data: isDoctorRegistered, refetch: runIsDoctorRegistered } = useContractRead({
     address: contractAddress,
-    abi,
+    abi: contractAbi,
     functionName: "isDrRegistered",
     args: [address],
     enabled,
@@ -22,7 +22,7 @@ export default function useRegisterDoctor() {
 
   const { writeAsync: registerDr, isLoading: txnLoading } = useContractWrite({
     address: contractAddress,
-    abi,
+    abi: contractAbi,
     functionName: "registerDr",
     args: [dataCID],
     enabled: enabled && dataCID,

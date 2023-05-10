@@ -5,7 +5,7 @@ import useValidTxnData from "./useValidTxnData";
 import useStatus from "./useStatus";
 
 export default function useGetDoctorOfPatient() {
-  const { contractAddress, abi, enabled } = useValidTxnData();
+  const { contractAddress, contractAbi, enabled } = useValidTxnData();
   const { data: signer } = useSigner();
 
   const [doctor, setDoctor] = useState("");
@@ -14,7 +14,7 @@ export default function useGetDoctorOfPatient() {
   const status = useStatus({ txnLoading, success });
 
   async function getDoctorOfPatient() {
-    const contract = new ethers.Contract(contractAddress, abi, signer);
+    const contract = new ethers.Contract(contractAddress, contractAbi, signer);
     return await contract.getDrOfPt();
   }
 

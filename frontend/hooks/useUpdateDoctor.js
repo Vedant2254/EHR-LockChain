@@ -5,12 +5,12 @@ import useValidTxnData from "./useValidTxnData";
 import useStatus from "./useStatus";
 
 export default function useUpdateDoctor() {
-  const { address, contractAddress, abi } = useValidTxnData();
+  const { address, contractAddress, contractAbi } = useValidTxnData();
   const { isLoading: uploading, dataCID, setupCID, resetCID } = useAddDoctorData(address);
 
   const { writeAsync: setDrHash, isLoading: txnLoading } = useContractWrite({
     address: contractAddress,
-    abi,
+    abi: contractAbi,
     functionName: "setDrHash",
     args: [dataCID],
   });

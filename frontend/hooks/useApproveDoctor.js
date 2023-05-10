@@ -5,7 +5,7 @@ import { useState } from "react";
 import useStatus from "./useStatus";
 
 export default function useApproveDoctor(address) {
-  const { contractAddress, abi, enabled } = useValidTxnData();
+  const { contractAddress, contractAbi, enabled } = useValidTxnData();
   const { isDoctorPending } = useIsDoctorPending(address);
 
   const [txnWaiting, setTxnWaiting] = useState(false);
@@ -13,7 +13,7 @@ export default function useApproveDoctor(address) {
 
   const { config: approveDoctorConfig } = usePrepareContractWrite({
     address: contractAddress,
-    abi,
+    abi: contractAbi,
     functionName: "approveDr",
     args: [address],
     enabled: enabled && address,
