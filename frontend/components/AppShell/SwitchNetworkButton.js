@@ -17,11 +17,11 @@ export default function SwitchNetworkButton() {
   return (
     isDefinitelyConnected &&
     chain &&
-    chain.id !== 11155111 && (
+    chain.id !== 80001 && (
       <Group
         spacing="2px"
         onClick={() => {
-          switchNetwork(11155111);
+          switchNetwork(80001);
         }}
         sx={{ cursor: "pointer" }}
       >
@@ -29,7 +29,7 @@ export default function SwitchNetworkButton() {
         <Box>
           Switch Network
           <Text c="dimmed" size="xs">
-            Sepolia
+            Polygon (Mumbai)
           </Text>
         </Box>
       </Group>
