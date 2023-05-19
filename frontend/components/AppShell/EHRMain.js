@@ -176,7 +176,7 @@ export default function EHRMain() {
               </Button> */}
               <Button
                 component="a"
-                href={`https://sepolia.etherscan.io/address/${contractAddress || ""}`}
+                href={`https://mumbai.polygonscan.com/address/${contractAddress || ""}`}
                 target="_blank"
                 variant="default"
                 radius="xl"

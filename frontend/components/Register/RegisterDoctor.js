@@ -9,18 +9,6 @@ export default function RegisterDoctor() {
 
   return (
     <>
-      {/* <LoadingOverlay
-        visible={status}
-        overlayBlur={4}
-        loader={
-          <>
-            <Center>
-              <Loader />
-            </Center>
-            <Text>{messages[status]}</Text>
-          </>
-        }
-      /> */}
       <BlurLoader visible={status} status={status} />
       <RegistrationForm
         user="doctor"
