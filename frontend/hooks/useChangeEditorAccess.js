@@ -1,16 +1,12 @@
-import { useEffect, useState } from "react";
-import { useContractWrite } from "wagmi";
+import { useEffect } from "react";
 import useValidTxnData from "./useValidTxnData";
 import useAddPatientData from "./useAddPatientData";
-import useGetPatientData from "./useGetPatientData";
 import useStatus from "./useStatus";
+import useRelayTransaction from "./useRelayTransaction";
 
 export default function useChangeEditorAccess(drAddress) {
-  const { address: curraddress, contractAddress, contractAbi, enabled } = useValidTxnData();
-
-  const [txnWaiting, setTxnWaiting] = useState(false);
-  const [success, setSuccess] = useState(false);
-
+  const { address: curraddress } = useValidTxnData();
+  const { relayTransaction, txnLoading, success } = useRelayTransaction();
   const {
     isLoading: uploading,
     CIDs,
@@ -18,29 +14,17 @@ export default function useChangeEditorAccess(drAddress) {
     resetCIDs,
   } = useAddPatientData(curraddress, drAddress);
 
-  const { writeAsync: changeEditorAccess, isLoading: txnLoading } = useContractWrite({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: "changeEditorAccess",
-    args: [drAddress, CIDs.generalDataCID, CIDs.keyDataCID],
-    enabled: enabled && drAddress && CIDs.generalDataCID && CIDs.keyDataCID,
-  });
-
-  const status = useStatus({ uploading, txnLoading, txnWaiting, success });
+  const status = useStatus({ uploading, txnLoading, success });
 
   // storing hashes (CIDs) to smart contract happens here
   useEffect(() => {
-    CIDs.generalDataCID &&
-      CIDs.keyDataCID &&
+    const { generalDataCID, keyDataCID } = CIDs;
+
+    generalDataCID &&
+      keyDataCID &&
       (async () => {
         try {
-          const res = await changeEditorAccess();
-
-          setTxnWaiting(true);
-          await res.wait(1);
-          setTxnWaiting(false);
-
-          setSuccess(true);
+          await relayTransaction("changeEditorAccess", [drAddress, generalDataCID, keyDataCID]);
         } catch (err) {
           console.log(err);
         }

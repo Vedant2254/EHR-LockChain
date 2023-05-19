@@ -3,38 +3,23 @@ import { useContractWrite } from "wagmi";
 import useValidTxnData from "./useValidTxnData";
 import useAddPatientData from "./useAddPatientData";
 import useStatus from "./useStatus";
+import useRelayTransaction from "./useRelayTransaction";
 
 export default function useRemoveEditorAccess() {
-  const { address: curraddress, contractAddress, contractAbi, enabled } = useValidTxnData();
-
-  const [txnWaiting, setTxnWaiting] = useState(false);
-  const [success, setSuccess] = useState(false);
-
+  const { address: curraddress } = useValidTxnData();
   const { isLoading: uploading, CIDs, setupCIDs, resetCIDs } = useAddPatientData(curraddress);
-
-  const { writeAsync: removeEditorAccess, isLoading: txnLoading } = useContractWrite({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: "removeEditorAccess",
-    args: [CIDs.generalDataCID, CIDs.keyDataCID],
-    enabled: enabled && CIDs.generalDataCID && CIDs.keyDataCID,
-  });
-
-  const status = useStatus({ uploading, txnLoading, txnWaiting, success });
+  const { relayTransaction, txnLoading, success } = useRelayTransaction();
+  const status = useStatus({ uploading, txnLoading, success });
 
   // storing hashes (CIDs) to smart contract happens here
   useEffect(() => {
-    CIDs.generalDataCID &&
-      CIDs.keyDataCID &&
+    const { generalDataCID, keyDataCID } = CIDs;
+
+    generalDataCID &&
+      keyDataCID &&
       (async () => {
         try {
-          const res = await removeEditorAccess();
-
-          setTxnWaiting(true);
-          await res.wait(1);
-          setTxnWaiting(false);
-
-          setSuccess(true);
+          await relayTransaction("removeEditorAccess", [generalDataCID, keyDataCID]);
         } catch (err) {
           console.log(err);
         }

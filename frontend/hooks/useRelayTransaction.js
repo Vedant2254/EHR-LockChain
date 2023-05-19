@@ -21,6 +21,7 @@ export default function useRelayTransaction() {
       });
 
       tx = JSON.parse(response.data.result);
+
       setSuccess(true);
     } catch (err) {
       console.log(err);

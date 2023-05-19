@@ -19,7 +19,7 @@ export default function useDisapproveDoctor(address) {
     enabled: enabled && address,
   });
 
-  const { writeAsync: disapproveDoctor, isLoading: isDisapproving } =
+  const { writeAsync: disapproveDoctor, isLoading: txnLoading } =
     useContractWrite(disapproveDoctorConfig);
 
   async function runDisapproveDoctor() {
@@ -37,7 +37,7 @@ export default function useDisapproveDoctor(address) {
   }
 
   const status = useStatus({
-    txnLoading: isDisapproving,
+    txnLoading,
     txnWaiting,
     success,
   });

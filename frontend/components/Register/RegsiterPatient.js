@@ -1,26 +1,21 @@
 import useRegisterPatient from "@/hooks/useRegisterPatient";
 import RegistrationForm from "@/components/Forms/RegistrationForm";
-import { LoadingOverlay, Text, Loader, Center } from "@mantine/core";
-import messages from "@/utils/messages";
 import BlurLoader from "../Utils/BlurLoader";
+import { useAccount } from "wagmi";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 export default function RegisterPatient() {
+  const { address } = useAccount();
   const { status, handleOnSumbit } = useRegisterPatient();
+  const router = useRouter();
+
+  useEffect(() => {
+    status === "success" && router.reload("/patient/dashboard");
+  }, [status]);
 
   return (
     <>
-      {/* <LoadingOverlay
-        visible={status}
-        overlayBlur={4}
-        loader={
-          <>
-            <Center>
-              <Loader />
-            </Center>
-            <Text>{messages[status]}</Text>
-          </>
-        }
-      /> */}
       <BlurLoader visible={status} status={status} />
       <RegistrationForm
         user="patient"

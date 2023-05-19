@@ -4,30 +4,12 @@ import useValidTxnData from "@/hooks/useValidTxnData";
 import useAddPatientData from "./useAddPatientData";
 import { readAsDataURLAsync } from "@/utils/readFileAsync";
 import useStatus from "./useStatus";
+import useRelayTransaction from "./useRelayTransaction";
 
 export default function useRegisterPatient() {
-  const { address, contractAddress, contractAbi, enabled } = useValidTxnData();
+  const { address } = useValidTxnData();
   const { isLoading: uploading, CIDs, setupCIDs, resetCIDs } = useAddPatientData(address);
-
-  const [txnWaiting, setTxnWaiting] = useState(false);
-
-  // check if user is patient
-  const { data: isPatient, refetch: runIsPatient } = useContractRead({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: "isPatient",
-    args: [address],
-    enabled,
-  });
-
-  // perform registration
-  const { writeAsync: registerPatient, isLoading: txnLoading } = useContractWrite({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: "registerPt",
-    args: [CIDs.generalDataCID, CIDs.keyDataCID],
-    enabled: enabled && CIDs.generalDataCID && CIDs.keyDataCID,
-  });
+  const { relayTransaction, txnLoading, success } = useRelayTransaction();
 
   // registers patient when CIDs are available
   useEffect(() => {
@@ -37,13 +19,7 @@ export default function useRegisterPatient() {
       keyCID &&
       (async () => {
         try {
-          const response = await registerPatient();
-
-          setTxnWaiting(true);
-          await response.wait(1);
-          setTxnWaiting(false);
-
-          await runIsPatient();
+          await relayTransaction("registerPt", [generalDataCID, keyCID]);
         } catch (err) {
           console.log(err);
         }
@@ -52,7 +28,7 @@ export default function useRegisterPatient() {
       })();
   }, [CIDs]);
 
-  const message = useStatus({ uploading, txnLoading, txnWaiting });
+  const message = useStatus({ uploading, txnLoading, success });
 
   /* Handler functions */
   async function handleOnSumbit(data) {
@@ -86,7 +62,6 @@ export default function useRegisterPatient() {
   }
 
   return {
-    isPatient,
     status: message,
     handleOnSumbit,
   };

@@ -35,6 +35,7 @@
     "embla-carousel-react": "^7.1.0",
     "eslint": "8.36.0",
     "eslint-config-next": "13.2.4",
+    "eth-sig-util": "^3.0.1",
     "ethers": "^5",
     "next": "13.2.4",
     "react": "18.2.0",

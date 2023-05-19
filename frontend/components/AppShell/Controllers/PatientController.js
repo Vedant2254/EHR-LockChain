@@ -25,7 +25,7 @@ export default function PatientController() {
   const { status: statusOfRemove, runRemoveEditorAccess } = useRemoveEditorAccess();
 
   useEffect(() => {
-    (statusOfChange == "success" || statusOfRemove == "success") &&
+    (statusOfChange === "success" || statusOfRemove === "success") &&
       router.reload(window.location.pathname);
   }, [statusOfChange, statusOfRemove]);
 

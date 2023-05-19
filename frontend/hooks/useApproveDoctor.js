@@ -19,7 +19,7 @@ export default function useApproveDoctor(address) {
     enabled: enabled && address,
   });
 
-  const { writeAsync: approveDoctor, isLoading: isApproving } =
+  const { writeAsync: approveDoctor, isLoading: txnLoading } =
     useContractWrite(approveDoctorConfig);
 
   async function runApproveDoctor() {
@@ -37,7 +37,7 @@ export default function useApproveDoctor(address) {
   }
 
   const status = useStatus({
-    txnLoading: isApproving,
+    txnLoading,
     txnWaiting,
     success,
   });

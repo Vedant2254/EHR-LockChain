@@ -4,44 +4,21 @@ import useValidTxnData from "@/hooks/useValidTxnData";
 import useAddDoctorData from "./useAddDoctorData";
 import { readAsDataURLAsync } from "@/utils/readFileAsync";
 import useStatus from "./useStatus";
+import useRelayTransaction from "./useRelayTransaction";
 
 export default function useRegisterDoctor() {
-  const { address, contractAddress, contractAbi, enabled } = useValidTxnData();
+  const { address } = useValidTxnData();
   const { isLoading: uploading, dataCID, setupCID, resetCID } = useAddDoctorData(address);
+  const { relayTransaction, txnLoading, success } = useRelayTransaction();
 
-  const [txnWaiting, setTxnWaiting] = useState(false);
-
-  /* Contract functions */
-  const { data: isDoctorRegistered, refetch: runIsDoctorRegistered } = useContractRead({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: "isDrRegistered",
-    args: [address],
-    enabled,
-  });
-
-  const { writeAsync: registerDr, isLoading: txnLoading } = useContractWrite({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: "registerDr",
-    args: [dataCID],
-    enabled: enabled && dataCID,
-  });
-
-  const message = useStatus({ uploading, txnLoading, txnWaiting });
+  const message = useStatus({ uploading, txnLoading, success });
 
   /* useEffects */
   useEffect(() => {
     dataCID &&
       (async () => {
         try {
-          const response = await registerDr();
-
-          setTxnWaiting(true);
-          await response.wait(1);
-          setTxnWaiting(false);
-
-          await runIsDoctorRegistered();
+          await relayTransaction("registerDr", [dataCID]);
         } catch (err) {
           console.log(err);
         }
@@ -75,7 +52,6 @@ export default function useRegisterDoctor() {
   }
 
   return {
-    isDoctorRegistered,
     status: message,
     handleOnSubmit,
   };

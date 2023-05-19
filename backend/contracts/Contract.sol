@@ -95,7 +95,7 @@ contract Contract is ERC2771ContextUpgradeable {
         return true;
     }
 
-    function registerDr(string memory _hash) public {
+    function registerDr(string memory _hash) public notAdmin {
         if (isPatient(_msgSender())) revert("Contract: Address already registered as patient");
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed");
         doctors.users.add(_msgSender(), _hash);
@@ -114,7 +114,7 @@ contract Contract is ERC2771ContextUpgradeable {
         admin.pending_doctors.unset(_address);
     }
 
-    function registerDrConfirm(string memory _public_key) public {
+    function registerDrConfirm(string memory _public_key) public notAdmin {
         if (bytes(_public_key).length == 0) revert("Contract: Empty public key is not allowed!");
         if (!doctors.users.has(_msgSender())) revert Contract__NotDoctor();
         if (admin.pending_doctors.get(_msgSender())) revert Contract__PendingDoctorApproval();
@@ -152,7 +152,7 @@ contract Contract is ERC2771ContextUpgradeable {
         return patients.users.has(_address);
     }
 
-    function registerPt(string memory _hash, string memory _key_data_hash) public {
+    function registerPt(string memory _hash, string memory _key_data_hash) public notAdmin {
         if (isDrRegistered(_msgSender()) || isDoctor(_msgSender()))
             revert("Contract: Address already registered as doctor");
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed");
@@ -193,6 +193,15 @@ contract Contract is ERC2771ContextUpgradeable {
         ) return patients.records[_address].key_data_hash;
 
         revert("Not Allowed");
+    }
+
+    function setPtBothHash(
+        address _address,
+        string memory _generalHash,
+        string memory _recordHash
+    ) public {
+        if (bytes(_generalHash).length != 0) setPtGeneralHash(_generalHash);
+        if (bytes(_recordHash).length != 0) setPtRecordHash(_address, _recordHash);
     }
 
     function getAllPts() public view returns (address[] memory) {
@@ -266,6 +275,11 @@ contract Contract is ERC2771ContextUpgradeable {
 
     modifier onlyPatient() {
         if (!isPatient(_msgSender())) revert Contract__NotPatient();
+        _;
+    }
+
+    modifier notAdmin() {
+        if (isAdmin(_msgSender())) revert("Contract: Admin cannot register for other roles");
         _;
     }
 }

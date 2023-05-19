@@ -1,26 +1,19 @@
 import useRegisterDoctor from "@/hooks/useRegisterDoctor";
-import { Center, Loader, LoadingOverlay, Text } from "@mantine/core";
 import RegistrationForm from "@/components/Forms/RegistrationForm";
-import messages from "@/utils/messages";
 import BlurLoader from "../Utils/BlurLoader";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 export default function RegisterDoctor() {
   const { status, handleOnSubmit } = useRegisterDoctor();
+  const router = useRouter();
+
+  useEffect(() => {
+    status === "success" && router.reload(window.location.pathname);
+  }, [status]);
 
   return (
     <>
-      {/* <LoadingOverlay
-        visible={status}
-        overlayBlur={4}
-        loader={
-          <>
-            <Center>
-              <Loader />
-            </Center>
-            <Text>{messages[status]}</Text>
-          </>
-        }
-      /> */}
       <BlurLoader visible={status} status={status} />
       <RegistrationForm
         user="doctor"

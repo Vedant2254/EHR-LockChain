@@ -3,46 +3,40 @@ import { useContractWrite } from "wagmi";
 import useIsDoctor from "@/hooks/useIsDoctor";
 import useValidTxnData from "./useValidTxnData";
 import { getPublicKey } from "@/utils/metamask";
+import useRelayTransaction from "./useRelayTransaction";
+import useStatus from "./useStatus";
 
 export default function useRegisterDoctorConfirm() {
-  const { address, contractAddress, contractAbi, enabled } = useValidTxnData();
-  const { isDoctor, runIsDoctor } = useIsDoctor(address);
+  const { address } = useValidTxnData();
+  const { relayTransaction, txnLoading, success } = useRelayTransaction();
 
   const [publicKey, setPublicKey] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [uploading, setIsUploading] = useState(false);
 
-  const { writeAsync: runRegisterDrConfirm } = useContractWrite({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: "registerDrConfirm",
-    args: [publicKey],
-    enabled: enabled && publicKey,
-  });
+  const message = useStatus({ uploading, txnLoading, success });
 
   useEffect(() => {
     publicKey &&
       (async () => {
         try {
-          const response = await runRegisterDrConfirm();
-          await response.wait(1);
-          await runIsDoctor();
+          console.log(await relayTransaction("registerDrConfirm", [publicKey]));
         } catch (err) {
           console.log(err);
         }
         setPublicKey(null);
-        setIsLoading(false);
       })();
   }, [publicKey]);
 
   async function registerDrConfirm() {
-    setIsLoading(true);
+    setIsUploading(true);
     try {
       setPublicKey(await getPublicKey(address));
     } catch (err) {
       console.log(err);
-      setIsLoading(false);
+      setIsUploading(false);
     }
+    setIsUploading(false);
   }
 
-  return { isLoading, isDoctor, runIsDoctor, registerDrConfirm };
+  return { status: message, registerDrConfirm };
 }

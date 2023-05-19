@@ -7,7 +7,7 @@ describe("Contract", function () {
   beforeEach(async function () {
     [admin, doctor, patient] = await ethers.getSigners();
     await deployments.fixture(["all"]);
-    contract = await ethers.getContract("Contract");
+    contract = await ethers.getContract("Contract", admin);
   });
 
   describe("getAdmin", function () {
@@ -79,6 +79,12 @@ describe("Contract", function () {
         "Roles: account already has role"
       );
     });
+
+    it("Reverts if address is admin", async function () {
+      await expect(contract.registerDr("sample-hash")).to.be.revertedWith(
+        "Contract: Admin cannot register for other roles"
+      );
+    });
   });
 
   describe("getAllDrs", function () {
@@ -133,15 +139,20 @@ describe("Contract", function () {
         "Roles: account already has role"
       );
     });
+
+    it("Reverts if address is admin", async function () {
+      await expect(contract.registerPt(hash, hash)).to.be.revertedWith(
+        "Contract: Admin cannot register for other roles"
+      );
+    });
   });
 
   describe("getAllPts", function () {
     it("All patients array is returned correctly", async function () {
-      await contract.registerPt("sample-hash", "sample-hash");
-      contract.connect(doctor).registerPt("sample-hash", "sample-hash");
-      contract.connect(patient).registerPt("sample-hash", "sample-hash");
+      await contract.connect(doctor).registerPt("sample-hash", "sample-hash");
+      await contract.connect(patient).registerPt("sample-hash", "sample-hash");
       const pats = await contract.getAllPts();
-      assert(pats[0] == admin.address, pats[1] == doctor.address, (pats[2] = patient.address));
+      assert(pats[0] == doctor.address, pats[1] == patient.address);
     });
   });
 
@@ -165,6 +176,39 @@ describe("Contract", function () {
       await contract.connect(patient).registerPt("sample-hash", "sample-hash");
       await contract.connect(patient).setPtRecordHash(patient.address, hash);
       assert.equal(await contract.connect(patient).getPtRecordHash(patient.address), hash);
+    });
+  });
+
+  describe("setPtBothHash", function () {
+    const generalHash = "new-general-hash";
+    const recordHash = "new-record-hash";
+
+    beforeEach(async function () {
+      await contract.connect(patient).registerPt("sample-hash", "sample-hash");
+    });
+
+    it("Both hashes are set correctly", async function () {
+      await contract.connect(patient).setPtBothHash(patient.address, generalHash, recordHash);
+      assert(
+        (await contract.connect(patient).getPtGeneralHash(patient.address)) === generalHash,
+        (await contract.connect(patient).getPtRecordHash(patient.address)) === recordHash
+      );
+    });
+
+    it("Only general hash is set correctly", async function () {
+      await contract.connect(patient).setPtBothHash(patient.address, "", recordHash);
+      assert(
+        (await contract.connect(patient).getPtGeneralHash(patient.address)) === "sample-hash",
+        (await contract.connect(patient).getPtRecordHash(patient.address)) === recordHash
+      );
+    });
+
+    it("Only general hash is set correctly", async function () {
+      await contract.connect(patient).setPtBothHash(patient.address, generalHash, "");
+      assert(
+        (await contract.connect(patient).getPtGeneralHash(patient.address)) === generalHash,
+        (await contract.connect(patient).getPtRecordHash(patient.address)) === "sample-hash"
+      );
     });
   });
 
