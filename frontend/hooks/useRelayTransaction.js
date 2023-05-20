@@ -20,7 +20,7 @@ export default function useRelayTransaction() {
         },
       });
 
-      tx = JSON.parse(response.data.result);
+      tx = JSON.parse(response.data.result).tx;
 
       setSuccess(true);
     } catch (err) {
