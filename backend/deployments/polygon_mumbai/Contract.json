@@ -1,5 +1,5 @@
 {
-  "address": "0x1A13BF184eDE6742b12ff7Ce0442cc16C00aaD76",
+  "address": "0x72474fd94742626dd9b006df6B4c26d4A4471c56",
   "abi": [
     {
       "anonymous": false,
@@ -153,6 +153,64 @@
       "anonymous": false,
       "inputs": [
         {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_doctor",
+          "type": "address"
+        }
+      ],
+      "name": "DoctorApproved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_doctor",
+          "type": "address"
+        }
+      ],
+      "name": "DoctorDataChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_doctor",
+          "type": "address"
+        }
+      ],
+      "name": "DoctorDisapproved",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_patient",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_newEditor",
+          "type": "address"
+        }
+      ],
+      "name": "GrantedDataAccess",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
           "indexed": false,
           "internalType": "uint8",
           "name": "version",
@@ -160,6 +218,83 @@
         }
       ],
       "name": "Initialized",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_doctor",
+          "type": "address"
+        }
+      ],
+      "name": "NewDoctorRegistered",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_patient",
+          "type": "address"
+        }
+      ],
+      "name": "NewPatientRegistered",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_patient",
+          "type": "address"
+        }
+      ],
+      "name": "PatientGeneralDataChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_patient",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_editor",
+          "type": "address"
+        }
+      ],
+      "name": "PatientMedicalRecordChanged",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_patient",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "_oldEditor",
+          "type": "address"
+        }
+      ],
+      "name": "RevokedDataAccess",
       "type": "event"
     },
     {
@@ -702,46 +837,46 @@
       "type": "constructor"
     }
   ],
-  "transactionHash": "0x06dec55652807e0bba7e3fac5d2c9eb1b06f2bf01a42a619e540c3ec9a267730",
+  "transactionHash": "0xd7beae44e4d17622e583bffa8081583b1512ae7e4ab4d79f58e7715581f3d231",
   "receipt": {
     "to": null,
     "from": "0x1EbbD6c85cfF4335Ae0C182b2781A777676Ee97A",
-    "contractAddress": "0x1A13BF184eDE6742b12ff7Ce0442cc16C00aaD76",
+    "contractAddress": "0x72474fd94742626dd9b006df6B4c26d4A4471c56",
     "transactionIndex": 0,
     "gasUsed": "766452",
-    "logsBloom": "0x00000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000008000000000000000000000008000000000000000000000000000000002800000004000000000000100000000000000000000000000000000000400000000000000800000000080000000000000000000000000000000000000000000000000000000000000000000000000800000200000000200008004080000000000000000000080000000000000000000024000000020000000000001000000000100000000000400000000100000000000000000000000000040000000000000000000000000000000000000000200100000",
-    "blockHash": "0x901aaaf5a4b1190cccc836ff84772a5e5d9f45fc4245c1928a3aa11e469ec982",
-    "transactionHash": "0x06dec55652807e0bba7e3fac5d2c9eb1b06f2bf01a42a619e540c3ec9a267730",
+    "logsBloom": "0x00000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000008000000000000000000000008000000000800000000000000000000002800000004000000000000100000000000000000000000000000000001400000000000000800000000080000000000000080000000000000000000000000000000000000000000000000000000000800000200000000800008000080000800000000000000000000000000000000000004000000020000000000001000000000100000000000400000000100000000000000000000000000000000000000000000000000000000000000000000020100000",
+    "blockHash": "0x6e62e25a6dbdf790c09e1e770ac7f7059d36d14cc6a352bf5ad0b4c359b19939",
+    "transactionHash": "0xd7beae44e4d17622e583bffa8081583b1512ae7e4ab4d79f58e7715581f3d231",
     "logs": [
       {
         "transactionIndex": 0,
-        "blockNumber": 35808206,
-        "transactionHash": "0x06dec55652807e0bba7e3fac5d2c9eb1b06f2bf01a42a619e540c3ec9a267730",
-        "address": "0x1A13BF184eDE6742b12ff7Ce0442cc16C00aaD76",
+        "blockNumber": 35856127,
+        "transactionHash": "0xd7beae44e4d17622e583bffa8081583b1512ae7e4ab4d79f58e7715581f3d231",
+        "address": "0x72474fd94742626dd9b006df6B4c26d4A4471c56",
         "topics": [
           "0xbc7cd75a20ee27fd9adebab32041f755214dbc6bffa90cc0225b39da2e5c2d3b",
-          "0x000000000000000000000000e38a4b8e148c1d593f8e9eec39b7c5a20887684a"
+          "0x0000000000000000000000009206c44f2296c737a22d2df15c092cd8a5bf0863"
         ],
         "data": "0x",
         "logIndex": 0,
-        "blockHash": "0x901aaaf5a4b1190cccc836ff84772a5e5d9f45fc4245c1928a3aa11e469ec982"
+        "blockHash": "0x6e62e25a6dbdf790c09e1e770ac7f7059d36d14cc6a352bf5ad0b4c359b19939"
       },
       {
         "transactionIndex": 0,
-        "blockNumber": 35808206,
-        "transactionHash": "0x06dec55652807e0bba7e3fac5d2c9eb1b06f2bf01a42a619e540c3ec9a267730",
-        "address": "0x1A13BF184eDE6742b12ff7Ce0442cc16C00aaD76",
+        "blockNumber": 35856127,
+        "transactionHash": "0xd7beae44e4d17622e583bffa8081583b1512ae7e4ab4d79f58e7715581f3d231",
+        "address": "0x72474fd94742626dd9b006df6B4c26d4A4471c56",
         "topics": [
           "0x7e644d79422f17c01e4894b5f4f588d331ebfa28653d42ae832dc59e38c9798f"
         ],
-        "data": "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000a78151aff623f70763532417f9b44dedb1c613b9",
+        "data": "0x000000000000000000000000000000000000000000000000000000000000000000000000000000000000000044cf749ed1929fdedfa50ac30a8d1eb95ad16840",
         "logIndex": 1,
-        "blockHash": "0x901aaaf5a4b1190cccc836ff84772a5e5d9f45fc4245c1928a3aa11e469ec982"
+        "blockHash": "0x6e62e25a6dbdf790c09e1e770ac7f7059d36d14cc6a352bf5ad0b4c359b19939"
       },
       {
         "transactionIndex": 0,
-        "blockNumber": 35808206,
-        "transactionHash": "0x06dec55652807e0bba7e3fac5d2c9eb1b06f2bf01a42a619e540c3ec9a267730",
+        "blockNumber": 35856127,
+        "transactionHash": "0xd7beae44e4d17622e583bffa8081583b1512ae7e4ab4d79f58e7715581f3d231",
         "address": "0x0000000000000000000000000000000000001010",
         "topics": [
           "0x4dfe1bbbcf077ddc3e01291eea2d5c70c2b422b415d95645b9adcfd678cb1d63",
@@ -749,19 +884,19 @@
           "0x0000000000000000000000001ebbd6c85cff4335ae0c182b2781a777676ee97a",
           "0x0000000000000000000000003a22c8bc68e98b0faf40f349dd2b2890fae01484"
         ],
-        "data": "0x00000000000000000000000000000000000000000000000001104c673f0200c00000000000000000000000000000000000000000000000000202727cacbb615f0000000000000000000000000000000000000000000009443e346f98e42ee62600000000000000000000000000000000000000000000000000f226156db9609f0000000000000000000000000000000000000000000009443f44bc002330e6e6",
+        "data": "0x00000000000000000000000000000000000000000000000000056439f4bb09ac000000000000000000000000000000000000000000000000004a95c12d99b144000000000000000000000000000000000000000000000955664016313e30cc7e0000000000000000000000000000000000000000000000000045318738dea79800000000000000000000000000000000000000000000095566457a6b32ebd62a",
         "logIndex": 2,
-        "blockHash": "0x901aaaf5a4b1190cccc836ff84772a5e5d9f45fc4245c1928a3aa11e469ec982"
+        "blockHash": "0x6e62e25a6dbdf790c09e1e770ac7f7059d36d14cc6a352bf5ad0b4c359b19939"
       }
     ],
-    "blockNumber": 35808206,
+    "blockNumber": 35856127,
     "cumulativeGasUsed": "766452",
     "status": 1,
     "byzantium": true
   },
   "args": [
-    "0xe38a4b8E148C1D593f8e9eEC39B7c5a20887684a",
-    "0xA78151AfF623f70763532417f9b44dedB1C613B9",
+    "0x9206c44F2296c737A22D2dF15c092Cd8a5bf0863",
+    "0x44CF749eD1929FDeDfa50AC30A8d1eB95ad16840",
     "0x8129fc1c"
   ],
   "numDeployments": 1,
@@ -773,7 +908,7 @@
     "methodName": "initialize",
     "args": []
   },
-  "implementation": "0xe38a4b8E148C1D593f8e9eEC39B7c5a20887684a",
+  "implementation": "0x9206c44F2296c737A22D2dF15c092Cd8a5bf0863",
   "devdoc": {
     "details": "This contract implements a proxy that is upgradeable by an admin. To avoid https://medium.com/nomic-labs-blog/malicious-backdoors-in-ethereum-proxies-62629adf3357[proxy selector clashing], which can potentially be used in an attack, this contract uses the https://blog.openzeppelin.com/the-transparent-proxy-pattern/[transparent proxy pattern]. This pattern implies two things that go hand in hand: 1. If any account other than the admin calls the proxy, the call will be forwarded to the implementation, even if that call matches one of the admin functions exposed by the proxy itself. 2. If the admin calls the proxy, it can access the admin functions, but its calls will never be forwarded to the implementation. If the admin tries to call a function on the implementation it will fail with an error that says \"admin cannot fallback to proxy target\". These properties mean that the admin account can only be used for admin actions like upgrading the proxy or changing the admin, so it's best if it's a dedicated account that is not used for anything else. This will avoid headaches due to sudden errors when trying to call a function from the proxy implementation. Our recommendation is for the dedicated account to be an instance of the {ProxyAdmin} contract. If set up this way, you should think of the `ProxyAdmin` instance as the real administrative interface of your proxy.",
     "kind": "dev",

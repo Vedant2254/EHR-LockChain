@@ -1,6 +1,7 @@
 import { useState } from "react";
 import usePrepareRequest from "./usePrepareRequest";
 import axios from "axios";
+import { useNetwork } from "wagmi";
 
 export default function useRelayTransaction() {
   const prepareRequest = usePrepareRequest();
@@ -9,7 +10,7 @@ export default function useRelayTransaction() {
   const [success, setSuccess] = useState(false);
 
   async function relayTransaction(functionName, args) {
-    let tx = null;
+    let txReciept = null;
     try {
       setTxnLoading(true);
       const request = await prepareRequest(functionName, args);
@@ -20,7 +21,7 @@ export default function useRelayTransaction() {
         },
       });
 
-      tx = JSON.parse(response.data.result).tx;
+      txReciept = JSON.parse(response.data.result);
 
       setSuccess(true);
     } catch (err) {
@@ -28,7 +29,7 @@ export default function useRelayTransaction() {
     }
 
     setTxnLoading(false);
-    return tx;
+    return txReciept;
   }
 
   return { relayTransaction, txnLoading, success };

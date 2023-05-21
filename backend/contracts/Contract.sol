@@ -15,6 +15,16 @@ error Contract__PendingDoctorApproval();
 error Contract__DoctorPublicKeyMissing();
 
 contract Contract is ERC2771ContextUpgradeable {
+    event NewPatientRegistered(address indexed _patient);
+    event NewDoctorRegistered(address indexed _doctor);
+    event DoctorApproved(address indexed _doctor);
+    event DoctorDisapproved(address indexed _doctor);
+    event PatientGeneralDataChanged(address indexed _patient);
+    event PatientMedicalRecordChanged(address indexed _patient, address indexed _editor);
+    event DoctorDataChanged(address indexed _doctor);
+    event GrantedDataAccess(address indexed _patient, address indexed _newEditor);
+    event RevokedDataAccess(address indexed _patient, address indexed _oldEditor);
+
     // using methods of Roles for Role struct in Roles
     using Roles for Roles.Role;
     using AddToBoolMapping for AddToBoolMapping.Map;
@@ -100,18 +110,24 @@ contract Contract is ERC2771ContextUpgradeable {
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed");
         doctors.users.add(_msgSender(), _hash);
         admin.pending_doctors.set(_msgSender());
+
+        emit NewDoctorRegistered(_msgSender());
     }
 
     function approveDr(address _address) public onlyAdmin {
         if (isDoctor(_address)) return;
         if (!doctors.users.has(_address)) return;
         admin.pending_doctors.unset(_address);
+
+        emit DoctorApproved(_address);
     }
 
     function disapproveDr(address _address) public onlyAdmin {
         if (!isDrPending(_address)) revert("Contract: Doctor not registered");
         doctors.users.remove(_address);
         admin.pending_doctors.unset(_address);
+
+        emit DoctorDisapproved(_address);
     }
 
     function registerDrConfirm(string memory _public_key) public notAdmin {
@@ -124,6 +140,8 @@ contract Contract is ERC2771ContextUpgradeable {
     function setDrHash(string memory _hash) public onlyDoctor {
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed!");
         doctors.users.setHash(_msgSender(), _hash);
+
+        emit DoctorDataChanged(_msgSender());
     }
 
     function getDrHash(address _address) public view returns (string memory) {
@@ -159,10 +177,14 @@ contract Contract is ERC2771ContextUpgradeable {
         patients.users.add(_msgSender(), _hash);
         patients.records[_msgSender()].editor = _msgSender();
         patients.records[_msgSender()].key_data_hash = _key_data_hash;
+
+        emit NewPatientRegistered(_msgSender());
     }
 
     function setPtGeneralHash(string memory _hash) public onlyPatient {
         patients.users.setHash(_msgSender(), _hash);
+
+        emit PatientGeneralDataChanged(_msgSender());
     }
 
     function getPtGeneralHash(address _address) public view returns (string memory) {
@@ -181,6 +203,8 @@ contract Contract is ERC2771ContextUpgradeable {
         if (!isPatient(_address)) revert Contract__NotPatient();
         if (!(patients.records[_address].editor == _msgSender())) revert("Not Allowed");
         patients.records[_address].key_data_hash = _hash;
+
+        emit PatientMedicalRecordChanged(_address, _msgSender());
     }
 
     function getPtRecordHash(address _address) public view returns (string memory) {
@@ -202,6 +226,9 @@ contract Contract is ERC2771ContextUpgradeable {
     ) public {
         if (bytes(_generalHash).length != 0) setPtGeneralHash(_generalHash);
         if (bytes(_recordHash).length != 0) setPtRecordHash(_address, _recordHash);
+
+        emit PatientGeneralDataChanged(_address);
+        emit PatientMedicalRecordChanged(_address, _msgSender());
     }
 
     function getAllPts() public view returns (address[] memory) {
@@ -222,6 +249,8 @@ contract Contract is ERC2771ContextUpgradeable {
         // add new editor access
         patients.records[_msgSender()].editor = _address;
         doctors.docToPatAccess[_address].set(_msgSender());
+
+        emit GrantedDataAccess(_msgSender(), _address);
     }
 
     function removeEditorAccess(
@@ -234,6 +263,8 @@ contract Contract is ERC2771ContextUpgradeable {
 
         patients.users.setHash(_msgSender(), _general_hash);
         patients.records[_msgSender()].key_data_hash = _key_hash;
+
+        emit RevokedDataAccess(_msgSender(), old_editor);
     }
 
     function getDrOfPt() public view onlyPatient returns (address) {

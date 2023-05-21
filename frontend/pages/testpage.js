@@ -1,6 +1,12 @@
 import useGetPatientData from "@/hooks/useGetPatientData";
 import ConnectButton from "@/components/AppShell/ConnectButton";
-import { AddChainError, useAccount, useContractWrite, usePrepareContractWrite } from "wagmi";
+import {
+  AddChainError,
+  useAccount,
+  useContractEvent,
+  useContractWrite,
+  usePrepareContractWrite,
+} from "wagmi";
 import useValidTxnData from "@/hooks/useValidTxnData";
 import useGetDoctorOfPatient from "@/hooks/useGetDoctorOfPatient";
 import useChangeEditorAccess from "@/hooks/useChangeEditorAccess";
@@ -16,5 +22,14 @@ import { useRouter } from "next/router";
 import { Button } from "@mantine/core";
 
 export default function TestPage() {
-  return "";
+  const { contractAddress, contractAbi } = useValidTxnData();
+
+  useContractEvent({
+    address: contractAddress,
+    abi: contractAbi,
+    eventName: "NewPatientRegistered",
+    listener(log) {
+      console.log(log);
+    },
+  });
 }
