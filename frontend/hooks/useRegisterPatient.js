@@ -9,7 +9,7 @@ import useRelayTransaction from "./useRelayTransaction";
 export default function useRegisterPatient() {
   const { address } = useValidTxnData();
   const { isLoading: uploading, CIDs, setupCIDs, resetCIDs } = useAddPatientData(address);
-  const { relayTransaction, txnLoading, success } = useRelayTransaction();
+  const { relayTransaction, txnLoading, txnWaiting, success } = useRelayTransaction();
 
   // registers patient when CIDs are available
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function useRegisterPatient() {
       })();
   }, [CIDs]);
 
-  const message = useStatus({ uploading, txnLoading, success });
+  const message = useStatus({ uploading, txnLoading, txnWaiting, success });
 
   /* Handler functions */
   async function handleOnSumbit(data) {

@@ -3,15 +3,15 @@ import RegistrationForm from "@/components/Forms/RegistrationForm";
 import BlurLoader from "../Utils/BlurLoader";
 import { useAccount } from "wagmi";
 import { useEffect } from "react";
-import { useRouter } from "next/router";
+import useIsPatient from "@/hooks/useIsPatient";
 
 export default function RegisterPatient() {
   const { address } = useAccount();
+  const { runIsPatient } = useIsPatient(address);
   const { status, handleOnSumbit } = useRegisterPatient();
-  const router = useRouter();
 
   useEffect(() => {
-    status === "success" && router.reload("/patient/dashboard");
+    status === "success" && runIsPatient();
   }, [status]);
 
   return (

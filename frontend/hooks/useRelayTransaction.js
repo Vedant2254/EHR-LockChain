@@ -1,16 +1,29 @@
-import { useState } from "react";
-import usePrepareRequest from "./usePrepareRequest";
+import { useEffect, useState } from "react";
+import { useWaitForTransaction } from "wagmi";
 import axios from "axios";
-import { useNetwork } from "wagmi";
+import usePrepareRequest from "./usePrepareRequest";
 
 export default function useRelayTransaction() {
   const prepareRequest = usePrepareRequest();
 
   const [txnLoading, setTxnLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [hash, setHash] = useState(null);
+
+  const { data, isFetching: txnWaiting } = useWaitForTransaction({
+    confirmations: 5,
+    hash,
+  });
+
+  useEffect(() => {
+    if (data) {
+      setSuccess(true);
+      setHash(null);
+    }
+  }, [data]);
 
   async function relayTransaction(functionName, args) {
-    let txReciept = null;
+    let tx = null;
     try {
       setTxnLoading(true);
       const request = await prepareRequest(functionName, args);
@@ -21,16 +34,16 @@ export default function useRelayTransaction() {
         },
       });
 
-      txReciept = JSON.parse(response.data.result);
-
-      setSuccess(true);
+      tx = JSON.parse(response.data.result);
+      setTxnLoading(false);
+      setHash(tx.hash);
     } catch (err) {
+      setTxnLoading(false);
       console.log(err);
     }
 
-    setTxnLoading(false);
-    return txReciept;
+    return tx;
   }
 
-  return { relayTransaction, txnLoading, success };
+  return { relayTransaction, txnLoading, txnWaiting, success };
 }

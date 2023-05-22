@@ -1,15 +1,19 @@
 import useRegisterDoctor from "@/hooks/useRegisterDoctor";
 import RegistrationForm from "@/components/Forms/RegistrationForm";
 import BlurLoader from "../Utils/BlurLoader";
+import { useAccount } from "wagmi";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import useIsDoctorRegistered from "@/hooks/useIsDoctorRegistered";
+import useIsDoctor from "@/hooks/useIsDoctor";
 
 export default function RegisterDoctor() {
+  const { address } = useAccount();
+  const { runIsDoctorRegistered } = useIsDoctorRegistered(address);
   const { status, handleOnSubmit } = useRegisterDoctor();
-  const router = useRouter();
 
   useEffect(() => {
-    status === "success" && router.reload(window.location.pathname);
+    status === "success" && runIsDoctorRegistered();
   }, [status]);
 
   return (

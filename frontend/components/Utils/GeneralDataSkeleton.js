@@ -6,7 +6,7 @@ export default function GeneralDataSkeleton({ status, details }) {
     <>
       <Skeleton height={25} w="20%" my="lg" radius="xl" />
       <Grid my="xs">
-        <Grid.Col span={3} bor>
+        <Grid.Col span={3}>
           <Skeleton height={200} mt={15} circle />
         </Grid.Col>
         <Grid.Col span={5}>

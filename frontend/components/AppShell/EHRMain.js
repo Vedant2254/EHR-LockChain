@@ -163,20 +163,9 @@ export default function EHRMain() {
                   Dashboard
                 </Button>
               )}
-              {/* <Button
-                component="a"
-                href="https://github.com/Vedant2254/EHR-data-management-system"
-                target="_blank"
-                variant="default"
-                radius="xl"
-                size="md"
-                className={classes.control}
-              >
-                Source code
-              </Button> */}
               <Button
                 component="a"
-                href={`https://sepolia.etherscan.io/address/${contractAddress || ""}`}
+                href={`https://mumbai.polygonscan.com/address/${contractAddress || ""}`}
                 target="_blank"
                 variant="default"
                 radius="xl"

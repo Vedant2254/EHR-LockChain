@@ -36,6 +36,7 @@ export default function useGetDoctorData(address) {
     } catch (err) {
       console.log(err);
       setFailed(true);
+      setData({ generalData: {}, certificates: [] });
     }
     setIsRetrieving(false);
   }

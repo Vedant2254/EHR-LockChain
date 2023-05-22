@@ -8,8 +8,8 @@ import useRelayTransaction from "./useRelayTransaction";
 export default function useRemoveEditorAccess() {
   const { address: curraddress } = useValidTxnData();
   const { isLoading: uploading, CIDs, setupCIDs, resetCIDs } = useAddPatientData(curraddress);
-  const { relayTransaction, txnLoading, success } = useRelayTransaction();
-  const status = useStatus({ uploading, txnLoading, success });
+  const { relayTransaction, txnLoading, txnWaiting, success } = useRelayTransaction();
+  const status = useStatus({ uploading, txnLoading, txnWaiting, success });
 
   // storing hashes (CIDs) to smart contract happens here
   useEffect(() => {

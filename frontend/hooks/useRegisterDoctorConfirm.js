@@ -8,12 +8,12 @@ import useStatus from "./useStatus";
 
 export default function useRegisterDoctorConfirm() {
   const { address } = useValidTxnData();
-  const { relayTransaction, txnLoading, success } = useRelayTransaction();
+  const { relayTransaction, txnLoading, txnWaiting, success } = useRelayTransaction();
 
   const [publicKey, setPublicKey] = useState(null);
   const [uploading, setIsUploading] = useState(false);
 
-  const message = useStatus({ uploading, txnLoading, success });
+  const message = useStatus({ uploading, txnLoading, txnWaiting, success });
 
   useEffect(() => {
     publicKey &&

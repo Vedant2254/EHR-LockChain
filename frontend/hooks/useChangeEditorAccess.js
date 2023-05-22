@@ -6,7 +6,7 @@ import useRelayTransaction from "./useRelayTransaction";
 
 export default function useChangeEditorAccess(drAddress) {
   const { address: curraddress } = useValidTxnData();
-  const { relayTransaction, txnLoading, success } = useRelayTransaction();
+  const { relayTransaction, txnLoading, txnWaiting, success } = useRelayTransaction();
   const {
     isLoading: uploading,
     CIDs,
@@ -14,7 +14,7 @@ export default function useChangeEditorAccess(drAddress) {
     resetCIDs,
   } = useAddPatientData(curraddress, drAddress);
 
-  const status = useStatus({ uploading, txnLoading, success });
+  const status = useStatus({ uploading, txnLoading, txnWaiting, success });
 
   // storing hashes (CIDs) to smart contract happens here
   useEffect(() => {

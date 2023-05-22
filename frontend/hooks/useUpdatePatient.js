@@ -10,10 +10,11 @@ export default function useUpdatePatient(ptAddress, updater) {
     setupCIDs,
     resetCIDs,
   } = useAddPatientData(ptAddress, updater);
-  const { relayTransaction, txnLoading, success } = useRelayTransaction();
+  const { relayTransaction, txnLoading, txnWaiting, success } = useRelayTransaction();
   const message = useStatus({
     uploading,
     txnLoading,
+    txnWaiting,
     success,
   });
 

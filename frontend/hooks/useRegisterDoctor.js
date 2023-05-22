@@ -9,9 +9,9 @@ import useRelayTransaction from "./useRelayTransaction";
 export default function useRegisterDoctor() {
   const { address } = useValidTxnData();
   const { isLoading: uploading, dataCID, setupCID, resetCID } = useAddDoctorData(address);
-  const { relayTransaction, txnLoading, success } = useRelayTransaction();
+  const { relayTransaction, txnLoading, txnWaiting, success } = useRelayTransaction();
 
-  const message = useStatus({ uploading, txnLoading, success });
+  const message = useStatus({ uploading, txnLoading, txnWaiting, success });
 
   /* useEffects */
   useEffect(() => {
