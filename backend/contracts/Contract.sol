@@ -137,6 +137,13 @@ contract Contract is ERC2771ContextUpgradeable {
         doctors.public_keys[_msgSender()] = _public_key;
     }
 
+    function deleteDr() public notAdmin {
+        if (isDrRegistered(_msgSender())) {
+            doctors.users.remove(_msgSender());
+            admin.pending_doctors.unset(_msgSender());
+        }
+    }
+
     function setDrHash(string memory _hash) public onlyDoctor {
         if (bytes(_hash).length == 0) revert("Contract: Empty hash is not allowed!");
         doctors.users.setHash(_msgSender(), _hash);
@@ -179,6 +186,13 @@ contract Contract is ERC2771ContextUpgradeable {
         patients.records[_msgSender()].key_data_hash = _key_data_hash;
 
         emit NewPatientRegistered(_msgSender());
+    }
+
+    function deletePt() public notAdmin {
+        if (isPatient(_msgSender())) {
+            patients.users.remove(_msgSender());
+            delete patients.records[_msgSender()];
+        }
     }
 
     function setPtGeneralHash(string memory _hash) public onlyPatient {
