@@ -73,8 +73,8 @@ export default function EHRHeader({ opened, setOpened }) {
 
         <Group onClick={() => router.push("/")} sx={{ cursor: "pointer" }}>
           <Avatar src="/ehr-logo-main.png" />
-          <Text size="lg" fw="bold" variant="gradient">
-            EHR data management system
+          <Text size="xl" fw="bold" variant="gradient">
+            EHR-LockChain
           </Text>
         </Group>
 

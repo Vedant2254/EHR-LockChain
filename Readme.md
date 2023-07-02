@@ -1,4 +1,4 @@
-# EHR data management system
+# EHR-LockChain
 
 <!-- Project Intro -->
 <div align="center">
