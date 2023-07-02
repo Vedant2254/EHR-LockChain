@@ -6,6 +6,7 @@ import { MetaMaskConnector } from "wagmi/connectors/metaMask";
 import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import HeadComponent from "@/components/HeadComponent";
 import { useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import "@/styles/globals.css";
 
 const { chains, provider, webSocketProvider } = configureChains(
@@ -53,6 +54,7 @@ export default function App({ Component, pageProps }) {
         <WagmiConfig client={client}>
           <HeadComponent />
           <Component {...pageProps} />
+          <Analytics />
         </WagmiConfig>
       </ColorSchemeProvider>
     </MantineProvider>

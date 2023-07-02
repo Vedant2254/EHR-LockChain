@@ -30,6 +30,7 @@
     "@tiptap/extension-link": "^2.0.0-beta.220",
     "@tiptap/react": "^2.0.0-beta.220",
     "@tiptap/starter-kit": "^2.0.0-beta.220",
+    "@vercel/analytics": "^1.0.1",
     "dayjs": "^1.11.7",
     "defender-relay-client": "^1.43.0",
     "embla-carousel-react": "^7.1.0",
