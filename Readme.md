@@ -11,7 +11,7 @@
     <br />
     <span >Patients can use the application to manage sharing and access control of their medical records with respective doctors registered on application<span>
     <br />
-    <a href="https://github.com/Vedant2254/Fundme-hardhat-blockchain"><strong>Explore the source code »</strong></a>
+    <a href="https://github.com/Vedant2254/ehr-lockchain"><strong>Explore the source code »</strong></a>
     <br />
     <br />
     <a href="https://ehr-data-management-system.vercel.app/" target="_blank">Live dapp</a>

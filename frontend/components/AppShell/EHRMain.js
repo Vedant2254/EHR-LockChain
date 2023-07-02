@@ -183,6 +183,7 @@ export default function EHRMain() {
                   ? "/ehr-logo-main-animated.gif"
                   : "/ehr-logo-main-dark-animated.gif"
               }
+              withPlaceholder={"/ehr-logo-main.png"}
             />
           </Grid.Col>
         </Grid>
