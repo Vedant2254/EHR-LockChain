@@ -36,7 +36,7 @@ export default function EHRFooter() {
       <Container mx="auto" className={classes.inner}>
         <ActionIcon
           component="a"
-          href="https://github.com/Vedant2254/EHR-data-management-system"
+          href="https://github.com/Vedant2254/EHR-LockChain"
           target="_blank"
           size="xl"
           c="white"

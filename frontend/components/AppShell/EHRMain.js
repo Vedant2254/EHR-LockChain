@@ -163,17 +163,19 @@ export default function EHRMain() {
                   Dashboard
                 </Button>
               )}
-              <Button
-                component="a"
-                href={`https://mumbai.polygonscan.com/address/${contractAddress || ""}`}
-                target="_blank"
-                variant="default"
-                radius="xl"
-                size="md"
-                className={classes.control}
-              >
-                Smart Contract
-              </Button>
+              {isDefinitelyConnected && (
+                <Button
+                  component="a"
+                  href={`https://mumbai.polygonscan.com/address/${contractAddress || ""}`}
+                  target="_blank"
+                  variant="default"
+                  radius="xl"
+                  size="md"
+                  className={classes.control}
+                >
+                  Smart Contract
+                </Button>
+              )}
             </Group>
           </Grid.Col>
           <Grid.Col span={5} className={classes.image}>
