@@ -21,7 +21,7 @@ import Link from "next/link";
 import useIsPatient from "@/hooks/useIsPatient";
 import useIsDoctorRegistered from "@/hooks/useIsDoctorRegistered";
 import useIsAdmin from "@/hooks/useIsAdmin";
-import { useAccount, useNetwork } from "wagmi";
+import { useAccount } from "wagmi";
 import { useRouter } from "next/router";
 import { IconMoonStars, IconPlug, IconSun, IconSwitch, IconSwitch3 } from "@tabler/icons-react";
 import SwitchNetworkButton from "./SwitchNetworkButton";
@@ -52,7 +52,6 @@ export default function EHRHeader({ opened, setOpened }) {
   const { isDoctorRegistered } = useIsDoctorRegistered(address);
   const { isAdmin } = useIsAdmin(address);
   const { classes } = useStyles();
-  const { chain } = useNetwork();
   const router = useRouter();
   const theme = useMantineTheme();
 
@@ -62,13 +61,7 @@ export default function EHRHeader({ opened, setOpened }) {
     <Header height={{ base: 50, md: 70 }} className={classes.header} id="header">
       <Flex justify="space-between" align="center" h="100%">
         <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-          <Burger
-            opened={opened}
-            onClick={() => setOpened((o) => !o)}
-            size="sm"
-            color={theme.colors.gray[6]}
-            mr="xl"
-          />
+          <Burger opened={opened} onClick={() => setOpened((o) => !o)} size="sm" color={theme.colors.gray[6]} mr="xl" />
         </MediaQuery>
 
         <Group onClick={() => router.push("/")} sx={{ cursor: "pointer" }}>

@@ -1,4 +1,4 @@
-import { useAccount, useNetwork } from "wagmi";
+import { useAccount } from "wagmi";
 import useSWR from "swr";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
@@ -7,8 +7,7 @@ const fetcher = (url) => fetch(url).then((res) => res.json());
 // smart contract function
 export default function useValidTxnData() {
   const { data } = useSWR("/api/constants", fetcher);
-  const { chain } = useNetwork();
-  const { address } = useAccount();
+  const { chain, address } = useAccount();
 
   const jsonData = data ? JSON.parse(data) : null;
 

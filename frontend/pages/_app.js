@@ -1,30 +1,13 @@
-import { WagmiConfig, configureChains, createClient } from "wagmi";
-import { hardhat, goerli, sepolia, polygonMumbai } from "wagmi/chains";
-import { publicProvider } from "wagmi/providers/public";
-import { alchemyProvider } from "wagmi/providers/alchemy";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
-import HeadComponent from "@/components/HeadComponent";
 import { useState } from "react";
+import { WagmiProvider } from "wagmi";
+import { config } from "@/config";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import HeadComponent from "@/components/HeadComponent";
+import { ColorSchemeProvider, MantineProvider } from "@mantine/core";
 import { Analytics } from "@vercel/analytics/react";
 import "@/styles/globals.css";
 
-const { chains, provider, webSocketProvider } = configureChains(
-  [hardhat, goerli, sepolia, polygonMumbai],
-  [
-    publicProvider(),
-    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_GOERLI_RPC_URL }),
-    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_SEPOLIA_RPC_URL }),
-    alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_POLYGON_MUMBAI_RPC_URL }),
-  ]
-);
-
-const client = createClient({
-  autoConnect: true,
-  connectors: [new MetaMaskConnector({ chains })],
-  provider,
-  webSocketProvider,
-});
+const queryClient = new QueryClient();
 
 export default function App({ Component, pageProps }) {
   const [colorScheme, setColorScheme] = useState("light");
@@ -34,29 +17,31 @@ export default function App({ Component, pageProps }) {
   }
 
   return (
-    <MantineProvider
-      theme={{
-        colorScheme,
-        loader: "bars",
-        defaultGradient: { from: "purple", to: "blue", deg: 90 },
-        components: {
-          Button: {
-            styles: {
-              root: {
-                transition: "150ms",
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <MantineProvider
+          theme={{
+            colorScheme,
+            loader: "bars",
+            defaultGradient: { from: "purple", to: "blue", deg: 90 },
+            components: {
+              Button: {
+                styles: {
+                  root: {
+                    transition: "150ms",
+                  },
+                },
               },
             },
-          },
-        },
-      }}
-    >
-      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-        <WagmiConfig client={client}>
-          <HeadComponent />
-          <Component {...pageProps} />
-          <Analytics />
-        </WagmiConfig>
-      </ColorSchemeProvider>
-    </MantineProvider>
+          }}
+        >
+          <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+            <HeadComponent />
+            <Component {...pageProps} />
+            <Analytics />
+          </ColorSchemeProvider>
+        </MantineProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }

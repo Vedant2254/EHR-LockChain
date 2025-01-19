@@ -1,11 +1,11 @@
 import { ethers } from "ethers";
 import useValidTxnData from "./useValidTxnData";
 import { signMetaTxRequest } from "@/utils/signer";
-import { useProvider, useSigner } from "wagmi";
+import { usePublicClient, useWalletClient } from "wagmi";
 
 export default function usePrepareRequest() {
-  const provider = useProvider();
-  const { data: signer } = useSigner();
+  const provider = usePublicClient();
+  const { data: signer } = useWalletClient();
   const { forwarderAddress, forwarderAbi, contractAddress, contractAbi } = useValidTxnData();
 
   async function prepareRequest(functionName, args) {

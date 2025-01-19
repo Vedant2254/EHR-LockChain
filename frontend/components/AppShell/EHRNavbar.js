@@ -1,37 +1,21 @@
 import { useEffect, useState } from "react";
-import {
-  createStyles,
-  Navbar,
-  Group,
-  Code,
-  getStylesRef,
-  rem,
-  Box,
-  ActionIcon,
-} from "@mantine/core";
+import { createStyles, Navbar, getStylesRef, rem, ActionIcon } from "@mantine/core";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import ConnectButton from "@/components/AppShell/ConnectButton";
-import { IconBrandGithub, IconLogout, IconSwitch, IconSwitchHorizontal } from "@tabler/icons-react";
 import LogosMetamaskIcon from "../Utils/Icons/MetamaskIcon";
-import SwitchNetworkButton from "./SwitchNetworkButton";
-import { useNetwork } from "wagmi";
 
 const useStyles = createStyles((theme) => ({
   header: {
     paddingBottom: theme.spacing.md,
     marginBottom: `calc(${theme.spacing.md} * 1.5)`,
-    borderBottom: `${rem(1)} solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[2]
-    }`,
+    borderBottom: `${rem(1)} solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[2]}`,
   },
 
   footer: {
     paddingTop: theme.spacing.md,
     marginTop: theme.spacing.md,
-    borderTop: `${rem(1)} solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[2]
-    }`,
+    borderTop: `${rem(1)} solid ${theme.colorScheme === "dark" ? theme.colors.dark[4] : theme.colors.gray[2]}`,
   },
 
   link: {
@@ -76,24 +60,17 @@ export default function EHRNavbar({ navlinks, opened }) {
   const { classes, cx } = useStyles();
   const router = useRouter();
   const { location } = router.query;
-  const { chain } = useNetwork();
 
   const [active, setActive] = useState("");
 
-  const basePath = location
-    ? router.asPath.slice(0, router.asPath.indexOf(location))
-    : router.pathname;
+  const basePath = location ? router.asPath.slice(0, router.asPath.indexOf(location)) : router.pathname;
 
   useEffect(() => {
     setActive(location);
   }, [location]);
 
   const links = navlinks.map((link) => (
-    <Link
-      className={cx(classes.link, { [classes.linkActive]: link.location === active })}
-      href={`${basePath}${link.location}`}
-      key={link.label}
-    >
+    <Link className={cx(classes.link, { [classes.linkActive]: link.location === active })} href={`${basePath}${link.location}`} key={link.label}>
       <link.icon className={classes.linkIcon} stroke={1.5} />
       {link.label}
     </Link>
