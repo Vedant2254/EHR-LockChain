@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useWaitForTransaction } from "wagmi";
+import { useWaitForTransactionReceipt } from "wagmi";
 import axios from "axios";
 import usePrepareRequest from "./usePrepareRequest";
 
@@ -10,7 +10,7 @@ export default function useRelayTransaction() {
   const [success, setSuccess] = useState(false);
   const [hash, setHash] = useState(null);
 
-  const { data, isFetching: txnWaiting } = useWaitForTransaction({
+  const { data, isFetching: txnWaiting } = useWaitForTransactionReceipt({
     confirmations: 5,
     hash,
   });

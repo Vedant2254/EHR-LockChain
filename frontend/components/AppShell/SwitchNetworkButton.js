@@ -1,14 +1,16 @@
-import { Box, Button, Flex, Group, Text } from "@mantine/core";
-import { IconSwitch, IconSwitch3 } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
-import { useAccount, useNetwork, useSwitchNetwork } from "wagmi";
+import { Box, Group, Text } from "@mantine/core";
+import { IconSwitch } from "@tabler/icons-react";
+import { useEffect, useMemo, useState } from "react";
+import { useAccount, useSwitchChain } from "wagmi";
+import { sepolia } from "wagmi/chains";
 
 export default function SwitchNetworkButton() {
-  const { isConnected, isDisconnected } = useAccount();
-  const { chain } = useNetwork();
-  const { chains, switchNetwork } = useSwitchNetwork();
+  const { isConnected, isDisconnected, chain } = useAccount();
+  const { switchChain } = useSwitchChain();
 
   const [isDefinitelyConnected, setIsDefinitelyConnected] = useState(false);
+
+  const isOnSupportedChain = useMemo(() => chain && sepolia && chain.id === sepolia.id, [chain]);
 
   useEffect(() => {
     setIsDefinitelyConnected(isConnected);
@@ -16,20 +18,13 @@ export default function SwitchNetworkButton() {
 
   return (
     isDefinitelyConnected &&
-    chain &&
-    chain.id !== 80001 && (
-      <Group
-        spacing="2px"
-        onClick={() => {
-          switchNetwork(80001);
-        }}
-        sx={{ cursor: "pointer" }}
-      >
+    !isOnSupportedChain && (
+      <Group spacing="2px" onClick={async () => switchChain({ chainId: sepolia.id })} sx={{ cursor: "pointer" }}>
         <IconSwitch />
         <Box>
           Switch Network
           <Text c="dimmed" size="xs">
-            Polygon (Mumbai)
+            Sepolia (Ethereum Testnet)
           </Text>
         </Box>
       </Group>

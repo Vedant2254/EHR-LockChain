@@ -1,9 +1,7 @@
-import { useNetwork, useSignTypedData } from "wagmi";
+import { useSignTypedData } from "wagmi";
 import { SignTypedDataVersion, recoverTypedSignature } from "@metamask/eth-sig-util";
 
 export default function useSignCertificates() {
-  const { chain } = useNetwork();
-
   const domain = {
     name: "MedicalRecord signature",
     // chainId: chain && chain.id,

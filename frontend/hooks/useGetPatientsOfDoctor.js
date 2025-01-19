@@ -1,11 +1,11 @@
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
-import { useSigner } from "wagmi";
+import { useWalletClient } from "wagmi";
 import useValidTxnData from "./useValidTxnData";
 
 export default function useGetPatientsOfDoctor(runnow = true) {
   const { contractAddress, contractAbi, enabled } = useValidTxnData();
-  const { data: signer } = useSigner();
+  const { data: signer } = useWalletClient();
 
   const [patients, setPatients] = useState([]);
 
